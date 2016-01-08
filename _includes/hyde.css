@@ -56,10 +56,10 @@ html {
   text-align: center;
   padding: 2rem 1rem;
   color: rgba(255,255,255,.5);
-  background: -webkit-linear-gradient(#009688, #00695C);
-  background: -o-linear-gradient(#009688, #00695C);
-  background: -moz-linear-gradient(#009688, #00695C);
-  background: linear-gradient(#009688, #00695C);
+  background: -webkit-linear-gradient(#8DB6CD, #8DEEEE);
+  background: -o-linear-gradient(#8DB6CD, #8DEEEE);
+  background: -moz-linear-gradient(#8DB6CD, #8DEEEE);
+  background: linear-gradient(#8DB6CD, #8DEEEE);
 }
 @media (min-width: 48em) {
   .sidebar {
