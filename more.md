@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About
+title: More
 ---
 
 待完善
