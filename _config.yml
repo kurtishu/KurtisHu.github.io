@@ -1,0 +1,33 @@
+# Dependencies
+markdown:         kramdown
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+relative_permalinks: true
+
+# Setup
+title:            Kurtis Hu
+description:      'Empty'
+url:              http://kurtishu.github.io
+baseurl:          /
+logo:             /content/images/me.jpg
+
+author:
+  name:           'Kurtis Hu'
+  url:            https://github.com/kurtishu
+  email: 		  kurtis_hu@hotmail.com
+
+paginate:         5
+
+disqus_shortname: kurtis
+
+github:
+  repo:           https://github.com/kurtishu/KurtisHu.github.io
+
+gems:
+  - jekyll-sitemap
+
+kramdown:
+  # Enable GitHub Flavored Markdown (fenced code blocks)
+  input: GFM
