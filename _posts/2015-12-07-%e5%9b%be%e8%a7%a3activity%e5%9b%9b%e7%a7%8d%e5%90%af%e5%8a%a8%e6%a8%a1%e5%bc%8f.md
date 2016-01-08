@@ -1,8 +1,7 @@
 ---
-id: 188
+layout: post
 title: 图解Activity四种启动模式
 author: kurtis.hu
-permalink: /?p=188
 categories:
   - Android
 tags:

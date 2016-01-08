@@ -1,14 +1,7 @@
 ---
-id: 203
-title: freeswitch常用命令
-author: kurtis.hu
 layout: post
-guid: http://172.20.41.31/pss/?p=203
-permalink: /?p=203
-categories:
-  - Others
-tags:
-  - freeswitch
+title: freeswitch 常用命令汇总
+author: kurtis.hu
 ---
 <span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; ">后台启动freeswitch<br /></span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; ">freeswitch&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; ">&#8211;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; ">nc</span>
 
