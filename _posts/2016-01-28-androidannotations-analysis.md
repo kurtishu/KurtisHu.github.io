@@ -1,12 +1,11 @@
 ---
 layout: post
-title: 图解Activity四种启动模式
+title: AndroidAnnotions 源码解析
 author: kurtis.hu
 categories:
   - Android
 ---
 
-#AndroidAnnotions 源码解析
 AndroidAnnotions 官方的给出的定义是
 ```
 AndroidAnnotations is an Open Source framework that speeds up Android development. It takes care of the plumbing, and lets you concentrate on what's really important. By simplifying your code, it facilitates its maintenance.
