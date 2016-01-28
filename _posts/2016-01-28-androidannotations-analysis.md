@@ -1,7 +1,9 @@
-﻿---
+---
 layout: post
-title: AndroidAnnotions 源码解析
+title: 图解Activity四种启动模式
 author: kurtis.hu
+categories:
+  - Android
 ---
 
 #AndroidAnnotions 源码解析
@@ -94,4 +96,3 @@ private void processThrowing(Set<? extends TypeElement> annotations, RoundEnviro
 
 ####更多
 关于AndroidAnnotation框架如何去Validate、解析，以及生成类的过程没有具体分析，留到以后再完善。
-
