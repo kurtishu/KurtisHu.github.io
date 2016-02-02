@@ -7,14 +7,14 @@ categories:
 ---
 
 AndroidAnnotions 官方的给出的定义是
-```
-AndroidAnnotations is an Open Source framework that speeds up Android development. It takes care of the plumbing, and lets you concentrate on what's really important. By simplifying your code, it facilitates its maintenance.
-```
+
+> AndroidAnnotations is an Open Source framework that speeds up Android development. It takes care of the plumbing, and lets you concentrate on what's really important. By simplifying your code, it facilitates its maintenance.
+
 AndroidAnnotations 使用标准的Java注解处理工具自动添加一个额外的编译步骤生成的源代码(会生成一个加了"_"的同名类)，在新生产的源文件中实现View的实例化、Class的注入等工作，以达到减轻开发者工作量的目的。
-####关于 APT(Annotion Processing Tool)
+###关于 APT(Annotion Processing Tool)
 APT 是java 注解处理工具，它的作用就是在源代码中找到并处理Annotation Processors(Annnotation Processors 简单说就是实现了AnnotationProcessor interface 的类)，更多关于APT的内容请参考：[oracle apt doc](http://docs.oracle.com/javase/1.5.0/docs/guide/apt/GettingStarted.html) 
 
-#### Android Stuio使用AndroidAnnotation
+### Android Stuio使用AndroidAnnotation
 在Android Stuio使用AndroidAnnotion，在网上有具体的配置步骤，引入这个框架会涉及到两个jar包
 ```
  dependencies {
@@ -24,7 +24,7 @@ APT 是java 注解处理工具，它的作用就是在源代码中找到并处�
 ```
 其中上面一个是AndroidAnnotations的处理核心包，包含了一个 Annotation Processor，另一个则是暴露出来的所有Annotions，例如@EActivity，@EBean等, API这个包没什么好说的，下面主要讲下androidannotations.jar。
 
-#### 解密androidannotations.jar
+### 解密androidannotations.jar
 解压androidannotations.jar文件，在META-INF\services\下有个javax.annotation.processing.Processor，该文件会‘告诉’apt来处理这个文件指定的Processor。这个文件所指定的Processor是org.androidannotations.AndroidAnnotationProcessor。所以重点关注AndroidAnnotationProcessor这个类。
 ###org.androidannotations.AndroidAnnotationProcessor
 
@@ -93,5 +93,5 @@ private void processThrowing(Set<? extends TypeElement> annotations, RoundEnviro
 
 ```
 
-####更多
+###更多
 关于AndroidAnnotation框架如何去Validate、解析，以及生成类的过程没有具体分析，留到以后再完善。

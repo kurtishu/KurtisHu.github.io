@@ -17,21 +17,21 @@ tags:
 
 
 
-<img src="/content/images/Standard.png" width="431" height="390" />
+<img src="/images/Standard.png" width="431" height="390" />
 
 <span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: medium; text-align: left; ">2.&nbsp;SingleTop模式<br /></span></strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: medium; text-align: left; ">这种模式会考虑当前要激活的Activity实例在任务栈中是否正处于栈顶，如果处于栈顶则无需重新创建新的实例，会重用已存在的实例，否则会在任务栈中创建新的实例。注：Activity2 的launchMode 为singleTop。</span></span>
 
-<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><strong style="font-family: Simsun; font-size: medium; text-align: left; "><img src="/content/images/SingleTop.png" width="358" height="386" /></strong></span>
+<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><strong style="font-family: Simsun; font-size: medium; text-align: left; "><img src="/images/SingleTop.png" width="358" height="386" /></strong></span>
 
 <span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: medium; text-align: left; ">3.&nbsp;SingleTask模式<br /></span></strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: medium; text-align: left; ">如果任务栈中存在该模式的Activity实例，则把栈中该实例以上的Activity实例全部移除，调用该实例的newIntent()方法重用该Activity，使该实例处於栈顶位置，否则就重新创建一个新的Activity实例。<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: medium; text-align: left; ">注：Activity2 的launchMode 为singleTask。</span></span></span>
 
-<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><strong style="font-family: Simsun; font-size: medium; text-align: left; "><img src="/content/images/SingleTask.png" width="541" height="418" /></strong></span>
+<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><strong style="font-family: Simsun; font-size: medium; text-align: left; "><img src="/images/SingleTask.png" width="541" height="418" /></strong></span>
 
 <p class="p0" style="font-family: Simsun; font-size: medium; white-space: normal; text-align: left; ">
   <span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><strong>4.&nbsp;SingleInstance模式</strong><br />当该模式Activity实例在任务栈中创建后，只要该实例还在任务栈中，即只要激活的是该类型的Activity，都会通过调用实例的newIntent()方法重用该Activity，此时使用的都是同一个Activity实例，它都会处于任务栈的栈顶。此模式一般用于加载较慢的，比较耗性能且不需要每次都重新创建的Activity。<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: medium; text-align: left; ">注：Activity2 的launchMode 为singleInstance。</span></span>
 </p>
 
-<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><img src="/content/images/SingleInstance.png" width="508" height="428" /></span>
+<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><img src="/images/SingleInstance.png" width="508" height="428" /></span>
 
 <span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><strong>总结：</strong><br />standard：默认模式，始终创建新的实例。<br />singleTop： 要激活的Activity处于栈顶，则不新建实例，重用该实例，否则新建实例。<br />singleTask： 检查要激活Activity在栈中是否存在，如果存在把该实例pop 到栈顶，该实例栈以上的实例出栈，如果不存在，新建一个栈并把该实例置于栈底。<br />singleInstance：检查要激活Activity在栈中是否存在，不存在，新建一个栈并把该实例置于栈底，存在直接使用该实例，singleInstance的实例在所在的栈的栈底，并且该栈中只有唯一该对象。</span>
 
