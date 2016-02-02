@@ -3,7 +3,10 @@ layout: post
 title: AndroidAnnotions 源码解析
 author: kurtis.hu
 categories:
-  - Android
+  - Android  
+tags: 
+- Annotation
+- AndroidAnnotions
 ---
 
 AndroidAnnotions 官方的给出的定义是
