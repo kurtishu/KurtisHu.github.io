@@ -1,16 +1,16 @@
 ﻿---
 published: true
-title: Android 
 layout: post
-author: Kurtis Hu
-category: Android 学习资源
-tags:
-- Open source
+title: Android 学习资源
+author: kurtis.hu
+categories:
+  - Android  
+tags: 
+- Souce code
 - Library
-- Android
 ---
 
-## Android源代码
+### Android源代码
 * [Grepcode](http://grepcode.com/project/repository.grepcode.com/java/ext/com.google.android/android/) - Android系统源码在线查看
 * [Androidxref](http://androidxref.com/) - Android系统源码在线查
 * [codota](http://www.codota.com/) - Find Great Code Examples
@@ -39,3 +39,4 @@ tags:
 * [稀土掘金](http://gold.xitu.io/#/)
 * [Android Weekly](http://androidweekly.net/)
 * [Android开发技术周报](http://www.androidweekly.cn/)
+* [泡在网上的日子](http://www.jcodecraeer.com/plus/list.php?tid=16)
