@@ -10,7 +10,7 @@ tags:
 - IDE
 ---
 
-> 来源：JeremyHe）<br/>
+> 来源：JeremyHe <br/>
 > 链接：http://zlv.me/posts/2015/07/13/14_android-studio-tips/
 
 ###  关于快捷键

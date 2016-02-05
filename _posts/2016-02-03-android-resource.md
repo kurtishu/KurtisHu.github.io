@@ -1,12 +1,12 @@
-﻿---
-layout: post
+﻿--- 
 title: Android 学习资源
-author: kurtis.hu
-categories:
-  - Android  
+layout: post
+author: Kurtis Hu
+category: 
+  - Android
 tags: 
-  - Souce code
-  - Library
+- Souce code
+- Library
 ---
 
 ### Android源代码
