@@ -102,37 +102,37 @@ shift+f6
 重命名变量或者方法名。重构神技。  
 ![](http://zlv.me/pics/14-rename.gif)
 ---
-### 条件断点
+###  条件断点
 ---
 通过右键断点，可以对一个断点加入条件。只有当满足条件时，才会进入到断点中。调试神技，只对自己关心的情况进行调试，不浪费时间。  
 ![](http://zlv.me/pics/14-conditionalbreakpoint.gif)
 ---
-### 进入调试模式
+###  进入调试模式
 ---
 点击Attach Debugger(即绿色小虫旁边那个)可以快速进入调试而不需要重新部署和启动app。
 可以选择为此功能设置一个快捷键或者通过前面提到的Find Actions(ctrl+shift+a)输入"attach"进行调用。  
 ![](http://zlv.me/pics/14-attachdebugger.gif)
 
 ---
-### 快速查看变量的值
+###  快速查看变量的值
 ---
 按住Alt点击想要查看的变量或者语句。如果想查看更多，则可以按Alt+f8调出Evaluate Expression窗口来自行输入自定义的语句。  
 ![](http://zlv.me/pics/14-mouse_evaluate_expression.gif)
 
 ---
-### 分析堆栈信息
+###  分析堆栈信息
 ---
 Find Actions(ctrl+shift+a)输入"analyze stacktrace"即可查看堆栈信息。  
 ![](http://zlv.me/pics/14-analyzestacktrace.gif)
 
 ---
-### 分析某个值的来源
+###  分析某个值的来源
 ---
 Find Actions(ctrl+shift+a)输入"Analyze Data Flow to Here"，可以查看某个变量某个参数其值是如何一路赋值过来的。
 对于分析代码非常有用  
 ![](http://zlv.me/pics/14-analyzedataflow.gif)
 ---
-### 多行编辑
+###  多行编辑
 ---
 强大的神技之一，用过vim的vim-multiple-cursors或者Sublime Text的多行编辑都不会忘记那种快感！ 也许不是平时用得最多的技能，但是却是关键时刻提高效率的工具。    
 ```
@@ -141,7 +141,7 @@ Find Actions(ctrl+shift+a)输入"Analyze Data Flow to Here"，可以查看某个
 ![](http://zlv.me/pics/14-multiselection.gif)
 
 ---
-### 列编辑
+###  列编辑
 ---
 在vim中叫作块编辑，同样神技！使用方法：按住Alt加鼠标左键拉框即可
 PS：发现Ubuntu下不可用，代替方法为按Alt+Shift+Insert之后拖框选择。
@@ -149,7 +149,7 @@ PS：发现Ubuntu下不可用，代替方法为按Alt+Shift+Insert之后拖框�
 ![](http://zlv.me/pics/14-columnselection.gif)
 
 ---
-### Enter和Tab在代码提示时的区别
+###  Enter和Tab在代码提示时的区别
 ---  
 ![](http://zlv.me/pics/14-codecompletionentertab.gif)
 
@@ -158,7 +158,7 @@ PS：发现Ubuntu下不可用，代替方法为按Alt+Shift+Insert之后拖框�
 <br/>
 <br/>
 
-# Android Studio 简介
+##  Android Studio 简介
 > 来源：工匠若水（@工匠若水）<br/>
 > 链接：http://blog.csdn.net/yanbober/article/details/45306483
 
