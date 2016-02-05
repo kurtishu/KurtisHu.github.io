@@ -16,7 +16,7 @@ tags:
 
 ###  关于快捷键
 
- **The File Structure Popup**
+ **The File Structure Popup**  
 ```
  ctrl+f12 
 ```  
@@ -116,9 +116,8 @@ shift+f6
 ###  快速查看变量的值  
 
 按住Alt点击想要查看的变量或者语句。如果想查看更多，则可以按Alt+f8调出Evaluate Expression窗口来自行输入自定义的语句。  
-![](http://zlv.me/pics/14-mouse_evaluate_expression.gif)
+![](http://zlv.me/pics/14-mouse_evaluate_expression.gif)  
 
----
 ###  分析堆栈信息  
 
 Find Actions(ctrl+shift+a)输入"analyze stacktrace"即可查看堆栈信息。  
