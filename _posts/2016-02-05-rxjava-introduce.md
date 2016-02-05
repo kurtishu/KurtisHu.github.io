@@ -26,8 +26,9 @@ tags:
 
 ---
 
-* RxJava Essentials 中文翻译版   
-> 链接：[RxJava Essentials](http://rxjava.yuxingxin.com/)   
+* RxJava Essentials 中文翻译版  
+
+> 链接：[http://rxjava.yuxingxin.com](http://rxjava.yuxingxin.com/)   
 
 ---
 
