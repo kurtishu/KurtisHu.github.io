@@ -1,6 +1,6 @@
 --- 
 published: true
-title: 关于 Android Studio
+title: Android Studio奇技
 layout: post
 author: Kurtis Hu
 category: 
@@ -10,10 +10,9 @@ tags:
 - IDE
 ---
 
-##  倍数提高工作效率的Android Studio奇技  
 > 来源：JeremyHe）<br/>
 > 链接：http://zlv.me/posts/2015/07/13/14_android-studio-tips/
-
+<br/>
 ###  关于快捷键
 
  **The File Structure Popup**  
