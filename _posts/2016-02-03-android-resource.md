@@ -1,4 +1,5 @@
-﻿--- 
+--- 
+published: true
 title: Android 学习资源
 layout: post
 author: Kurtis Hu
@@ -6,7 +7,6 @@ category:
   - Android
 tags: 
 - Souce code
-- Library
 ---
 
 ### Android源代码
