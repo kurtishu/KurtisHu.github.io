@@ -13,9 +13,9 @@ tags:
 ##  倍数提高工作效率的Android Studio奇技  
 > 来源：JeremyHe）<br/>
 > 链接：http://zlv.me/posts/2015/07/13/14_android-studio-tips/
----
-### 关于快捷键
----
+
+###关于快捷键
+
  **The File Structure Popup**
 ```
  ctrl+f12 
