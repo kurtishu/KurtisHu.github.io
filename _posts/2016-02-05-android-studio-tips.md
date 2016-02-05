@@ -103,25 +103,25 @@ shift+f6
 ![](http://zlv.me/pics/14-rename.gif)
 ---
 ###  条件断点
----
+
 通过右键断点，可以对一个断点加入条件。只有当满足条件时，才会进入到断点中。调试神技，只对自己关心的情况进行调试，不浪费时间。  
 ![](http://zlv.me/pics/14-conditionalbreakpoint.gif)
 ---
 ###  进入调试模式
----
+
 点击Attach Debugger(即绿色小虫旁边那个)可以快速进入调试而不需要重新部署和启动app。
 可以选择为此功能设置一个快捷键或者通过前面提到的Find Actions(ctrl+shift+a)输入"attach"进行调用。  
 ![](http://zlv.me/pics/14-attachdebugger.gif)
 
 ---
 ###  快速查看变量的值
----
+
 按住Alt点击想要查看的变量或者语句。如果想查看更多，则可以按Alt+f8调出Evaluate Expression窗口来自行输入自定义的语句。  
 ![](http://zlv.me/pics/14-mouse_evaluate_expression.gif)
 
 ---
 ###  分析堆栈信息
----
+
 Find Actions(ctrl+shift+a)输入"analyze stacktrace"即可查看堆栈信息。  
 ![](http://zlv.me/pics/14-analyzestacktrace.gif)
 
@@ -133,7 +133,7 @@ Find Actions(ctrl+shift+a)输入"Analyze Data Flow to Here"，可以查看某个
 ![](http://zlv.me/pics/14-analyzedataflow.gif)
 ---
 ###  多行编辑
----
+
 强大的神技之一，用过vim的vim-multiple-cursors或者Sublime Text的多行编辑都不会忘记那种快感！ 也许不是平时用得最多的技能，但是却是关键时刻提高效率的工具。    
 ```
 快捷键：Alt+J
@@ -142,7 +142,7 @@ Find Actions(ctrl+shift+a)输入"Analyze Data Flow to Here"，可以查看某个
 
 ---
 ###  列编辑
----
+
 在vim中叫作块编辑，同样神技！使用方法：按住Alt加鼠标左键拉框即可
 PS：发现Ubuntu下不可用，代替方法为按Alt+Shift+Insert之后拖框选择。
 但是经过这么操作之后，神技就大打折扣了。估计是与Ubuntu的快捷键冲突了。  
@@ -150,7 +150,7 @@ PS：发现Ubuntu下不可用，代替方法为按Alt+Shift+Insert之后拖框�
 
 ---
 ###  Enter和Tab在代码提示时的区别
----  
+ 
 ![](http://zlv.me/pics/14-codecompletionentertab.gif)
 
 ---
