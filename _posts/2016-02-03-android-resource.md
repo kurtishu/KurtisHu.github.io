@@ -7,6 +7,7 @@ category:
   - Android
 tags: 
 - Souce code
+- Library
 ---
 
 ### Android源代码
@@ -18,7 +19,9 @@ tags:
 
 ---
 
-### 开源库
+### 开源库  
+* [awesome-android](https://github.com/snowdream/awesome-android) - Android libs from github
+* [android-open-project](https://github.com/Trinea/android-open-project) - Android 开源项目分类汇总
 * [Android Arsenal](http://android-arsenal.com/)
 * [appance](http://www.appance.com/category/android/)
 * [Android Libraries and Resources](http://alamkanak.github.io/android-libraries-and-resources/)
@@ -28,7 +31,7 @@ tags:
 * [Android Gems](http://www.android-gems.com/)
 * [AndroidLibs](https://android-libs.com/)
 * [codeKK开源项目集合](http://p.codekk.com/)
-
+* [Android 开发者的浏览器书签](http://adb.rocko.xyz/)
 
 ---
 
@@ -39,3 +42,12 @@ tags:
 * [Android Weekly](http://androidweekly.net/)
 * [Android开发技术周报](http://www.androidweekly.cn/)
 * [泡在网上的日子](http://www.jcodecraeer.com/plus/list.php?tid=16)
+
+---
+
+### 其他
+* [Android最佳实践](https://github.com/futurice/android-best-practices)
+* [Android开发者网址导航](http://www.jianshu.com/p/54902270249d)
+* [Android开发者必知的杂志周刊](http://www.jianshu.com/p/54c4a19ffa68)
+* [AndroidTips](https://github.com/JohnTsaiAndroid/AndroidTips) - A collections of tips in Android developing.
+* [2015年十大热门Android开源新项目](http://www.jianshu.com/p/aa7238cd8daf)
