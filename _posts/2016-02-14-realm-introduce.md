@@ -14,6 +14,8 @@ tags:
 
 目前支持 iOS/OS X/Android 平台，提供 Swift/Objective-C/Java 语言的 API。    
 
+<br/>
+
 ####  Realm的特点   
 
 **跨平台**： 现在绝大多数的应用开发并不仅仅只在 iOS 平台上进行开发，还要兼顾到 Android 平台的开发。为两个平台设计不同的数据库是愚蠢的，而使用 Realm 数据库， iOS 和 Android 无需考虑内部数据的架构，调用 Realm 提供的 API 就可以完成数据的交换，实现 “ 一个数据库，两个平台无缝衔接 "。   

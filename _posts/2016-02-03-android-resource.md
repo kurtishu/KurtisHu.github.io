@@ -51,3 +51,4 @@ tags:
 * [Android开发者必知的杂志周刊](http://www.jianshu.com/p/54c4a19ffa68)
 * [AndroidTips](https://github.com/JohnTsaiAndroid/AndroidTips) - A collections of tips in Android developing.
 * [2015年十大热门Android开源新项目](http://www.jianshu.com/p/aa7238cd8daf)
+* [GitHub上最火的74个Android开源项目](http://www.open-open.com/lib/view/open1388317075000.html)
