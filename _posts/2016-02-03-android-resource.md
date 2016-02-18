@@ -16,6 +16,7 @@ tags:
 * [codota](http://www.codota.com/) - Find Great Code Examples
 * [searchcode](https://searchcode.com/) - Search over 20 billion lines of code.
 * [codota](https://www.codota.com/) - Find Great Code Example
+* [CodePath Android Cliffnotes](http://guides.codepath.com/android)
 
 ---
 
