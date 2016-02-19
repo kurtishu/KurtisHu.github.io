@@ -47,6 +47,7 @@ tags:
 ---
 
 ### 其他
+* [Android学习之路](http://stormzhang.com/android/2014/07/07/learn-android-from-rookie/)
 * [Android最佳实践](https://github.com/futurice/android-best-practices)
 * [Android开发者网址导航](http://www.jianshu.com/p/54902270249d)
 * [Android开发者必知的杂志周刊](http://www.jianshu.com/p/54c4a19ffa68)
