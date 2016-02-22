@@ -47,6 +47,7 @@ tags:
 ---
 
 ### 其他
+* [Best Android Gists](https://github.com/lopspower/BestAndroidGists)
 * [Android学习之路](http://stormzhang.com/android/2014/07/07/learn-android-from-rookie/)
 * [Android最佳实践](https://github.com/futurice/android-best-practices)
 * [Android开发者网址导航](http://www.jianshu.com/p/54902270249d)
