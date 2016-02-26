@@ -12,6 +12,7 @@ tags:
 
 
 * [React-Native学习指南](https://github.com/ele828/react-native-guide)
+* [React Native](http://reactnative.cn/docs/0.21/getting-started.html)
 * ...
 
 ---
