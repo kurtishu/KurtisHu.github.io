@@ -31,9 +31,9 @@ Native App和Web App都有自己的优缺点，而Hybrid App在具备Native App�
 ### UI
 **viewport的概念**      
 在使用html5开发移动应用的时候，viewport可以让你开发出的页面，适应不同的设备的不同屏幕大小，不同的分辨率，控制用户的缩放、滚动行为，一般具体的设置如下:   
-``` 
+```  
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-```   
+```    
 一般情况，在你的html中加入上面一行代码，就可以实现html的自适应了。  
 
 
