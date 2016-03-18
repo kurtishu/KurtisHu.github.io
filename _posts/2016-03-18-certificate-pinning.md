@@ -20,16 +20,12 @@ tags:
 ### 开发者常见信任所有证书的错误做法
 实现一个X509TrustManager接口，将其中的CheckServerTrusted()方法实现为空，即不检查服务器是否可信或者在SSLSoketFactory的实例中，通过setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIET),接受所有证书。做出这种选择的可能原因是，使用了自己生成了证书，客户端发现证书没有和可信CA 形成信任链，出现 了CertificateException等异常。
 
-####  使用Apache的HttpClient
+####  使用Apache的HttpClient  
 ``` java
 public static DefaultHttpClient getHttpClient(int httpPort,
 			int httpsPort) {
 		try {
-			KeyStore trustStore = KeyStore.getInstance(KeyStore
-					.getDefaultType());
-			trustStore.load(null, null);
-
-			SSLSocketFactory sf = new MySSLSocketFactory(trustStore);
+			SSLSocketFactory sf = getSocketFactory();
 			sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
 			HttpParams params = new BasicHttpParams();
@@ -72,56 +68,45 @@ public static DefaultHttpClient getHttpClient(int httpPort,
 				new UsernamePasswordCredentials(username, password));
 	}
 
-```    
-重点是在MySSLSocketFactory，马上贴上代码   
-``` java
-   /**
-	 * Socket Factory that won't grumble about self-signed certs and certs where
-	 * the hostname differs... (localhost etc)
-	 */
-	private static class MySSLSocketFactory extends SSLSocketFactory {
-		SSLContext sslContext = SSLContext.getInstance("TLS");
+```      
+ 
+ 重点是在MySSLSocketFactory，马上贴上代码     
 
-		public MySSLSocketFactory(KeyStore truststore)
-				throws NoSuchAlgorithmException, KeyManagementException,
-				KeyStoreException, UnrecoverableKeyException {
-			super(truststore);
+ ``` java
+	private SSLSocketFactory getSocketFactory() {
+	  final TrustManager[] trustManagers = new TrustManager[] { new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(
+                    java.security.cert.X509Certificate[] chain,
+                    String authType) throws CertificateException {
+            }
 
-			TrustManager tm = new X509TrustManager() {
-				public void checkClientTrusted(X509Certificate[] chain,
-						String authType) throws CertificateException {
-				}
+            @Override
+            public void checkServerTrusted(
+                    java.security.cert.X509Certificate[] chain,
+                    String authType) throws CertificateException {
 
-				public void checkServerTrusted(X509Certificate[] chain,
-						String authType) throws CertificateException {
-				}
+            }
 
-				public X509Certificate[] getAcceptedIssuers() {
-					return null;
-				}
-			};
-			sslContext.init(null, new TrustManager[] { tm }, null);
-		}
+            @Override
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+        } };
 
-		@Override
-		public Socket createSocket(Socket socket, String host, int port,
-				boolean autoClose) throws IOException, UnknownHostException {
-			return sslContext.getSocketFactory().createSocket(socket, host,
-					port, autoClose);
-		}
-
-		@Override
-		public Socket createSocket() throws IOException {
-			return sslContext.getSocketFactory().createSocket();
-		}
+        // Install the all-trusting trust manager
+        final SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, trustManagers, new java.security.SecureRandom());
+        // Create an ssl socket factory with our all-trusting manager
+        return sslContext.getSocketFactory();
 	}
 ```
 
 ####  使用Square的OKHttp
 
 ``` java
- private void configOKHttpClient(String hostName) throws Exception {
-        // Create a trust manager that does not validate certificate chains
+ private void getOKHttpClient() throws Exception {
+        OkHttpClient okHttpClient = new OkHttpClient();
         final TrustManager[] trustManagers = new TrustManager[] { new X509TrustManager() {
             @Override
             public void checkClientTrusted(
@@ -147,8 +132,6 @@ public static DefaultHttpClient getHttpClient(int httpPort,
         sslContext.init(null, trustManagers, new java.security.SecureRandom());
         // Create an ssl socket factory with our all-trusting manager
         final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
-        // Sets the socket factory used to secure HTTPS connections.
         okHttpClient.setSslSocketFactory(sslSocketFactory);
 
         // Sets the verifier used to confirm that response certificates
@@ -161,14 +144,14 @@ public static DefaultHttpClient getHttpClient(int httpPort,
     }
 ```    
 
-###  Certificate Pinning
-事实上，在移动软件大多只和固定的服务器通信，因此可以在代码更精确地直接验证是否某张特定的证书，这种方法称为“证书锁定”（certificate pinning）。
-实现证书的方法有二种：一种是前文提到的实现X509TrustManager接口，另一种则是使用keystore。
-#### 方法一：
-实现X509TrustManager接口，在方法checkClientTrusted中可以获取到服务器端的证书，证书里面有包括版本号， 序列号， 创建时间，过期时间，公钥，签名等信息，一般情况下我们是那公钥验证。    
-常规做法是先获取到证书上的公钥，然后hash或者MD5，或者加上其他的处理，当每次请求时在方法checkClientTrusted中获取公钥做同样的处理，比较两次处理后的结果是否一致，如果一直说明访问的Server是可信的，否则是不可信的。  
-**OKHttp ** 针对Certificate Pinning 做了一个封装，它的原理是，可以对特定的host做证书验证，其实也是验证证书的公钥，不过有自己特定的规则{Publick}经过Sha1算法hash一下，然后Base64加密一次，然后在结果前面加上字符串"sha1/"
-``` java
+###  Certificate Pinning   
+事实上，在移动软件大多只和固定的服务器通信，因此可以在代码更精确地直接验证是否某张特定的证书，这种方法称为“证书锁定”（certificate pinning）。   
+实现证书的方法有二种：一种是前文提到的实现X509TrustManager接口，另一种则是使用keystore。    
+#### 方法一：   
+实现X509TrustManager接口，在方法checkClientTrusted中可以获取到服务器端的证书，证书里面有包括版本号， 序列号， 创建时间，过期时间，公钥，签名等信息，一般情况下我们是那公钥验证。      
+常规做法是先获取到证书上的公钥，然后hash或者MD5，或者加上其他的处理，当每次请求时在方法checkClientTrusted中获取公钥做同样的处理，比较两次处理后的结果是否一致，如果一直说明访问的Server是可信的，否则是不可信的。     
+**OKHttp ** 针对Certificate Pinning 做了一个封装，它的原理是，可以对特定的host做证书验证，其实也是验证证书的公钥，不过有自己特定的规则{Publick}经过Sha1算法hash一下，然后Base64加密一次，然后在结果前面加上字符串"sha1/"   
+``` java  
   CertificatePinner certificatePinner = new CertificatePinner.Builder()
                     .add("127.0.0.1", "sha1/xxxxx")
                     .build();
@@ -176,7 +159,7 @@ public static DefaultHttpClient getHttpClient(int httpPort,
 			
   // 在	checkClientTrusted方法中通过以下方法可以获取上面"xxxxx"	的内容	
   Util.sha1(ByteString.of(chain[0].getPublicKey().getEncoded())).base64()			
-``` 
-#### 方法二：
-使用keystone， 具体如果使用，且听下回分解。
+```    
+#### 方法二：   
+使用keystone， 具体如果使用，且听下回分解。   
 <br/>
