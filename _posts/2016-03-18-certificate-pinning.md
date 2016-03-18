@@ -70,7 +70,7 @@ public static DefaultHttpClient getHttpClient(int httpPort,
 
 ```      
  
- 重点是在MySSLSocketFactory，马上贴上代码     
+ 重点是在获取SSLSocketFactory，马上贴上代码     
 
 ``` java  
     // 获取SocketFactory
@@ -153,7 +153,7 @@ public static DefaultHttpClient getHttpClient(int httpPort,
 实现X509TrustManager接口，在方法checkClientTrusted中可以获取到服务器端的证书，证书里面有包括版本号， 序列号， 创建时间，过期时间，公钥，签名等信息，一般情况下我们是那公钥验证。      
 常规做法是先获取到证书上的公钥，然后hash或者MD5，或者加上其他的处理，当每次请求时在方法checkClientTrusted中获取公钥做同样的处理，比较两次处理后的结果是否一致，如果一直说明访问的Server是可信的，否则是不可信的。     
 
-**OKHttp ** 针对Certificate Pinning 做了一个封装，它的原理是，可以对特定的host做证书验证，其实也是验证证书的公钥，不过有自己特定的规则{Public Key}经过Sha1算法hash一下，然后Base64加密一次，然后在结果前面加上字符串"sha1/".                  
+** OKHttp ** 针对Certificate Pinning 做了一个封装，它的原理是，可以对特定的host做证书验证，其实也是验证证书的公钥，不过有自己特定的规则{Public Key}经过Sha1算法hash一下，然后Base64加密一次，然后在结果前面加上字符串"sha1/".                  
 
 ``` java       
   
