@@ -1,12 +1,14 @@
 --- 
 published: true
-title: 数字签名
+title: Android SSL Certificate Pinning
 layout: post
 author: Kurtis Hu
 category: 
   - security
 tags: 
 - Android SSL Certificate Pinning
+- HttpClient
+- OKHttp
 ---
 
 > http://www.mobilephonedevelopment.com/archives/1762
