@@ -4,7 +4,7 @@ title: Android 学习资源
 layout: post
 author: Kurtis Hu
 category: 
-  - Android
+  - android
 tags: 
 - Souce code
 - Library
@@ -46,6 +46,12 @@ tags:
 
 ---
 
+### Android架构设计
+* [浅谈Andorid开发中的MVP模式](http://mp.weixin.qq.com/s?__biz=MjM5NDkxMTgyNw==&mid=404575601&idx=1&sn=bb6e51210563b79f682da02c7f78bf3e#rd)
+* [Android App的设计架构：MVC,MVP,MVVM与架构经验谈](https://www.sdk.cn/news/2501)
+* [Android的MVP设计模式](http://blog.waynell.com/2015/05/29/mvp-on-android/)
+---
+
 ### 其他
 * [Android 学习资料收集](http://www.jianshu.com/p/af2de05aadff#rd) 
 * [Best Android Gists](https://github.com/lopspower/BestAndroidGists)
@@ -56,3 +62,4 @@ tags:
 * [AndroidTips](https://github.com/JohnTsaiAndroid/AndroidTips) - A collections of tips in Android developing.
 * [2015年十大热门Android开源新项目](http://www.jianshu.com/p/aa7238cd8daf)
 * [GitHub上最火的74个Android开源项目](http://www.open-open.com/lib/view/open1388317075000.html)
+* [Point-of-Android](https://github.com/FX-Max/Point-of-Android) - Android 一些重要知识点解析整理
