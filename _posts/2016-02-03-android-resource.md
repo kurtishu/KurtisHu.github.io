@@ -50,6 +50,8 @@ tags:
 * [浅谈Andorid开发中的MVP模式](http://mp.weixin.qq.com/s?__biz=MjM5NDkxMTgyNw==&mid=404575601&idx=1&sn=bb6e51210563b79f682da02c7f78bf3e#rd)
 * [Android App的设计架构：MVC,MVP,MVVM与架构经验谈](https://www.sdk.cn/news/2501)
 * [Android的MVP设计模式](http://blog.waynell.com/2015/05/29/mvp-on-android/)
+* [用MVP架构开发Android应用](http://kymjs.com/code/2015/11/09/01/)
+
 ---
 
 ### 其他
