@@ -24,6 +24,7 @@ tags:
 > 作者：[扔物线](https://github.com/rengwuxian)   
 > 链接：[http://zlv.me/posts/2015/07/13/14_android-studio-tips/](http://zlv.me/posts/2015/07/13/14_android-studio-tips/)    
 
+* [RxJava是什么](http://mp.weixin.qq.com/s?__biz=MzI4MzE2MTQ5Mw==&mid=402031617&idx=1&sn=edef837b660f00f58e6137862b2147ba#rd)
 ---
 
 * RxJava Essentials 中文翻译版  
