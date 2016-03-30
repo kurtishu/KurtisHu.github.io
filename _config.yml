@@ -14,7 +14,7 @@ twitter_username: KurtisHu
 github_username:  KurtisHu
 disqus_shortname: kurtishu
 favicon:     "/images/favicon.ico"
-aboutme: 我就是我，不一样的Coder \r\n # these are shown on aboutme-sidebar.
+aboutme: 我就是我，不一样的Coder  &nbsp;&nbsp; # these are shown on aboutme-sidebar.
 aboutme_photo: http://img2.3lian.com/2014/f5/158/d/86.jpg # your photo.
 
 
