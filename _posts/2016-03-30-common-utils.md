@@ -6,19 +6,19 @@ author: Kurtis Hu
 category: 
   - android
 tags: 
-- Android SSL Certificate Pinning
-- HttpClient
-- OKHttp
+- Android 
+- Utils
+- Tools
 ---
 
 > 本文转自： [android常用工具类库整理](http://www.jianshu.com/p/3e3612c174bc)
 > http://www.jianshu.com/p/3e3612c174bc
 ---
 
-####   记录一些常用的工具类，方便查找使用  
+记录一些常用的工具类，方便查找使用  
 
 | 作者	| 地址| 
-|:-------------:| -----:|  
+|:-------------:| :-----:|  
 | xiaopansky	| [AndroidToolbox](https://github.com/xiaopansky/AndroidToolbox)| 
 | pengjianbo	| [ToolsFinal](https://github.com/pengjianbo/ToolsFinal)| 
 | jingle1267	| [android-utils](https://github.com/jingle1267/android-utils)| 
@@ -31,9 +31,9 @@ tags:
 | cesarferreira	| [AndroidQuickUtils](https://github.com/cesarferreira/AndroidQuickUtils)| 
 | knightliao	| [common-utils](https://github.com/GavinCT/AndroidMultiChannelBuildTool)| 
 | GavinCT	| [AndroidMultiChannelBuildTool](https://github.com/GavinCT/AndroidMultiChannelBuildTool)| 
-| TheFinestArtist	[AndroidBaseUtils](https://github.com/TheFinestArtist/AndroidBaseUtils)| 
+| TheFinestArtist	|[AndroidBaseUtils](https://github.com/TheFinestArtist/AndroidBaseUtils)| 
 
-> 文／dongjunkun（简书作者）
+> dongjunkun（简书作者）
 > 原文链接：http://www.jianshu.com/p/3e3612c174bc
 > 著作权归作者所有
  
