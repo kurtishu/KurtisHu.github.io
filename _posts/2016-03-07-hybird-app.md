@@ -31,7 +31,7 @@ Native App和Web App都有自己的优缺点，而Hybrid App在具备Native App�
 ### UI
 **viewport的概念**      
 在使用html5开发移动应用的时候，viewport可以让你开发出的页面，适应不同的设备的不同屏幕大小，不同的分辨率，控制用户的缩放、滚动行为，一般具体的设置如下:   
-```  
+```  java
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 ```    
 一般情况，在你的html中加入上面一行代码，就可以实现html的自适应了。  
@@ -43,9 +43,11 @@ Native App和Web App都有自己的优缺点，而Hybrid App在具备Native App�
 
 > [简单混合应用开发](http://bbs.gfan.com/android-6198184-1-1.html)  
 
+### 三种不同的混合型APP应用开发解决方案
+>   [Link](http://cache.baiducontent.com/c?m=9d78d513d9d431df4f9ae5697d65c0176d4381132ba1d1020cd0843e92732a405321a3e52878564291d27d141cb20c19afe736056e4470ecc29fd011cabbe57972d73a676d54c11a588845e7900c629d3d9058eaae1ae7b9fb3293add8c4df23098c0c5b&p=882a9645dcd90be00abe9b7c4205cf&newp=8679df0486cc42af52fec7710f598d231610db2151ddda06&user=baidu&fm=sc&query=%BB%EC%BA%CF%D3%A6%D3%C3&qid=95bad1f2000dfea4&p1=16)
 ### 常见框架
 [Cordova](http://cordova.apache.org/) 、 [ionic](http://ionicframework.com/) 、 [AppCan](http://www.appcan.cn/) 、 [ApiCloud](http://www.apicloud.com/)   
-
+[HTML5来了，7个混合式移动开发框架](http://www.cocoachina.com/webapp/20141222/10718.html)
 ### React Native
 > React Native使你能够在Javascript和React的基础上获得完全一致的开发体验，构建世界一流的原生APP。  
 > React Native着力于提高多平台开发的开发效率 —— 仅需学习一次，编写任何平台。(Learn once, write anywhere)
