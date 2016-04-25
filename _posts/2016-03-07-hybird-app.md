@@ -48,6 +48,8 @@ Native App和Web App都有自己的优缺点，而Hybrid App在具备Native App�
 ### 常见框架
 [Cordova](http://cordova.apache.org/) 、 [ionic](http://ionicframework.com/) 、 [AppCan](http://www.appcan.cn/) 、 [ApiCloud](http://www.apicloud.com/)   
 [HTML5来了，7个混合式移动开发框架](http://www.cocoachina.com/webapp/20141222/10718.html)
+
+[好好和h5沟通！几种常见的hybrid通信方式](http://zjutkz.net/2016/04/17/%E5%A5%BD%E5%A5%BD%E5%92%8Ch5%E6%B2%9F%E9%80%9A%EF%BC%81%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%9A%84hybrid%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/)
 ### React Native
 > React Native使你能够在Javascript和React的基础上获得完全一致的开发体验，构建世界一流的原生APP。  
 > React Native着力于提高多平台开发的开发效率 —— 仅需学习一次，编写任何平台。(Learn once, write anywhere)
