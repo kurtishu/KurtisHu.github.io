@@ -77,4 +77,6 @@ Native App和Web App都有自己的优缺点，而Hybrid App在具备Native App�
 
 React Native 是使用html + Javascript 开发原生app的框架
 
+* [其实没那么复杂！探究react-native通信机制](http://www.tuicool.com/articles/y6zMVbb)
+
 <br/>
