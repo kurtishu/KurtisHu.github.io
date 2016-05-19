@@ -58,6 +58,7 @@ tags:
 ---
 
 ### 其他
+* [Android 开发值得订阅的日报和周刊](http://tikitoo.github.io/2016/04/26/android-worth-subscribe-daily-weekly/)
 * [Android 学习资料收集](http://www.jianshu.com/p/af2de05aadff#rd) 
 * [Best Android Gists](https://github.com/lopspower/BestAndroidGists)
 * [Android学习之路](http://stormzhang.com/android/2014/07/07/learn-android-from-rookie/)
