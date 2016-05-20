@@ -104,56 +104,37 @@ date: 2016年05月20日
 传统的JSInterface
 
 [slide]
-  <div class="columns2">
-    <pre><code class="javascript">
-        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr">
-          <head>
-           <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            <script type="text/javascript">
-               function showToast(toast) {
-                 javascript:control.showToast(toast);
-               }
-               function log(msg){
-                console.log(msg);
-              }
-            </script>
-       </head>
-       <body>
-         <input type="button" value="toast" onClick="showToast('Hello world')" />
-       </body>
-       </html>
-     </code></pre>
-    <pre><code class="javascript">
-      @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        webView = (WebView)findViewById(R.id.webView);
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new JsInterface(), "control");
-        webView.loadUrl("file:///android_asset/interact.html");
-    }
+## Demo
+-----
+<div class="columns-2">
+<pre><code class="javascript">
 
-    public class JsInterface {
 
-        @JavascriptInterface
-        public void showToast(String toast) {
-            Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
-            log("show toast success");
-        }
+( function showToast(toast) {
+   javascript:control.showToast(toast);
+  }
+  function log(msg){
+   console.log(msg);
+  }
+)
 
-        public void log(final String msg){
-            webView.post(new Runnable() {
-                @Override
-                public void run() {
-                    webView.loadUrl("javascript: log(" + "'" + msg + "'" + ")");
-                }
-            });
-        }
-      }
+
+</code></pre>
+<pre><code class="javascript">
+   {
+     WebSettings webSettings = webView.getSettings();
+     webSettings.setJavaScriptEnabled(true);
+     webView.addJavascriptInterface(new JsInterface(), "control");
+     webView.loadUrl("file:///android_asset/interact.html");
+  }
+ 
+  public class JsInterface {
+    @JavascriptInterface
+    public void showToast(String toast) {
+      Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
+      log("show toast success");
    }
-     </code></pre>
+</code></pre>
 </div>
 
 [slide]
@@ -183,17 +164,21 @@ public boolean onJsConfirm(WebView view, String url, String message, JsResult re
 
 [slide]
 ## 常见的hybrid通信方式
-JavascripeCore
+JavascriptCore
 
 [slide]
 ## React Native
 ----
 > A framework for building native apps using React.
-
 > <smal>Learn once, write anywhere </small> {:&.pull-right} 
 
 [slide]
 ## React Demo
+
+[slide]
+## 使用React Native编写的应用
+----
+<iframe data-src="http://reactnative.cn/cases.html" src="about:blank;" width="1024" height="640" style="width:1024px;height:640px;  background-color: transparent;"></iframe>
 
 [slide]
 ## Thank You!
