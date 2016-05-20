@@ -75,6 +75,9 @@ date: 2016年05月20日
      * 技术还不是很成熟 
 
 [slide]
+![HybirdApp](/img/hybridapp.jpg)
+
+[slide]
 ## Hybrid App开发实战
 ----
 ## 三种不同的解决方案
@@ -140,6 +143,8 @@ date: 2016年05月20日
 [slide]
 ## 常见的hybrid通信方式
 JSBridge
+---
+<a href="https://github.com/lzyzsd/JsBridge">https://github.com/lzyzsd/JsBridge</a>
 
 [slide]
 <span class="blue">WebChromeClient</span>
@@ -158,6 +163,10 @@ public boolean onJsAlert(WebView view, String url, String message, JsResult resu
 public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
     return super.onJsConfirm(view, url, message, result);
 }
+@Override
+public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+    return false;
+}
 ```  
 <span class="label label-warning">hybrid://JSBridge:1538351/method?{“message”:”msg”}</span>
 
@@ -165,12 +174,17 @@ public boolean onJsConfirm(WebView view, String url, String message, JsResult re
 [slide]
 ## 常见的hybrid通信方式
 JavascriptCore
+---
+JavaScriptCore是webkit的一个重要组成部分，主要是对JS进行解析和提供执行环境.
+[slide]
+![JavaScriptCore](/img/javascriptcore.png)
 
 [slide]
 ## React Native
 ----
-> A framework for building native apps using React.
-> <smal>Learn once, write anywhere </small> {:&.pull-right} 
+### A framework for building native apps using React.
+----
+> <smal>Learn once, write anywhere </small>  
 
 [slide]
 ## React Demo
