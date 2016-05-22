@@ -186,6 +186,10 @@ public boolean shouldOverrideUrlLoading(WebView webView, String url) {
 > <smal>Learn once, write anywhere </small>  
 
 [slide]
+## 通信方式
+![通信方式](/img/react-native.png)
+
+[slide]
 ## React Demo
 
 [slide]
