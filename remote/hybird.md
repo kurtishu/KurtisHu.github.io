@@ -29,14 +29,14 @@ date: 2016年05月20日
 [slide]
   ## native-app(原生应用)
   -----
-  * 优点：
-     * 可访问手机所有硬件（GPS、摄像头）设备 {:&.moveIn} 
+  * 优点:  
+     * 可访问手机所有硬件（GPS、摄像头）设备   {:&.fadeIn} 
      * 速度更快、性能高、整体用户体验不错
      * 可线下使用
      * 支持大量图形和动画
      * 容易获取
-  * 缺点：
-     * 开发成本高 {:&.moveIn} 
+  * 缺点: 
+     * 开发成本高  {:&.fadeIn} 
      * 支持设备非常有限
      * 上线时间不确定（App Store审核过程不一）
      * 内容限制（App Store限制）
@@ -46,14 +46,14 @@ date: 2016年05月20日
   ## web-app(Web应用)
   -----
    <small>Web应用本质上是为移动浏览器设计的基于Web的应用，它们是用普通Web开发语言开发的，可以在各种智能手机浏览器上运行</small>
-  * 优点：
-     * 支持设备广泛 {:&.moveIn} 
+  * 优点:  
+     * 支持设备广泛  {:&.bounceIn} 
      * 较低的开发成本
      * 可即时上线
      * 无内容限制
      * 用户可以直接使用最新版本
-  * 缺点：
-     * 表现略差(对联网的要求比较大) {:&.moveIn}  
+  * 缺点: 
+     * 表现略差(对联网的要求比较大)  {:&.bounceIn} 
      * 用户体验没那么炫
      * 图片和动画支持性不高
      * 要求联网
@@ -64,13 +64,13 @@ date: 2016年05月20日
   -----
   <small>混合应用大家都知道是原生应用和Web应用的结合体，采用了原生应用的一部分、Web应用的一部分，所以必须在部分在设备上运行、部分在Web上运行</small>  
   <span class="red">混合应用中比例很自由，比如Web 占90%，原生占10%；或者各占50%</span>  
-  * 优点：
-     * 兼容多平台 {:&.moveIn} 
+  * 优点:
+     * 兼容多平台  {:&.zoomIn}  
      * 顺利访问手机的多种功能
      * App Store中可下载（Web应用套用原生应用的外壳）
      * 可线下使用
   * 缺点：
-     * 用户体验不如本地应用 {:&.moveIn} 
+     * 用户体验不如本地应用  {:&.zoomIn}  
      * 性能稍慢（需要连接网络）
      * 技术还不是很成熟 
 
@@ -87,7 +87,7 @@ date: 2016年05月20日
  [magic data-transition="earthquake"]
   ## 以WebView作为用户界面层，以Javascript作为基本逻辑，以及和中间件通讯，再由中间件访问底层API的方式，进行应用开发
   -----
-  <i>![Cordova](/img/cordova.jpg)</i>
+  <i>![Cordova](/img/cordova.jpg)</i> 
   <i>![Ionic](/img/ionic.jpg)</i>
   <i>![AppCan](/img/appcan.jpg)</i>
   <i>![ApiCould](/img/apicould.jpg)</i>
@@ -101,13 +101,14 @@ date: 2016年05月20日
   ## 在开发原生应用的基础上，嵌入WebView但是整体的架构使用原生应用提供
   -----
  [/magic]
-
 [slide]
 ## 常见的hybrid通信方式
-传统的JSInterface
 
 [slide]
-## Demo
+## JSInterface
+
+[slide]
+## Example
 -----
 <div class="columns-2">
 <pre><code class="javascript">
@@ -120,7 +121,6 @@ date: 2016年05月20日
    console.log(msg);
   }
 )
-
 
 </code></pre>
 <pre><code class="javascript">
@@ -141,8 +141,7 @@ date: 2016年05月20日
 </div>
 
 [slide]
-## 常见的hybrid通信方式
-JSBridge
+## JSBridge
 ---
 <a href="https://github.com/lzyzsd/JsBridge">https://github.com/lzyzsd/JsBridge</a>
 
@@ -172,16 +171,16 @@ public boolean shouldOverrideUrlLoading(WebView webView, String url) {
 
 
 [slide]
-## 常见的hybrid通信方式
-JavascriptCore
+## JavaScriptCore  
 ---
-JavaScriptCore是webkit的一个重要组成部分，主要是对JS进行解析和提供执行环境.
+ <span class="text-primary">JavaScriptCore是webkit的一个重要组成部分，主要是对JS进行解析和提供执行环境.</span>
 [slide]
 ![JavaScriptCore](/img/javascriptcore.png)
 
 [slide]
 ## React Native
 ----
+![React](/img/react.png)
 ### A framework for building native apps using React.
 ----
 > <smal>Learn once, write anywhere </small>  
