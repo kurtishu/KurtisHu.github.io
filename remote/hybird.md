@@ -1,12 +1,12 @@
 title: Hybird App Introduction
 speaker: Kurtis Hu
 url: https://github.com/ksky521/nodePPT
-transition: slide2
-theme: dark
+transition: kontext
+theme: moon
 files: /js/demo.js,/css/demo.css
 date: 2016年05月20日
 
-[slide]
+[slide style="background-image:url('/img/bg1.png')" data-transition="earthquake"]
 
 # Hybird App
 ## @Kurtis Hu
@@ -16,12 +16,12 @@ date: 2016年05月20日
 <i class="fa fa-css3"></i>
 <i class="fa fa-html5"></i>
 
-[slide style="background-image:url('/img/bg1.png')"]
+[slide]
 
 ## Hybird App(混合模式移动应用)
 > A mobile application that is coded in both browser-supported language and computer language. 
 
-[slide]
+[slide data-transition="slide2"]
   ## web-app、native-app、hybrid app
   -----
   ![3者的优缺点解析](/img/app-analys.png)
@@ -38,8 +38,8 @@ date: 2016年05月20日
   * 缺点: 
      * 开发成本高  {:&.fadeIn} 
      * 支持设备非常有限
-     * 上线时间不确定（App Store审核过程不一）
-     * 内容限制（App Store限制）
+     * 上线时间不确定（应用市场审核过程不一）
+     * 内容限制（应用市场限制）
      * 获得新版本时需重新下载应用更新
 
 [slide]
@@ -53,17 +53,15 @@ date: 2016年05月20日
      * 无内容限制
      * 用户可以直接使用最新版本
   * 缺点: 
-     * 表现略差(对联网的要求比较大)  {:&.bounceIn} 
-     * 用户体验没那么炫
+     * 用户体验略差(对联网的要求比较大)  {:&.bounceIn} 
      * 图片和动画支持性不高
-     * 要求联网
-     * 对手机特点有限制（摄像头、GPS等）
+     * 无法直接访问手机硬件（摄像头、GPS等）
 
 [slide]
   ## hybrid app(混合应用)
   -----
-  <small>混合应用大家都知道是原生应用和Web应用的结合体，采用了原生应用的一部分、Web应用的一部分，所以必须在部分在设备上运行、部分在Web上运行</small>  
-  <span class="red">混合应用中比例很自由，比如Web 占90%，原生占10%；或者各占50%</span>  
+  <small>原生应用和Web应用的结合体，采用了原生应用的一部分、Web应用的一部分，部分在设备上运行、部分在Web上运行</small>  
+  <span class="red">混合比例很自由，比如Web 占90%，原生占10%；或者各占50%</span>  
   * 优点:
      * 兼容多平台  {:&.zoomIn}  
      * 顺利访问手机的多种功能
@@ -71,22 +69,23 @@ date: 2016年05月20日
      * 可线下使用
   * 缺点：
      * 用户体验不如本地应用  {:&.zoomIn}  
-     * 性能稍慢（需要连接网络）
+     * 性能稍慢
      * 技术还不是很成熟 
 
 [slide]
 ![HybirdApp](/img/hybridapp.jpg)
 
-[slide]
+[slide data-transition="circle"]
 ## Hybrid App开发实战
 ----
 ## 三种不同的解决方案
 
-[slide]
+[slide data-transition="move"]
 
  [magic data-transition="earthquake"]
   ## 以WebView作为用户界面层，以Javascript作为基本逻辑，以及和中间件通讯，再由中间件访问底层API的方式，进行应用开发
   -----
+  <br/>
   <i>![Cordova](/img/cordova.jpg)</i> 
   <i>![Ionic](/img/ionic.jpg)</i>
   <i>![AppCan](/img/appcan.jpg)</i>
@@ -95,19 +94,24 @@ date: 2016年05月20日
   ====
   ## 使用非官方语言的工具，打包成原生应用的方式开发
   -----
+  <br/>
   <i>![React](/img/react.png)</i>
   <i>![Kotlin](/img/kotlin.jpg)</i>
    ====
   ## 在开发原生应用的基础上，嵌入WebView但是整体的架构使用原生应用提供
   -----
+  <br/>
+  <i>![WeChat](/img/wechat.jpeg)</i>
+  <i>![Taobao](/img/taobao.png)</i>
+  <i>![AugLearn](/img/aug.png)</i>
  [/magic]
-[slide]
+[slide data-transition="newspaper"]
 ## 常见的hybrid通信方式
 
-[slide]
+[slide data-transition="horizontal3d"]
 ## JSInterface
 
-[slide]
+[slide data-transition="horizontal"]
 ## Example
 -----
 <div class="columns-2">
@@ -124,51 +128,94 @@ date: 2016年05月20日
 
 </code></pre>
 <pre><code class="javascript">
-   {
-     WebSettings webSettings = webView.getSettings();
-     webSettings.setJavaScriptEnabled(true);
-     webView.addJavascriptInterface(new JsInterface(), "control");
-     webView.loadUrl("file:///android_asset/interact.html");
-  }
- 
-  public class JsInterface {
-    @JavascriptInterface
-    public void showToast(String toast) {
-      Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
-      log("show toast success");
-   }
+{WebSettings webSettings = webView.getSettings();
+ webSettings.setJavaScriptEnabled(true);
+ webView.addJavascriptInterface(new JsInterface(), "control");
+ webView.loadUrl("file:///android_asset/interact.html");
+}
+public class JsInterface {
+  @JavascriptInterface
+  public void showToast(String toast) {
+   log("show toast success");
+}
 </code></pre>
 </div>
 
 [slide]
 ## JSBridge
----
-<a href="https://github.com/lzyzsd/JsBridge">https://github.com/lzyzsd/JsBridge</a>
+-----
+<a href="https://github.com/lzyzsd/JsBridge">https://github.com/lzyzsd/JsBridge</a>    
+<a href="https://github.com/marcuswestin/WebViewJavascriptBridge">https://github.com/marcuswestin/WebViewJavascriptBridge</a> 
 
 [slide]
-<span class="blue">WebChromeClient</span>
-``` java  
- @Override
+## Android URL拦截
+-----  
+```java 
+ WebViewClient
+ 
+@Override
+public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+ return false;
+}
+
+WebChromeClient
+
+@Override
 public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
-    return super.onJsPrompt(view, url, message, defaultValue, result);
+return super.onJsPrompt(view, url, message, defaultValue, result);
 }
 
 @Override
 public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-    return super.onJsAlert(view, url, message, result);
+return super.onJsAlert(view, url, message, result);
 }
 
 @Override
 public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
-    return super.onJsConfirm(view, url, message, result);
+return super.onJsConfirm(view, url, message, result);
 }
-@Override
-public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-    return false;
+
+```  
+
+[slide data-transition="zoomout"]
+## iOS URL拦截
+----- 
+``` ObjC
+
+// UIWebView调用 JavaScript 的函数：
+NSString* strValue = [webView stringByEvaluatingJavaScriptFromString:
+                @"YourFunctionName('YourParameter')"];
+
+// JavaScript （通过UIWebView）调用ObjC方法：
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:
+       (NSURLRequest *)request navigationType:
+       (UIWebViewNavigationType)navigationType {
+
+    return YES;
 }
 ```  
-<span class="label label-warning">hybrid://JSBridge:1538351/method?{“message”:”msg”}</span>
 
+[slide]
+## 自定义Schema
+----
+<span class="gray2">hybrid://JSBridge:1080/method?{“message”:”msg”}</span>
+``` java
+// URI parsing example 
+URI uri = new URI("hybrid://JSBridge:1080/method?{“message”:”msg”}");
+System.out.println(uri.getScheme()); // hybrid
+System.out.println(uri.getHost());  // JSBridge
+System.out.println(uri.getPort());  // 1080
+System.out.println(uri.getPath());  // method
+System.out.println(uri.getQuery()); // {“message”:”msg”}
+```
+<div>
+ <span class="red">* taobao:// </span>
+ <br/>
+ <br/>
+ <small>[Android] manifest.xml</small>
+ <br/>
+ <small>[iOS] AppDelegate openURL(url)</small>
+</div> {:&.flexbox.vleft} 
 
 [slide]
 ## JavaScriptCore  
@@ -177,7 +224,7 @@ public boolean shouldOverrideUrlLoading(WebView webView, String url) {
 [slide]
 ![JavaScriptCore](/img/javascriptcore.png)
 
-[slide]
+[slide data-transition="vertical3d"]
 ## React Native
 ----
 ![React](/img/react.png)
@@ -185,17 +232,17 @@ public boolean shouldOverrideUrlLoading(WebView webView, String url) {
 ----
 > <smal>Learn once, write anywhere </small>  
 
-[slide]
+[slide data-transition="zoomin"]
 ## 通信方式
 ![通信方式](/img/react-native.png)
 
 [slide]
 ## React Demo
 
-[slide]
+[slide data-transition="zoomout"]
 ## 使用React Native编写的应用
 ----
 <iframe data-src="http://reactnative.cn/cases.html" src="about:blank;" width="1024" height="640" style="width:1024px;height:640px;  background-color: transparent;"></iframe>
 
-[slide]
+[slide data-transition="pulse"]
 ## Thank You!
