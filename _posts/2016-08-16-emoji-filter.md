@@ -1,13 +1,13 @@
 --- 
 published: true
-title: Realm 让移动开发更简单
+title: Emoji Filter
 layout: post
 author: Kurtis Hu
 category: 
   - Android
 tags: 
-- Database
-- ORM
+- Emoji
+- Openfire
 ---
  
 Emoji filter for Openfire
