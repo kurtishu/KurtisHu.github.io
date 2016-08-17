@@ -8,7 +8,7 @@ category:
 tags: 
 - Other
 ---
-  
+
 
 ps -ef | grep java
 

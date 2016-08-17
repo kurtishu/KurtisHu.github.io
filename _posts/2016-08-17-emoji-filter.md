@@ -11,10 +11,9 @@ tags:
 ---
 
 
-## Emoji filter for Openfire when using XMPP
+## Emoji filter for Openfire
 
 ```java
-
 
     protected boolean checkCodePoint(char codePoint) {
         if ((codePoint == 0x0) ||
