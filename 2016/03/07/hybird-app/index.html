@@ -1,0 +1,807 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hybrid,Jsbrage,React," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/uploads/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="移动应用分类 原生应用 Web应用 混合应用  三者优缺点比较 原生应用、Web应用、混合应用：3者的优缺点解析   Native App和Web App都有自己的优缺点，而Hybrid App在具备Native App和Web App优点的同时，也继承了两者的缺点。    混合应用程序实现原理：在本地应用程序中添加WebView来显示HTML5（CSS、JavaScript）部分的内容，逻辑操作">
+<meta name="keywords" content="Hybrid,Jsbrage,React">
+<meta property="og:type" content="article">
+<meta property="og:title" content="混合开发 App（Hybrid App）">
+<meta property="og:url" content="http://kurtishu.github.io/2016/03/07/hybird-app/index.html">
+<meta property="og:site_name" content="Kurtis&#39;s Notes">
+<meta property="og:description" content="移动应用分类 原生应用 Web应用 混合应用  三者优缺点比较 原生应用、Web应用、混合应用：3者的优缺点解析   Native App和Web App都有自己的优缺点，而Hybrid App在具备Native App和Web App优点的同时，也继承了两者的缺点。    混合应用程序实现原理：在本地应用程序中添加WebView来显示HTML5（CSS、JavaScript）部分的内容，逻辑操作">
+<meta property="og:updated_time" content="2017-05-26T01:07:25.815Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="混合开发 App（Hybrid App）">
+<meta name="twitter:description" content="移动应用分类 原生应用 Web应用 混合应用  三者优缺点比较 原生应用、Web应用、混合应用：3者的优缺点解析   Native App和Web App都有自己的优缺点，而Hybrid App在具备Native App和Web App优点的同时，也继承了两者的缺点。    混合应用程序实现原理：在本地应用程序中添加WebView来显示HTML5（CSS、JavaScript）部分的内容，逻辑操作">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kurtishu.github.io/2016/03/07/hybird-app/"/>
+
+
+
+
+
+  <title>混合开发 App（Hybrid App） | Kurtis's Notes</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kurtis's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Simple notes</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2016/03/07/hybird-app/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kurtis Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kurtis's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">混合开发 App（Hybrid App）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-07T00:00:00+08:00">
+                2016-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hybrid/" itemprop="url" rel="index">
+                    <span itemprop="name">Hybrid</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="移动应用分类"><a href="#移动应用分类" class="headerlink" title="移动应用分类"></a>移动应用分类</h3><ul>
+<li>原生应用</li>
+<li>Web应用</li>
+<li>混合应用</li>
+</ul>
+<h3 id="三者优缺点比较"><a href="#三者优缺点比较" class="headerlink" title="三者优缺点比较"></a>三者优缺点比较</h3><blockquote>
+<p><a href="http://www.leiphone.com/news/201406/12921-keats-difference-native-vs-web-apps.html" target="_blank" rel="external">原生应用、Web应用、混合应用：3者的优缺点解析</a></p>
+</blockquote>
+<hr>
+<p>Native App和Web App都有自己的优缺点，而Hybrid App在具备Native App和Web App优点的同时，也继承了两者的缺点。  </p>
+<hr>
+<h3 id="混合应用程序实现原理："><a href="#混合应用程序实现原理：" class="headerlink" title="混合应用程序实现原理："></a>混合应用程序实现原理：</h3><p>在本地应用程序中添加WebView来显示HTML5（CSS、JavaScript）部分的内容，逻辑操作则集中在JavaScript和本地代码中实现。通过JavaScript来实现本地代码和HTML5之间的互操作。</p>
+<hr>
+<h3 id="UI"><a href="#UI" class="headerlink" title="UI"></a>UI</h3><p><strong>viewport的概念</strong><br>在使用html5开发移动应用的时候，viewport可以让你开发出的页面，适应不同的设备的不同屏幕大小，不同的分辨率，控制用户的缩放、滚动行为，一般具体的设置如下:   </p>
+<pre><code class="java">&lt;meta name=<span class="string">"viewport"</span> content=<span class="string">"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"</span>&gt;
+</code></pre>
+<p>一般情况，在你的html中加入上面一行代码，就可以实现html的自适应了。  </p>
+<hr>
+<h3 id="混合开发在Android平台上的实现"><a href="#混合开发在Android平台上的实现" class="headerlink" title="混合开发在Android平台上的实现"></a>混合开发在Android平台上的实现</h3><hr>
+<h3 id="在iOS平台的实现"><a href="#在iOS平台的实现" class="headerlink" title="在iOS平台的实现"></a>在iOS平台的实现</h3><hr>
+<blockquote>
+<p><a href="http://bbs.gfan.com/android-6198184-1-1.html" target="_blank" rel="external">简单混合应用开发</a>  </p>
+</blockquote>
+<hr>
+<h3 id="三种不同的混合型APP应用开发解决方案"><a href="#三种不同的混合型APP应用开发解决方案" class="headerlink" title="三种不同的混合型APP应用开发解决方案"></a>三种不同的混合型APP应用开发解决方案</h3><blockquote>
+<p>  <a href="http://cache.baiducontent.com/c?m=9d78d513d9d431df4f9ae5697d65c0176d4381132ba1d1020cd0843e92732a405321a3e52878564291d27d141cb20c19afe736056e4470ecc29fd011cabbe57972d73a676d54c11a588845e7900c629d3d9058eaae1ae7b9fb3293add8c4df23098c0c5b&amp;p=882a9645dcd90be00abe9b7c4205cf&amp;newp=8679df0486cc42af52fec7710f598d231610db2151ddda06&amp;user=baidu&amp;fm=sc&amp;query=%BB%EC%BA%CF%D3%A6%D3%C3&amp;qid=95bad1f2000dfea4&amp;p1=16" target="_blank" rel="external">Link</a></p>
+</blockquote>
+<hr>
+<h3 id="常见框架"><a href="#常见框架" class="headerlink" title="常见框架"></a>常见框架</h3><p><a href="http://cordova.apache.org/" target="_blank" rel="external">Cordova</a> 、 <a href="http://ionicframework.com/" target="_blank" rel="external">ionic</a> 、 <a href="http://www.appcan.cn/" target="_blank" rel="external">AppCan</a> 、 <a href="http://www.apicloud.com/" target="_blank" rel="external">ApiCloud</a>        </p>
+<p><a href="http://www.cocoachina.com/webapp/20141222/10718.html" target="_blank" rel="external">HTML5来了，7个混合式移动开发框架</a></p>
+<p><a href="http://zjutkz.net/2016/04/17/%E5%A5%BD%E5%A5%BD%E5%92%8Ch5%E6%B2%9F%E9%80%9A%EF%BC%81%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%9A%84hybrid%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/" target="_blank" rel="external">好好和h5沟通！几种常见的hybrid通信方式</a></p>
+<hr>
+<h3 id="React-Native"><a href="#React-Native" class="headerlink" title="React Native"></a>React Native</h3><blockquote>
+<p>React Native使你能够在Javascript和React的基础上获得完全一致的开发体验，构建世界一流的原生APP。<br>React Native着力于提高多平台开发的开发效率 —— 仅需学习一次，编写任何平台。(Learn once, write anywhere)</p>
+</blockquote>
+<p>React Native 是使用html + Javascript 开发原生app的框架</p>
+<ul>
+<li><a href="http://www.tuicool.com/articles/y6zMVbb" target="_blank" rel="external">其实没那么复杂！探究react-native通信机制</a></li>
+</ul>
+<p><br></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hybrid/" rel="tag"># Hybrid</a>
+          
+            <a href="/tags/Jsbrage/" rel="tag"># Jsbrage</a>
+          
+            <a href="/tags/React/" rel="tag"># React</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/07/react-native/" rel="next" title="React-Native学习资料汇总">
+                <i class="fa fa-chevron-left"></i> React-Native学习资料汇总
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/16/security-signature/" rel="prev" title="数字签名">
+                数字签名 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Kurtis Hu" />
+          <p class="site-author-name" itemprop="name">Kurtis Hu</p>
+           
+              <p class="site-description motion-element" itemprop="description">Hello World!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kurtishu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/kurtishu" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/kurtishu" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#移动应用分类"><span class="nav-number">1.</span> <span class="nav-text">移动应用分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三者优缺点比较"><span class="nav-number">2.</span> <span class="nav-text">三者优缺点比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#混合应用程序实现原理："><span class="nav-number">3.</span> <span class="nav-text">混合应用程序实现原理：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI"><span class="nav-number">4.</span> <span class="nav-text">UI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#混合开发在Android平台上的实现"><span class="nav-number">5.</span> <span class="nav-text">混合开发在Android平台上的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在iOS平台的实现"><span class="nav-number">6.</span> <span class="nav-text">在iOS平台的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三种不同的混合型APP应用开发解决方案"><span class="nav-number">7.</span> <span class="nav-text">三种不同的混合型APP应用开发解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见框架"><span class="nav-number">8.</span> <span class="nav-text">常见框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#React-Native"><span class="nav-number">9.</span> <span class="nav-text">React Native</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kurtis Hu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

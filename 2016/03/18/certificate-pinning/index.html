@@ -1,0 +1,827 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="SSL,Certificate Pinning,HttpClient,OKHttp," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/uploads/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="http://www.mobilephonedevelopment.com/archives/1762http://www.tuicool.com/articles/2MVJb2  在SSL/TLS通信中，客户端通过数字证书判断服务器是否可信，并采用证书的公钥与服务器进行加密通信。 然而，在开发者在代码中不检查服务器证书的有效性，或选择接受所有的证书时，这种做法可能导致的问题是中间人攻击。  攻">
+<meta name="keywords" content="SSL,Certificate Pinning,HttpClient,OKHttp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android SSL Certificate Pinning">
+<meta property="og:url" content="http://kurtishu.github.io/2016/03/18/certificate-pinning/index.html">
+<meta property="og:site_name" content="Kurtis&#39;s Notes">
+<meta property="og:description" content="http://www.mobilephonedevelopment.com/archives/1762http://www.tuicool.com/articles/2MVJb2  在SSL/TLS通信中，客户端通过数字证书判断服务器是否可信，并采用证书的公钥与服务器进行加密通信。 然而，在开发者在代码中不检查服务器证书的有效性，或选择接受所有的证书时，这种做法可能导致的问题是中间人攻击。  攻">
+<meta property="og:updated_time" content="2017-05-26T01:05:16.413Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android SSL Certificate Pinning">
+<meta name="twitter:description" content="http://www.mobilephonedevelopment.com/archives/1762http://www.tuicool.com/articles/2MVJb2  在SSL/TLS通信中，客户端通过数字证书判断服务器是否可信，并采用证书的公钥与服务器进行加密通信。 然而，在开发者在代码中不检查服务器证书的有效性，或选择接受所有的证书时，这种做法可能导致的问题是中间人攻击。  攻">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kurtishu.github.io/2016/03/18/certificate-pinning/"/>
+
+
+
+
+
+  <title>Android SSL Certificate Pinning | Kurtis's Notes</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kurtis's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Simple notes</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2016/03/18/certificate-pinning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kurtis Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kurtis's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android SSL Certificate Pinning</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-18T00:00:00+08:00">
+                2016-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Security/" itemprop="url" rel="index">
+                    <span itemprop="name">Security</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><a href="http://www.mobilephonedevelopment.com/archives/1762" target="_blank" rel="external">http://www.mobilephonedevelopment.com/archives/1762</a><br><a href="http://www.tuicool.com/articles/2MVJb2" target="_blank" rel="external">http://www.tuicool.com/articles/2MVJb2</a></p>
+</blockquote>
+<p>在SSL/TLS通信中，客户端通过数字证书判断服务器是否可信，并采用证书的公钥与服务器进行加密通信。</p>
+<p>然而，在开发者在代码中不检查服务器证书的有效性，或选择接受所有的证书时，这种做法可能导致的问题是中间人攻击。  攻击者可以伪造证书，或者盗用证书，以来达到和客户端建立通信的目地。 目前Google已经针对不验证服务器证书的app给出了警告，这些app将来是会有被Play Store拒之门外的危险的。(参考)[<a href="https://support.google.com/faqs/answer/6346016?hl=en" target="_blank" rel="external">https://support.google.com/faqs/answer/6346016?hl=en</a>]</p>
+<h3 id="开发者常见信任所有证书的错误做法"><a href="#开发者常见信任所有证书的错误做法" class="headerlink" title="开发者常见信任所有证书的错误做法"></a>开发者常见信任所有证书的错误做法</h3><p>实现一个X509TrustManager接口，将其中的CheckServerTrusted()方法实现为空，即不检查服务器是否可信或者在SSLSoketFactory的实例中，通过setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIET),接受所有证书。做出这种选择的可能原因是，使用了自己生成了证书，客户端发现证书没有和可信CA 形成信任链，出现 了CertificateException等异常。</p>
+<h4 id="使用Apache的HttpClient"><a href="#使用Apache的HttpClient" class="headerlink" title="使用Apache的HttpClient"></a>使用Apache的HttpClient</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DefaultHttpClient <span class="title">getHttpClient</span><span class="params">(<span class="keyword">int</span> httpPort,</span></span></div><div class="line">			<span class="keyword">int</span> httpsPort) &#123;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			SSLSocketFactory sf = getSocketFactory();</div><div class="line">			sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);</div><div class="line"></div><div class="line">			HttpParams params = <span class="keyword">new</span> BasicHttpParams();</div><div class="line">			HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);</div><div class="line">			HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);</div><div class="line">			HttpProtocolParams.setUseExpectContinue(params, <span class="keyword">true</span>);</div><div class="line"></div><div class="line">			<span class="comment">// set connection timeout.</span></div><div class="line">			ConnManagerParams.setTimeout(params, DEFAULT_TIMEOUT);</div><div class="line">			HttpConnectionParams.setConnectionTimeout(params,</div><div class="line">					DEFAULT_CONN_TIMEOUT);</div><div class="line">			HttpConnectionParams.setSoTimeout(params, DEFAULT_SOCKET_TIMEOUT);</div><div class="line">			<span class="comment">// set socket buffer size</span></div><div class="line">			HttpConnectionParams.setSocketBufferSize(params,</div><div class="line">					DEFAULT_SOCKET_BUFFER_SIZE);</div><div class="line">			<span class="comment">// set max connections per host</span></div><div class="line">			ConnManagerParams.setMaxConnectionsPerRoute(params,</div><div class="line">					<span class="keyword">new</span> ConnPerRouteBean(DEFAULT_MAX_CONN_PER_ROUTE));</div><div class="line">			<span class="comment">// set max total connections</span></div><div class="line">			ConnManagerParams.setMaxTotalConnections(params,</div><div class="line">					DEFAULT_MAX_CONNECTIONS);</div><div class="line"></div><div class="line">			SchemeRegistry registry = <span class="keyword">new</span> SchemeRegistry();</div><div class="line">			registry.register(<span class="keyword">new</span> Scheme(<span class="string">"http"</span>, PlainSocketFactory</div><div class="line">					.getSocketFactory(), httpPort));</div><div class="line">			registry.register(<span class="keyword">new</span> Scheme(<span class="string">"https"</span>, sf, httpsPort));</div><div class="line"></div><div class="line">			ClientConnectionManager ccm = <span class="keyword">new</span> ThreadSafeClientConnManager(</div><div class="line">					params, registry);</div><div class="line">			<span class="keyword">return</span> <span class="keyword">new</span> DefaultHttpClient(ccm, params);</div><div class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">new</span> DefaultHttpClient();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCredentials</span><span class="params">(DefaultHttpClient httpClient,</span></span></div><div class="line">			String host, <span class="keyword">int</span> port, String realm, String username, String password) &#123;</div><div class="line">		httpClient.getCredentialsProvider().setCredentials(</div><div class="line">				<span class="keyword">new</span> AuthScope(host, port, realm, <span class="string">"basic"</span>),</div><div class="line">				<span class="keyword">new</span> UsernamePasswordCredentials(username, password));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">```      </div><div class="line"> </div><div class="line"> 重点是在获取SSLSocketFactory，马上贴上代码     </div><div class="line"></div><div class="line">``` java  </div><div class="line">    <span class="comment">// 获取SocketFactory</span></div><div class="line">	<span class="function"><span class="keyword">private</span> SSLSocketFactory <span class="title">getSocketFactory</span><span class="params">()</span> </span>&#123;</div><div class="line">	  <span class="keyword">final</span> TrustManager[] trustManagers = <span class="keyword">new</span> TrustManager[] &#123; <span class="keyword">new</span> X509TrustManager() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkClientTrusted</span><span class="params">(</span></span></div><div class="line">                    java.security.cert.X509Certificate[] chain,</div><div class="line">                    String authType) <span class="keyword">throws</span> CertificateException &#123;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkServerTrusted</span><span class="params">(</span></span></div><div class="line">                    java.security.cert.X509Certificate[] chain,</div><div class="line">                    String authType) <span class="keyword">throws</span> CertificateException &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="keyword">public</span> java.security.cert.X509Certificate[] getAcceptedIssuers() &#123;</div><div class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">            &#125;</div><div class="line">        &#125; &#125;;</div><div class="line"></div><div class="line">        <span class="comment">// Install the all-trusting trust manager</span></div><div class="line">        <span class="keyword">final</span> SSLContext sslContext = SSLContext.getInstance(<span class="string">"TLS"</span>);</div><div class="line">        sslContext.init(<span class="keyword">null</span>, trustManagers, <span class="keyword">new</span> java.security.SecureRandom());</div><div class="line">        <span class="comment">// Create an ssl socket factory with our all-trusting manager</span></div><div class="line">        <span class="keyword">return</span> sslContext.getSocketFactory();</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<h4 id="使用Square的OKHttp"><a href="#使用Square的OKHttp" class="headerlink" title="使用Square的OKHttp"></a>使用Square的OKHttp</h4><pre><code class="java"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getOKHttpClient</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>{
+       OkHttpClient okHttpClient = <span class="keyword">new</span> OkHttpClient();
+       <span class="keyword">final</span> TrustManager[] trustManagers = <span class="keyword">new</span> TrustManager[] { <span class="keyword">new</span> X509TrustManager() {
+           <span class="meta">@Override</span>
+           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkClientTrusted</span><span class="params">(
+                   java.security.cert.X509Certificate[] chain,
+                   String authType)</span> <span class="keyword">throws</span> CertificateException </span>{
+           }
+
+           <span class="meta">@Override</span>
+           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkServerTrusted</span><span class="params">(
+                   java.security.cert.X509Certificate[] chain,
+                   String authType)</span> <span class="keyword">throws</span> CertificateException </span>{
+
+           }
+
+           <span class="meta">@Override</span>
+           <span class="keyword">public</span> java.security.cert.X509Certificate[] getAcceptedIssuers() {
+               <span class="keyword">return</span> <span class="keyword">null</span>;
+           }
+       } };
+
+       <span class="comment">// Install the all-trusting trust manager</span>
+       <span class="keyword">final</span> SSLContext sslContext = SSLContext.getInstance(<span class="string">"TLS"</span>);
+       sslContext.init(<span class="keyword">null</span>, trustManagers, <span class="keyword">new</span> java.security.SecureRandom());
+       <span class="comment">// Create an ssl socket factory with our all-trusting manager</span>
+       <span class="keyword">final</span> SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+       okHttpClient.setSslSocketFactory(sslSocketFactory);
+
+       <span class="comment">// Sets the verifier used to confirm that response certificates</span>
+       okHttpClient.setHostnameVerifier(<span class="keyword">new</span> HostnameVerifier() {
+           <span class="meta">@Override</span>
+           <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">verify</span><span class="params">(String hostname, SSLSession session)</span> </span>{
+               <span class="keyword">return</span> <span class="keyword">true</span>;
+           }
+       });
+   }
+</code></pre>
+<h3 id="Certificate-Pinning"><a href="#Certificate-Pinning" class="headerlink" title="Certificate Pinning"></a>Certificate Pinning</h3><p>事实上，在移动软件大多只和固定的服务器通信，因此可以在代码更精确地直接验证是否某张特定的证书，这种方法称为“证书锁定”（certificate pinning）。<br>实现证书的方法有二种：一种是前文提到的实现X509TrustManager接口，另一种则是使用keystore。    </p>
+<h4 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h4><p>实现X509TrustManager接口，在方法checkClientTrusted中可以获取到服务器端的证书，证书里面有包括版本号， 序列号， 创建时间，过期时间，公钥，签名等信息，一般情况下我们是那公钥验证。<br>常规做法是先获取到证书上的公钥，然后hash或者MD5，或者加上其他的处理，当每次请求时在方法checkClientTrusted中获取公钥做同样的处理，比较两次处理后的结果是否一致，如果一直说明访问的Server是可信的，否则是不可信的。     </p>
+<p><strong> OKHttp </strong> 针对Certificate Pinning 做了一个封装，它的原理是，可以对特定的host做证书验证，其实也是验证证书的公钥，不过有自己特定的规则{Public Key}经过Sha1算法hash一下，然后Base64加密一次，然后在结果前面加上字符串”sha1/“.                  </p>
+<pre><code class="java">
+CertificatePinner certificatePinner = <span class="keyword">new</span> CertificatePinner.Builder()
+                  .add(<span class="string">"127.0.0.1"</span>, <span class="string">"sha1/xxxxx"</span>)
+                  .build();
+          okHttpClient.setCertificatePinner(certificatePinner);
+
+<span class="comment">// 在    checkClientTrusted方法中通过以下方法可以获取上面"xxxxx"    的内容    </span>
+Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getEncoded())).base64()
+</code></pre>
+<h4 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h4><p>使用keystone， 具体如果使用，且听下回分解。<br><br></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SSL/" rel="tag"># SSL</a>
+          
+            <a href="/tags/Certificate-Pinning/" rel="tag"># Certificate Pinning</a>
+          
+            <a href="/tags/HttpClient/" rel="tag"># HttpClient</a>
+          
+            <a href="/tags/OKHttp/" rel="tag"># OKHttp</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/16/https/" rel="next" title="聊聊HTTPS">
+                <i class="fa fa-chevron-left"></i> 聊聊HTTPS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/15/keystore/" rel="prev" title="Keystore">
+                Keystore <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Kurtis Hu" />
+          <p class="site-author-name" itemprop="name">Kurtis Hu</p>
+           
+              <p class="site-description motion-element" itemprop="description">Hello World!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kurtishu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/kurtishu" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/kurtishu" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发者常见信任所有证书的错误做法"><span class="nav-number">1.</span> <span class="nav-text">开发者常见信任所有证书的错误做法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用Apache的HttpClient"><span class="nav-number">1.1.</span> <span class="nav-text">使用Apache的HttpClient</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用Square的OKHttp"><span class="nav-number">1.2.</span> <span class="nav-text">使用Square的OKHttp</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Certificate-Pinning"><span class="nav-number">2.</span> <span class="nav-text">Certificate Pinning</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一："><span class="nav-number">2.1.</span> <span class="nav-text">方法一：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二："><span class="nav-number">2.2.</span> <span class="nav-text">方法二：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kurtis Hu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
