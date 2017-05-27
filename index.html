@@ -274,6 +274,187 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2017/05/26/event-distribution/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kurtis Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kurtis's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/05/26/event-distribution/" itemprop="url">Android 事件分发机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-26T00:00:00+08:00">
+                2017-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在Android中事件分发是很重要的一块知识，了解并熟悉整套的分发机制有助于更好的分析各种点击滑动失效问题，更好去扩展控件的事件功能和开发自定义控件，同时事件分发机制也是Android面试必问考点之一。</p>
+<h3 id="MotionEvent事件初探"><a href="#MotionEvent事件初探" class="headerlink" title="MotionEvent事件初探"></a>MotionEvent事件初探</h3><p>MotionEvent在Android View事件分发、处理过程中很重要的一个类，我们对屏幕的点击，滑动，抬起等一系的动作都是由一个一个MotionEvent对象组成的。根据不同动作，主要有以下三种事件类型：</p>
+<ul>
+<li><strong>ACTION_DOWN</strong>：手指刚接触屏幕，按下去的那一瞬间产生该事件</li>
+<li><strong>ACTION_MOVE</strong>：手指在屏幕上移动时候产生该事件</li>
+<li><strong>ACTION_UP</strong>：手指从屏幕上松开的瞬间产生该事件</li>
+</ul>
+<p><strong>从ACTION_DOWN开始到ACTION_UP结束我们称为一个事件序列</strong><br>正常情况下，无论你手指在屏幕上有多么骚的操作，最终呈现在MotionEvent上来讲无外乎下面两种:</p>
+<ul>
+<li>点击后抬起，也就是单击操作：ACTION_DOWN -&gt; ACTION_UP</li>
+<li>点击后再风骚的滑动一段距离，再抬起：ACTION_DOWN -&gt; ACTION_MOVE -&gt; … -&gt; ACTION_MOVE -&gt; ACTION_UP</li>
+</ul>
+<h3 id="事件分发中重要方法"><a href="#事件分发中重要方法" class="headerlink" title="事件分发中重要方法"></a>事件分发中重要方法</h3><p>事件分发需要View的三个重要方法来共同完成：</p>
+<ul>
+<li><p><strong>public boolean dispatchTouchEvent(MotionEvent event)</strong><br>如果一个MotionEvent传递给了View，那么dispatchTouchEvent方法一定会被调用！<br>返回值：表示是否消费了当前事件。可能是View本身的onTouchEvent方法消费，也可能是子View的dispatchTouchEvent方法中消费。<br><strong>返回 true</strong>表示事件被消费，本次的事件终止传递。<br><strong>返回 false</strong>表示View以及子View均没有消费事件，将调用父View的onTouchEvent方法。</p>
+</li>
+<li><p><strong>public boolean onInterceptTouchEvent(MotionEvent ev) </strong><br>事件拦截，当一个ViewGroup在接到MotionEvent事件序列时候，首先会调用此方法判断是否需要拦截。<br><strong>特别注意，这是ViewGroup特有的方法</strong>，View并没有拦截方法<br>返回值：是否拦截事件传递，返回true表示拦截了事件，那么事件将不再向下分发而是调用View本身的onTouchEvent方法。返回false表示不做拦截，事件将向下分发到子View的dispatchTouchEvent方法。</p>
+</li>
+<li><p><strong>public boolean onTouchEvent(MotionEvent ev)</strong><br>真正对MotionEvent进行处理或者说消费的方法。在dispatchTouchEvent进行调用。<br>返回值：返回true表示事件被消费，本次的事件终止。返回false表示事件没有被消费，将调用父View的onTouchEvent方法</p>
+</li>
+</ul>
+<p>以下是伪代码（基于ViewGroup源码)描述以上三个方法的关系：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">dispatchTouchEvent</span><span class="params">(MotionEvent ev)</span> </span>&#123;</div><div class="line">        <span class="comment">// 检查是否拦截该事件 </span></div><div class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> intercepted;</div><div class="line">        <span class="keyword">if</span> (actionMasked == MotionEvent.ACTION_DOWN</div><div class="line">                || mFirstTouchTarget != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">final</span> <span class="keyword">boolean</span> disallowIntercept = (mGroupFlags &amp; FLAG_DISALLOW_INTERCEPT) != <span class="number">0</span>;</div><div class="line">            <span class="comment">// 子View请求是否需要父View拦截标志</span></div><div class="line">           <span class="keyword">if</span> (!disallowIntercept) &#123;</div><div class="line">                <span class="comment">// 调用onIntercepteTouchEvent判断时候拦截该事件</span></div><div class="line">                intercepted = onInterceptTouchEvent(ev);</div><div class="line">            &#125; </div><div class="line">        &#125; </div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (intercepted)  &#123;</div><div class="line">       <span class="comment">// 该事件被拦截，交由onTouchEvent方法来处理</span></div><div class="line">       handled = onTouchEvent(ev)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">       <span class="comment">// 该事件未被拦截，交由其子类的dispatchTouchEvent处理</span></div><div class="line">       handled = child.dispatchTouchEvent(ev);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> handled;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们再看看View的dispatchTouchEvent方法是如何实现的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">dispatchTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">    <span class="comment">// 事件是否被消费</span></div><div class="line">    <span class="keyword">boolean</span> result = <span class="keyword">false</span>;</div><div class="line">    <span class="comment">// 相关的监听器信息</span></div><div class="line">    ListenerInfo li = mListenerInfo;</div><div class="line">    <span class="keyword">if</span> (li != <span class="keyword">null</span> &amp;&amp; li.mOnTouchListener != <span class="keyword">null</span></div><div class="line">            &amp;&amp; (mViewFlags &amp; ENABLED_MASK) == ENABLED</div><div class="line">            &amp;&amp; li.mOnTouchListener.onTouch(<span class="keyword">this</span>, event)) &#123;</div><div class="line">        <span class="comment">// 检查事件被OnTouchListener的onTouch方法消费了</span></div><div class="line">        result = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 如果没有被执行，才执行onTouchEvent</span></div><div class="line">    <span class="keyword">if</span> (!result &amp;&amp; onTouchEvent(event)) &#123;</div><div class="line">        result = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在ViewGroup的dispatchTouchEvent我们发现disallowIntercept这个标志， 通过它我们可以找到另一个重要的方法requestDisallowInterceptTouchEvent：</p>
+<ul>
+<li><strong>requestDisallowInterceptTouchEvent</strong><br>requestDisallowInterceptTouchEvent 是ViewGroup类中的一个公用方法,  android系统中，一次点击事件是从父view传递到子view中，每一层的view可以决定是否拦截并处理点击事件或者传递到下一层，如果子view不处理点击事件，则该事件会传递会父view，由父view去决定是否处理该点击事件。但子view可以通过设置此方法去告诉父view不要拦截并处理点击事件，父view应该接受这个请求直到此次点击事件结束。</li>
+</ul>
+<p>实际的应用中，可以在子view的onTouch事件中注入父ViewGroup的实例，并调用requestDisallowInterceptTouchEvent去阻止父view拦截点击事件<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(View v, MotionEvent event)</span> </span>&#123;</div><div class="line">     ViewGroup viewGroup = (ViewGroup) v.getParent();</div><div class="line">     <span class="keyword">switch</span> (event.getAction()) &#123;</div><div class="line">     <span class="keyword">case</span> MotionEvent.ACTION_MOVE: </div><div class="line">         viewGroup.requestDisallowInterceptTouchEvent(<span class="keyword">true</span>);</div><div class="line">         <span class="keyword">break</span>;</div><div class="line">     <span class="keyword">case</span> MotionEvent.ACTION_UP:</div><div class="line">     <span class="keyword">case</span> MotionEvent.ACTION_CANCEL:</div><div class="line">         viewGroup .requestDisallowInterceptTouchEvent(<span class="keyword">false</span>);</div><div class="line">         <span class="keyword">break</span>;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="事件分发过程"><a href="#事件分发过程" class="headerlink" title="事件分发过程"></a>事件分发过程</h3><p>了解Android整个事件分发过程，比较好的方式是写一个Demo，步骤大致是先重写一个ViewGroup，一个View，然后重写Activity的dispatchTouchEvent、onTouchEvent，ViewGroup的dispatchTouchEvent、onInterceptTouchEvent、onTouchEvent以及View的dispatchTouchEvent、onTouchEvent，然后针对各个Event打Log，网上的很多关于Android事件分发的博文都是这么讲解的, 有兴趣可以自行查找。<br>通过下面的流程图，会更加清晰的帮助我们梳理事件分发机制：<br><img src="http://mmbiz.qpic.cn/mmbiz_png/y5HvXaQmpqnNkrnc8wQ9gAQcm76IKQPD7HDXqyRAGfepiahzaTJYx1K5KTEiaR0KgRWvmAIa7ylM6iaAGkvXMZvLg/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="Android事件流程图"></p>
+<p><center> <strong>View结构图</strong></center><br><img src="http://mmbiz.qpic.cn/mmbiz_png/y5HvXaQmpqnNkrnc8wQ9gAQcm76IKQPDO5VQXDR85NbaFHVGmKME4G3xMsXe0o74O0eRuMW6LHDjm2H17NqNiaQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p><center> <strong>View事件分发流程图</strong></center></p>
+<ul>
+<li>仔细看的话， 从上往下依次是Activity(Window)、ViewGroup(DecorView, RootViewGroup)、View， Activity是事件的起源。<br>*事件由Activity的dispatchTouchEvent做分发,  传递到ViewGroup的dispatchTouchEvent， onIntercepterTouchEvent，接着传递到View的dispatchTouchEvent。</li>
+<li>如果事件不被消费，整个事件又会回传到顶层Activity</li>
+<li>dispatchTouchEvent 和 onTouchEvent 一旦return true,事件就停止传递了（到达终点）。</li>
+<li>dispatchTouchEvent 和 onTouchEvent return false的时候事件都回传给父控件的onTouchEvent处理。</li>
+<li>ViewGroup 想把自己分发给自己的onTouchEvent，需要拦截器onInterceptTouchEvent方法return true，而ViewGroup 的拦截器onInterceptTouchEvent 默认是不拦截的。</li>
+<li>View 没有拦截器，为了让View可以把事件分发给自己的onTouchEvent，View的dispatchTouchEvent默认实现（super）就是把事件分发给自己的onTouchEvent。</li>
+</ul>
+<h3 id="OnTouch-amp-OnTouchEvent的关系"><a href="#OnTouch-amp-OnTouchEvent的关系" class="headerlink" title="OnTouch &amp; OnTouchEvent的关系"></a>OnTouch &amp; OnTouchEvent的关系</h3><p>其实在前面已经提到过，还是直接看源码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">dispatchTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">     <span class="comment">// 事件是否被消费</span></div><div class="line">     <span class="keyword">boolean</span> result = <span class="keyword">false</span>;</div><div class="line">     <span class="comment">// 相关的监听器信息</span></div><div class="line">     ListenerInfo li = mListenerInfo;</div><div class="line">     <span class="keyword">if</span> (li != <span class="keyword">null</span> &amp;&amp; li.mOnTouchListener != <span class="keyword">null</span></div><div class="line">             &amp;&amp; (mViewFlags &amp; ENABLED_MASK) == ENABLED</div><div class="line">             &amp;&amp; li.mOnTouchListener.onTouch(<span class="keyword">this</span>, event)) &#123;</div><div class="line">         <span class="comment">// 检查事件被OnTouchListener的onTouch方法消费了</span></div><div class="line">         result = <span class="keyword">true</span>;</div><div class="line">     &#125;</div><div class="line">     <span class="comment">// 如果没有被执行，才执行onTouchEvent</span></div><div class="line">     <span class="keyword">if</span> (!result &amp;&amp; onTouchEvent(event)) &#123;</div><div class="line">         result = <span class="keyword">true</span>;</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     <span class="keyword">return</span> result;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p>onTouch是OnTouchListener的接口方法，它是用来获取Touch 信息用的，onTouchEvent方法用来处理诸如down, move, up的消息， 通过以上源码可以看出:<br>onTouchListener的onTouch方法优先级比onTouchEvent高，会先触发。<br>假如onTouch方法返回false会接着触发onTouchEvent，反之onTouchEvent方法不会被调用。<br>内置诸如click事件的实现等等都基于onTouchEvent，假如onTouch返回true，这些事件将不会被触发。</p>
+<h3 id="OnTouchEvent-amp-OnClick-amp-OnLongClick的关系"><a href="#OnTouchEvent-amp-OnClick-amp-OnLongClick的关系" class="headerlink" title="OnTouchEvent &amp; OnClick &amp; OnLongClick的关系"></a>OnTouchEvent &amp; OnClick &amp; OnLongClick的关系</h3><p>还是来看下伪代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">   <span class="keyword">switch</span> (action) &#123;</div><div class="line">      <span class="keyword">case</span> MotionEvent.ACTION_UP:</div><div class="line">        <span class="keyword">if</span> (!mHasPerformedLongPress &amp;&amp; !mIgnoreNextUpEvent) &#123;</div><div class="line">           <span class="comment">// This is a tap, so remove the longpress check</span></div><div class="line">           removeLongPressCallback();</div><div class="line">           <span class="keyword">if</span> (!focusTaken) &#123;</div><div class="line">               <span class="keyword">if</span> (mPerformClick == <span class="keyword">null</span>) &#123;</div><div class="line">                   mPerformClick = <span class="keyword">new</span> PerformClick();</div><div class="line">               &#125;</div><div class="line">               <span class="keyword">if</span> (!post(mPerformClick)) &#123;</div><div class="line">                   <span class="comment">// 触发OnClickListener的onClick回调</span></div><div class="line">                   performClick();</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">break</span>:</div><div class="line">     <span class="keyword">case</span> MotionEvent.ACTION_DOWN:</div><div class="line">       setPressed(<span class="keyword">true</span>, x, y);</div><div class="line">       checkForLongClick(<span class="number">0</span>, x, y);</div><div class="line">       <span class="keyword">break</span>;</div><div class="line">     <span class="keyword">case</span> MotionEvent.ACTION_CANCEL:</div><div class="line">       setPressed(<span class="keyword">false</span>);</div><div class="line">       removeTapCallback();</div><div class="line">       removeLongPressCallback();</div><div class="line">       <span class="keyword">break</span>;</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以上源码看一看出，onClick是在onTouchEvent ACTION_UP的时候出发的，如果该View的onTouchEvent或者它的ACTION_UP不被调用是不会触发onClick回调的。</p>
+<p>关于onLongClick就稍微复杂一些，通过以上源码可以看到，当用户按下时（ACTION_DOWN）执行了checkForLongClick方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">checkForLongClick</span><span class="params">(<span class="keyword">int</span> delayOffset, <span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> ((mViewFlags &amp; LONG_CLICKABLE) == LONG_CLICKABLE) &#123;</div><div class="line">            mHasPerformedLongPress = <span class="keyword">false</span>;</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (mPendingCheckForLongPress == <span class="keyword">null</span>) &#123;</div><div class="line">                mPendingCheckForLongPress = <span class="keyword">new</span> CheckForLongPress();</div><div class="line">            &#125;</div><div class="line">            mPendingCheckForLongPress.setAnchor(x, y);</div><div class="line">            mPendingCheckForLongPress.rememberWindowAttachCount();</div><div class="line">            postDelayed(mPendingCheckForLongPress,</div><div class="line">                    ViewConfiguration.getLongPressTimeout() - delayOffset);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>该方法实际就是创建了个CheckForLongPress 的 Runnable， 它的run方法里面就是performLongClick(OnLongClickListener的回调就是在该方法中执行的)，然后把它放入一个HandlerActionQueue队列中，让它延迟一段时间（DEFAULT_LONG_PRESS_TIMEOUT = 500）以后执行。<br>同时如果500毫秒之内，ACTION_UP或者ACTION_CANCEL执行了，就会移除该Runnable。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
+<p><a href="http://www.jianshu.com/p/e99b5e8bd67b" target="_blank" rel="external">图解 Android 事件分发机制</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&amp;mid=2247484615&amp;idx=1&amp;sn=d34d4035e6ecf03abbead56cd9eafa4c&amp;chksm=96cda58aa1ba2c9c5663ff1f3e6a2ef72a64db81c813c74b7ebbc389fbcbb0ce3b3eaefe85a5&amp;scene=21#wechat_redirect" target="_blank" rel="external">一文读懂Android View事件分发机制</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&amp;mid=2247484662&amp;idx=1&amp;sn=7b8a8831b37975936a9ea95c7a54d52a&amp;chksm=96cda5bba1ba2cad32081316ad0771aab42fa64782f7b2c726acc2bb5809fb04f4ef7088ab29&amp;mpshare=1&amp;scene=23&amp;srcid=0527RJ2k4z4mAQyPQqhbtYIG#rd" target="_blank" rel="external">一文解决Android View滑动冲突</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2017/05/24/android-codingstyle/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1841,211 +2022,6 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2016/01/18/androidannotations-analysis/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kurtis Hu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Kurtis's Notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/01/18/androidannotations-analysis/" itemprop="url">AndroidAnnotions 源码解析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-18T00:00:00+08:00">
-                2016-01-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>AndroidAnnotions 官方的给出的定义是  </p>
-<blockquote>
-<p>AndroidAnnotations is an Open Source framework that speeds up Android development. It takes care of the plumbing, and lets you concentrate on what’s really important. By simplifying your code, it facilitates its maintenance.</p>
-</blockquote>
-<p>AndroidAnnotations 使用标准的Java注解处理工具自动添加一个额外的编译步骤生成的源代码(会生成一个加了”_”的同名类)，在新生产的源文件中实现View的实例化、Class的注入等工作，以达到减轻开发者工作量的目的。  </p>
-<h3 id="关于-APT-Annotion-Processing-Tool"><a href="#关于-APT-Annotion-Processing-Tool" class="headerlink" title="关于 APT(Annotion Processing Tool)"></a>关于 APT(Annotion Processing Tool)</h3><p>APT 是java 注解处理工具，它的作用就是在源代码中找到并处理Annotation Processors(Annnotation Processors 简单说就是实现了AnnotationProcessor interface 的类)，更多关于APT的内容请参考：<a href="http://docs.oracle.com/javase/1.5.0/docs/guide/apt/GettingStarted.html" target="_blank" rel="external">oracle apt doc</a>   </p>
-<h3 id="Android-Stuio使用AndroidAnnotation"><a href="#Android-Stuio使用AndroidAnnotation" class="headerlink" title="Android Stuio使用AndroidAnnotation"></a>Android Stuio使用AndroidAnnotation</h3><p>在Android Stuio使用AndroidAnnotion，在网上有具体的配置步骤，引入这个框架会涉及到两个jar包  </p>
-<pre><code> dependencies {
-    apt &quot;org.androidannotations:androidannotations:$AAVersion&quot;
-    compile &quot;org.androidannotations:androidannotations-api:$AAVersion&quot;
-}
-</code></pre><p>其中上面一个是AndroidAnnotations的处理核心包，包含了一个 Annotation Processor，另一个则是暴露出来的所有Annotions，例如@EActivity，@EBean等, API这个包没什么好说的，下面主要讲下androidannotations.jar。</p>
-<h3 id="解密androidannotations-jar"><a href="#解密androidannotations-jar" class="headerlink" title="解密androidannotations.jar"></a>解密androidannotations.jar</h3><p>解压androidannotations.jar文件，在META-INF\services\下有个javax.annotation.processing.Processor，该文件会‘告诉’apt来处理这个文件指定的Processor。这个文件所指定的Processor是org.androidannotations.AndroidAnnotationProcessor。所以重点关注AndroidAnnotationProcessor这个类。</p>
-<h3 id="org-androidannotations-AndroidAnnotationProcessor"><a href="#org-androidannotations-AndroidAnnotationProcessor" class="headerlink" title="org.androidannotations.AndroidAnnotationProcessor"></a>org.androidannotations.AndroidAnnotationProcessor</h3><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AndroidAnnotationProcessor</span> <span class="keyword">extends</span> <span class="title">AbstractProcessor</span> </span>{
-
-    <span class="meta">@Override</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span> </span>{
-      ...
-    }
-
-    <span class="meta">@Override</span>
-    <span class="function"><span class="keyword">public</span> SourceVersion <span class="title">getSupportedSourceVersion</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> SourceVersion.latestSupported();
-    }
-
-    <span class="meta">@Override</span>
-    <span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span> </span>{
-      ...
-    }
-</code></pre>
-<p>从代码可以看到 AndroidAnnotationProcessor继承至AbstractProcessor需要实现三个方法, process是处理Annotation的核心方法，Annatation解析s所需要的java<br>的版本好，一般使用lastestSupported(最新的java版本), getSupportedAnnotationTypes 返回需要解析的Annotation的Class集合。这里重点讲下process方法。   </p>
-<h3 id="关于process方法"><a href="#关于process方法" class="headerlink" title="关于process方法"></a>关于process方法</h3><p>先贴出核心代码  </p>
-<pre><code class="java"><span class="meta">@Override</span>
-<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span> </span>{
-...
-   <span class="keyword">try</span> {
-        <span class="comment">// *检查API的版本和处理核心包的版本是否匹配</span>
-        checkApiAndCoreVersions();
-
-        <span class="comment">// *处理Annotations的核心方法</span>
-        processThrowing(annotations, roundEnv);
-
-    } <span class="keyword">catch</span> (ProcessingException e) {
-        handleException(annotations, roundEnv, e);
-    } <span class="keyword">catch</span> (Exception e) {
-        handleException(annotations, roundEnv, <span class="keyword">new</span> ProcessingException(e, <span class="keyword">null</span>));
-    }
-...
-    <span class="keyword">return</span> <span class="keyword">true</span>;
-}
-</code></pre>
-<p>重点关注processThrowing方法，该方法主要做了三件事，一是Validate Annotation，二是解析Annotations，三是生产具体的class。</p>
-<pre><code class="java"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">processThrowing</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span> <span class="keyword">throws</span> ProcessingException, Exception </span>{
-    ...
-        IRClass rClass = rClassOption.get();
-
-        AndroidSystemServices androidSystemServices = <span class="keyword">new</span> AndroidSystemServices();
-
-        annotationHandlers.setAndroidEnvironment(rClass, androidSystemServices, androidManifest);
-
-        <span class="comment">// * Validate Annotations</span>
-        AnnotationElements validatedModel = validateAnnotations(extractedModel);
-
-        <span class="comment">// * 处理Annotations，返回ProcessResult结果</span>
-        ModelProcessor.ProcessResult processResult = processAnnotations(validatedModel);
-
-        <span class="comment">// * 根据解析到的Annotations 生成相应的类文件</span>
-        generateSources(processResult);
-    }
-</code></pre>
-<h3 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h3><p>关于AndroidAnnotation框架如何去Validate、解析，以及生成类的过程没有具体分析，留到以后再完善。</p>
-<p><br></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2095,7 +2071,7 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2117,7 +2093,7 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

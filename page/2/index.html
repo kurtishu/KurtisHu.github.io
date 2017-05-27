@@ -274,6 +274,211 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2016/01/18/androidannotations-analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kurtis Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kurtis's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/18/androidannotations-analysis/" itemprop="url">AndroidAnnotions 源码解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-18T00:00:00+08:00">
+                2016-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>AndroidAnnotions 官方的给出的定义是  </p>
+<blockquote>
+<p>AndroidAnnotations is an Open Source framework that speeds up Android development. It takes care of the plumbing, and lets you concentrate on what’s really important. By simplifying your code, it facilitates its maintenance.</p>
+</blockquote>
+<p>AndroidAnnotations 使用标准的Java注解处理工具自动添加一个额外的编译步骤生成的源代码(会生成一个加了”_”的同名类)，在新生产的源文件中实现View的实例化、Class的注入等工作，以达到减轻开发者工作量的目的。  </p>
+<h3 id="关于-APT-Annotion-Processing-Tool"><a href="#关于-APT-Annotion-Processing-Tool" class="headerlink" title="关于 APT(Annotion Processing Tool)"></a>关于 APT(Annotion Processing Tool)</h3><p>APT 是java 注解处理工具，它的作用就是在源代码中找到并处理Annotation Processors(Annnotation Processors 简单说就是实现了AnnotationProcessor interface 的类)，更多关于APT的内容请参考：<a href="http://docs.oracle.com/javase/1.5.0/docs/guide/apt/GettingStarted.html" target="_blank" rel="external">oracle apt doc</a>   </p>
+<h3 id="Android-Stuio使用AndroidAnnotation"><a href="#Android-Stuio使用AndroidAnnotation" class="headerlink" title="Android Stuio使用AndroidAnnotation"></a>Android Stuio使用AndroidAnnotation</h3><p>在Android Stuio使用AndroidAnnotion，在网上有具体的配置步骤，引入这个框架会涉及到两个jar包  </p>
+<pre><code> dependencies {
+    apt &quot;org.androidannotations:androidannotations:$AAVersion&quot;
+    compile &quot;org.androidannotations:androidannotations-api:$AAVersion&quot;
+}
+</code></pre><p>其中上面一个是AndroidAnnotations的处理核心包，包含了一个 Annotation Processor，另一个则是暴露出来的所有Annotions，例如@EActivity，@EBean等, API这个包没什么好说的，下面主要讲下androidannotations.jar。</p>
+<h3 id="解密androidannotations-jar"><a href="#解密androidannotations-jar" class="headerlink" title="解密androidannotations.jar"></a>解密androidannotations.jar</h3><p>解压androidannotations.jar文件，在META-INF\services\下有个javax.annotation.processing.Processor，该文件会‘告诉’apt来处理这个文件指定的Processor。这个文件所指定的Processor是org.androidannotations.AndroidAnnotationProcessor。所以重点关注AndroidAnnotationProcessor这个类。</p>
+<h3 id="org-androidannotations-AndroidAnnotationProcessor"><a href="#org-androidannotations-AndroidAnnotationProcessor" class="headerlink" title="org.androidannotations.AndroidAnnotationProcessor"></a>org.androidannotations.AndroidAnnotationProcessor</h3><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AndroidAnnotationProcessor</span> <span class="keyword">extends</span> <span class="title">AbstractProcessor</span> </span>{
+
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span> </span>{
+      ...
+    }
+
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> SourceVersion <span class="title">getSupportedSourceVersion</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> SourceVersion.latestSupported();
+    }
+
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span> </span>{
+      ...
+    }
+</code></pre>
+<p>从代码可以看到 AndroidAnnotationProcessor继承至AbstractProcessor需要实现三个方法, process是处理Annotation的核心方法，Annatation解析s所需要的java<br>的版本好，一般使用lastestSupported(最新的java版本), getSupportedAnnotationTypes 返回需要解析的Annotation的Class集合。这里重点讲下process方法。   </p>
+<h3 id="关于process方法"><a href="#关于process方法" class="headerlink" title="关于process方法"></a>关于process方法</h3><p>先贴出核心代码  </p>
+<pre><code class="java"><span class="meta">@Override</span>
+<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span> </span>{
+...
+   <span class="keyword">try</span> {
+        <span class="comment">// *检查API的版本和处理核心包的版本是否匹配</span>
+        checkApiAndCoreVersions();
+
+        <span class="comment">// *处理Annotations的核心方法</span>
+        processThrowing(annotations, roundEnv);
+
+    } <span class="keyword">catch</span> (ProcessingException e) {
+        handleException(annotations, roundEnv, e);
+    } <span class="keyword">catch</span> (Exception e) {
+        handleException(annotations, roundEnv, <span class="keyword">new</span> ProcessingException(e, <span class="keyword">null</span>));
+    }
+...
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+</code></pre>
+<p>重点关注processThrowing方法，该方法主要做了三件事，一是Validate Annotation，二是解析Annotations，三是生产具体的class。</p>
+<pre><code class="java"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">processThrowing</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span> <span class="keyword">throws</span> ProcessingException, Exception </span>{
+    ...
+        IRClass rClass = rClassOption.get();
+
+        AndroidSystemServices androidSystemServices = <span class="keyword">new</span> AndroidSystemServices();
+
+        annotationHandlers.setAndroidEnvironment(rClass, androidSystemServices, androidManifest);
+
+        <span class="comment">// * Validate Annotations</span>
+        AnnotationElements validatedModel = validateAnnotations(extractedModel);
+
+        <span class="comment">// * 处理Annotations，返回ProcessResult结果</span>
+        ModelProcessor.ProcessResult processResult = processAnnotations(validatedModel);
+
+        <span class="comment">// * 根据解析到的Annotations 生成相应的类文件</span>
+        generateSources(processResult);
+    }
+</code></pre>
+<h3 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h3><p>关于AndroidAnnotation框架如何去Validate、解析，以及生成类的过程没有具体分析，留到以后再完善。</p>
+<p><br></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2015/12/07/launch-mode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -684,7 +889,7 @@ private void parseJSParams(String url) {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -706,7 +911,7 @@ private void parseJSParams(String url) {
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
