@@ -90,15 +90,15 @@
 
 
 
-<meta name="description" content="Hello World!">
+<meta name="description" content="Everyone should have a dream">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Kurtis&#39;s Notes">
 <meta property="og:url" content="http://kurtishu.github.io/index.html">
 <meta property="og:site_name" content="Kurtis&#39;s Notes">
-<meta property="og:description" content="Hello World!">
+<meta property="og:description" content="Everyone should have a dream">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kurtis&#39;s Notes">
-<meta name="twitter:description" content="Hello World!">
+<meta name="twitter:description" content="Everyone should have a dream">
 
 
 
@@ -364,56 +364,16 @@
       
         
           
-            <p>在Android中事件分发是很重要的一块知识，了解并熟悉整套的分发机制有助于更好的分析各种点击滑动失效问题，更好去扩展控件的事件功能和开发自定义控件，同时事件分发机制也是Android面试必问考点之一。</p>
-<h3 id="MotionEvent事件初探"><a href="#MotionEvent事件初探" class="headerlink" title="MotionEvent事件初探"></a>MotionEvent事件初探</h3><p>MotionEvent在Android View事件分发、处理过程中很重要的一个类，我们对屏幕的点击，滑动，抬起等一系的动作都是由一个一个MotionEvent对象组成的。根据不同动作，主要有以下三种事件类型：</p>
-<ul>
-<li><strong>ACTION_DOWN</strong>：手指刚接触屏幕，按下去的那一瞬间产生该事件</li>
-<li><strong>ACTION_MOVE</strong>：手指在屏幕上移动时候产生该事件</li>
-<li><strong>ACTION_UP</strong>：手指从屏幕上松开的瞬间产生该事件</li>
-</ul>
-<p><strong>从ACTION_DOWN开始到ACTION_UP结束我们称为一个事件序列</strong><br>正常情况下，无论你手指在屏幕上有多么骚的操作，最终呈现在MotionEvent上来讲无外乎下面两种:</p>
-<ul>
-<li>点击后抬起，也就是单击操作：ACTION_DOWN -&gt; ACTION_UP</li>
-<li>点击后再风骚的滑动一段距离，再抬起：ACTION_DOWN -&gt; ACTION_MOVE -&gt; … -&gt; ACTION_MOVE -&gt; ACTION_UP</li>
-</ul>
-<h3 id="事件分发中重要方法"><a href="#事件分发中重要方法" class="headerlink" title="事件分发中重要方法"></a>事件分发中重要方法</h3><p>事件分发需要View的三个重要方法来共同完成：</p>
-<ul>
-<li><p><strong>public boolean dispatchTouchEvent(MotionEvent event)</strong><br>如果一个MotionEvent传递给了View，那么dispatchTouchEvent方法一定会被调用！<br>返回值：表示是否消费了当前事件。可能是View本身的onTouchEvent方法消费，也可能是子View的dispatchTouchEvent方法中消费。<br><strong>返回 true</strong>表示事件被消费，本次的事件终止传递。<br><strong>返回 false</strong>表示View以及子View均没有消费事件，将调用父View的onTouchEvent方法。</p>
-</li>
-<li><p><strong>public boolean onInterceptTouchEvent(MotionEvent ev) </strong><br>事件拦截，当一个ViewGroup在接到MotionEvent事件序列时候，首先会调用此方法判断是否需要拦截。<br><strong>特别注意，这是ViewGroup特有的方法</strong>，View并没有拦截方法<br>返回值：是否拦截事件传递，返回true表示拦截了事件，那么事件将不再向下分发而是调用View本身的onTouchEvent方法。返回false表示不做拦截，事件将向下分发到子View的dispatchTouchEvent方法。</p>
-</li>
-<li><p><strong>public boolean onTouchEvent(MotionEvent ev)</strong><br>真正对MotionEvent进行处理或者说消费的方法。在dispatchTouchEvent进行调用。<br>返回值：返回true表示事件被消费，本次的事件终止。返回false表示事件没有被消费，将调用父View的onTouchEvent方法</p>
-</li>
-</ul>
-<p>以下是伪代码（基于ViewGroup源码)描述以上三个方法的关系：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">dispatchTouchEvent</span><span class="params">(MotionEvent ev)</span> </span>&#123;</div><div class="line">        <span class="comment">// 检查是否拦截该事件 </span></div><div class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> intercepted;</div><div class="line">        <span class="keyword">if</span> (actionMasked == MotionEvent.ACTION_DOWN</div><div class="line">                || mFirstTouchTarget != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">final</span> <span class="keyword">boolean</span> disallowIntercept = (mGroupFlags &amp; FLAG_DISALLOW_INTERCEPT) != <span class="number">0</span>;</div><div class="line">            <span class="comment">// 子View请求是否需要父View拦截标志</span></div><div class="line">           <span class="keyword">if</span> (!disallowIntercept) &#123;</div><div class="line">                <span class="comment">// 调用onIntercepteTouchEvent判断时候拦截该事件</span></div><div class="line">                intercepted = onInterceptTouchEvent(ev);</div><div class="line">            &#125; </div><div class="line">        &#125; </div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (intercepted)  &#123;</div><div class="line">       <span class="comment">// 该事件被拦截，交由onTouchEvent方法来处理</span></div><div class="line">       handled = onTouchEvent(ev)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">       <span class="comment">// 该事件未被拦截，交由其子类的dispatchTouchEvent处理</span></div><div class="line">       handled = child.dispatchTouchEvent(ev);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> handled;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>我们再看看View的dispatchTouchEvent方法是如何实现的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">dispatchTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">    <span class="comment">// 事件是否被消费</span></div><div class="line">    <span class="keyword">boolean</span> result = <span class="keyword">false</span>;</div><div class="line">    <span class="comment">// 相关的监听器信息</span></div><div class="line">    ListenerInfo li = mListenerInfo;</div><div class="line">    <span class="keyword">if</span> (li != <span class="keyword">null</span> &amp;&amp; li.mOnTouchListener != <span class="keyword">null</span></div><div class="line">            &amp;&amp; (mViewFlags &amp; ENABLED_MASK) == ENABLED</div><div class="line">            &amp;&amp; li.mOnTouchListener.onTouch(<span class="keyword">this</span>, event)) &#123;</div><div class="line">        <span class="comment">// 检查事件被OnTouchListener的onTouch方法消费了</span></div><div class="line">        result = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 如果没有被执行，才执行onTouchEvent</span></div><div class="line">    <span class="keyword">if</span> (!result &amp;&amp; onTouchEvent(event)) &#123;</div><div class="line">        result = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在ViewGroup的dispatchTouchEvent我们发现disallowIntercept这个标志， 通过它我们可以找到另一个重要的方法requestDisallowInterceptTouchEvent：</p>
-<ul>
-<li><strong>requestDisallowInterceptTouchEvent</strong><br>requestDisallowInterceptTouchEvent 是ViewGroup类中的一个公用方法,  android系统中，一次点击事件是从父view传递到子view中，每一层的view可以决定是否拦截并处理点击事件或者传递到下一层，如果子view不处理点击事件，则该事件会传递会父view，由父view去决定是否处理该点击事件。但子view可以通过设置此方法去告诉父view不要拦截并处理点击事件，父view应该接受这个请求直到此次点击事件结束。</li>
-</ul>
-<p>实际的应用中，可以在子view的onTouch事件中注入父ViewGroup的实例，并调用requestDisallowInterceptTouchEvent去阻止父view拦截点击事件<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(View v, MotionEvent event)</span> </span>&#123;</div><div class="line">     ViewGroup viewGroup = (ViewGroup) v.getParent();</div><div class="line">     <span class="keyword">switch</span> (event.getAction()) &#123;</div><div class="line">     <span class="keyword">case</span> MotionEvent.ACTION_MOVE: </div><div class="line">         viewGroup.requestDisallowInterceptTouchEvent(<span class="keyword">true</span>);</div><div class="line">         <span class="keyword">break</span>;</div><div class="line">     <span class="keyword">case</span> MotionEvent.ACTION_UP:</div><div class="line">     <span class="keyword">case</span> MotionEvent.ACTION_CANCEL:</div><div class="line">         viewGroup .requestDisallowInterceptTouchEvent(<span class="keyword">false</span>);</div><div class="line">         <span class="keyword">break</span>;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="事件分发过程"><a href="#事件分发过程" class="headerlink" title="事件分发过程"></a>事件分发过程</h3><p>了解Android整个事件分发过程，比较好的方式是写一个Demo，步骤大致是先重写一个ViewGroup，一个View，然后重写Activity的dispatchTouchEvent、onTouchEvent，ViewGroup的dispatchTouchEvent、onInterceptTouchEvent、onTouchEvent以及View的dispatchTouchEvent、onTouchEvent，然后针对各个Event打Log，网上的很多关于Android事件分发的博文都是这么讲解的, 有兴趣可以自行查找。<br>通过下面的流程图，会更加清晰的帮助我们梳理事件分发机制：<br><img src="http://mmbiz.qpic.cn/mmbiz_png/y5HvXaQmpqnNkrnc8wQ9gAQcm76IKQPD7HDXqyRAGfepiahzaTJYx1K5KTEiaR0KgRWvmAIa7ylM6iaAGkvXMZvLg/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="Android事件流程图"></p>
-<p><center> <strong>View结构图</strong></center><br><img src="http://mmbiz.qpic.cn/mmbiz_png/y5HvXaQmpqnNkrnc8wQ9gAQcm76IKQPDO5VQXDR85NbaFHVGmKME4G3xMsXe0o74O0eRuMW6LHDjm2H17NqNiaQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
-<p><center> <strong>View事件分发流程图</strong></center></p>
-<ul>
-<li>仔细看的话， 从上往下依次是Activity(Window)、ViewGroup(DecorView, RootViewGroup)、View， Activity是事件的起源。<br>*事件由Activity的dispatchTouchEvent做分发,  传递到ViewGroup的dispatchTouchEvent， onIntercepterTouchEvent，接着传递到View的dispatchTouchEvent。</li>
-<li>如果事件不被消费，整个事件又会回传到顶层Activity</li>
-<li>dispatchTouchEvent 和 onTouchEvent 一旦return true,事件就停止传递了（到达终点）。</li>
-<li>dispatchTouchEvent 和 onTouchEvent return false的时候事件都回传给父控件的onTouchEvent处理。</li>
-<li>ViewGroup 想把自己分发给自己的onTouchEvent，需要拦截器onInterceptTouchEvent方法return true，而ViewGroup 的拦截器onInterceptTouchEvent 默认是不拦截的。</li>
-<li>View 没有拦截器，为了让View可以把事件分发给自己的onTouchEvent，View的dispatchTouchEvent默认实现（super）就是把事件分发给自己的onTouchEvent。</li>
-</ul>
-<h3 id="OnTouch-amp-OnTouchEvent的关系"><a href="#OnTouch-amp-OnTouchEvent的关系" class="headerlink" title="OnTouch &amp; OnTouchEvent的关系"></a>OnTouch &amp; OnTouchEvent的关系</h3><p>其实在前面已经提到过，还是直接看源码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">dispatchTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">     <span class="comment">// 事件是否被消费</span></div><div class="line">     <span class="keyword">boolean</span> result = <span class="keyword">false</span>;</div><div class="line">     <span class="comment">// 相关的监听器信息</span></div><div class="line">     ListenerInfo li = mListenerInfo;</div><div class="line">     <span class="keyword">if</span> (li != <span class="keyword">null</span> &amp;&amp; li.mOnTouchListener != <span class="keyword">null</span></div><div class="line">             &amp;&amp; (mViewFlags &amp; ENABLED_MASK) == ENABLED</div><div class="line">             &amp;&amp; li.mOnTouchListener.onTouch(<span class="keyword">this</span>, event)) &#123;</div><div class="line">         <span class="comment">// 检查事件被OnTouchListener的onTouch方法消费了</span></div><div class="line">         result = <span class="keyword">true</span>;</div><div class="line">     &#125;</div><div class="line">     <span class="comment">// 如果没有被执行，才执行onTouchEvent</span></div><div class="line">     <span class="keyword">if</span> (!result &amp;&amp; onTouchEvent(event)) &#123;</div><div class="line">         result = <span class="keyword">true</span>;</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     <span class="keyword">return</span> result;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
-<p>onTouch是OnTouchListener的接口方法，它是用来获取Touch 信息用的，onTouchEvent方法用来处理诸如down, move, up的消息， 通过以上源码可以看出:<br>onTouchListener的onTouch方法优先级比onTouchEvent高，会先触发。<br>假如onTouch方法返回false会接着触发onTouchEvent，反之onTouchEvent方法不会被调用。<br>内置诸如click事件的实现等等都基于onTouchEvent，假如onTouch返回true，这些事件将不会被触发。</p>
-<h3 id="OnTouchEvent-amp-OnClick-amp-OnLongClick的关系"><a href="#OnTouchEvent-amp-OnClick-amp-OnLongClick的关系" class="headerlink" title="OnTouchEvent &amp; OnClick &amp; OnLongClick的关系"></a>OnTouchEvent &amp; OnClick &amp; OnLongClick的关系</h3><p>还是来看下伪代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">   <span class="keyword">switch</span> (action) &#123;</div><div class="line">      <span class="keyword">case</span> MotionEvent.ACTION_UP:</div><div class="line">        <span class="keyword">if</span> (!mHasPerformedLongPress &amp;&amp; !mIgnoreNextUpEvent) &#123;</div><div class="line">           <span class="comment">// This is a tap, so remove the longpress check</span></div><div class="line">           removeLongPressCallback();</div><div class="line">           <span class="keyword">if</span> (!focusTaken) &#123;</div><div class="line">               <span class="keyword">if</span> (mPerformClick == <span class="keyword">null</span>) &#123;</div><div class="line">                   mPerformClick = <span class="keyword">new</span> PerformClick();</div><div class="line">               &#125;</div><div class="line">               <span class="keyword">if</span> (!post(mPerformClick)) &#123;</div><div class="line">                   <span class="comment">// 触发OnClickListener的onClick回调</span></div><div class="line">                   performClick();</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">break</span>:</div><div class="line">     <span class="keyword">case</span> MotionEvent.ACTION_DOWN:</div><div class="line">       setPressed(<span class="keyword">true</span>, x, y);</div><div class="line">       checkForLongClick(<span class="number">0</span>, x, y);</div><div class="line">       <span class="keyword">break</span>;</div><div class="line">     <span class="keyword">case</span> MotionEvent.ACTION_CANCEL:</div><div class="line">       setPressed(<span class="keyword">false</span>);</div><div class="line">       removeTapCallback();</div><div class="line">       removeLongPressCallback();</div><div class="line">       <span class="keyword">break</span>;</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>以上源码看一看出，onClick是在onTouchEvent ACTION_UP的时候出发的，如果该View的onTouchEvent或者它的ACTION_UP不被调用是不会触发onClick回调的。</p>
-<p>关于onLongClick就稍微复杂一些，通过以上源码可以看到，当用户按下时（ACTION_DOWN）执行了checkForLongClick方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">checkForLongClick</span><span class="params">(<span class="keyword">int</span> delayOffset, <span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> ((mViewFlags &amp; LONG_CLICKABLE) == LONG_CLICKABLE) &#123;</div><div class="line">            mHasPerformedLongPress = <span class="keyword">false</span>;</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (mPendingCheckForLongPress == <span class="keyword">null</span>) &#123;</div><div class="line">                mPendingCheckForLongPress = <span class="keyword">new</span> CheckForLongPress();</div><div class="line">            &#125;</div><div class="line">            mPendingCheckForLongPress.setAnchor(x, y);</div><div class="line">            mPendingCheckForLongPress.rememberWindowAttachCount();</div><div class="line">            postDelayed(mPendingCheckForLongPress,</div><div class="line">                    ViewConfiguration.getLongPressTimeout() - delayOffset);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
-<p>该方法实际就是创建了个CheckForLongPress 的 Runnable， 它的run方法里面就是performLongClick(OnLongClickListener的回调就是在该方法中执行的)，然后把它放入一个HandlerActionQueue队列中，让它延迟一段时间（DEFAULT_LONG_PRESS_TIMEOUT = 500）以后执行。<br>同时如果500毫秒之内，ACTION_UP或者ACTION_CANCEL执行了，就会移除该Runnable。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
-<p><a href="http://www.jianshu.com/p/e99b5e8bd67b" target="_blank" rel="external">图解 Android 事件分发机制</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&amp;mid=2247484615&amp;idx=1&amp;sn=d34d4035e6ecf03abbead56cd9eafa4c&amp;chksm=96cda58aa1ba2c9c5663ff1f3e6a2ef72a64db81c813c74b7ebbc389fbcbb0ce3b3eaefe85a5&amp;scene=21#wechat_redirect" target="_blank" rel="external">一文读懂Android View事件分发机制</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&amp;mid=2247484662&amp;idx=1&amp;sn=7b8a8831b37975936a9ea95c7a54d52a&amp;chksm=96cda5bba1ba2cad32081316ad0771aab42fa64782f7b2c726acc2bb5809fb04f4ef7088ab29&amp;mpshare=1&amp;scene=23&amp;srcid=0527RJ2k4z4mAQyPQqhbtYIG#rd" target="_blank" rel="external">一文解决Android View滑动冲突</a></p>
-</blockquote>
-
-          
+          在Android中事件分发是很重要的一块知识，了解并熟悉整套的分发机制有助于更好的分析各种点击滑动失效问题，更好去扩展控件的事件功能和开发自定义控件，同时事件分发机制也是Android面试必问考点之一。
+MotionEvent事件初探MotionEvent在Android View事件分发、处理过程
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/26/event-distribution/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -545,93 +505,23 @@
       
         
           
-            <h2 id="Android编程规范"><a href="#Android编程规范" class="headerlink" title="Android编程规范"></a>Android编程规范</h2><h3 id="基本原则"><a href="#基本原则" class="headerlink" title="基本原则"></a>基本原则</h3><ul>
-<li>代码风格与android源码保持一致</li>
-<li>命名要清晰明了、有明确含义</li>
-<li>同一产品命名风格要保持一致，避免一意多词</li>
-<li>同一作用域，不能有变量重名，如局部变量与全局变量重名</li>
-</ul>
-<h3 id="包名"><a href="#包名" class="headerlink" title="包名"></a>包名</h3><ul>
-<li>package命名如com.brian.xx.yy.zz，xx为产品，yy为模块，zz为子模块</li>
-<li>模块划分，按以下两种方式均可，但需要项目组统一<br>按产品业务划分，如<br>com.brian.example.homepage 和 com.brian.example.player 按逻辑功能划分，如<br>com.brian.example.homepage.ui 和 com.brian.example.homepage.logic</li>
-</ul>
-<h3 id="类成员命名，参考android源码，如-android-content-pm-PackageManager"><a href="#类成员命名，参考android源码，如-android-content-pm-PackageManager" class="headerlink" title="类成员命名，参考android源码，如 android.content.pm.PackageManager"></a>类成员命名，参考android源码，如 android.content.pm.PackageManager</h3><ul>
-<li>类： public abstract class PackageManager</li>
-<li>函数： public abstract PackageInfogetPackageInfo(String packageName)</li>
-<li>常量： public static final int GET_ACTIVITIES= 0x00000001;</li>
-<li>静态变量： static ComponentName sComponent;</li>
-<li>成员变量： ComponentName mComponent;</li>
-<li>临时变量： ComponentName component;</li>
-</ul>
-<h3 id="资源命名"><a href="#资源命名" class="headerlink" title="资源命名"></a>资源命名</h3><ul>
-<li>文件名（字母小写和下划线组成）activity_main.xml ic_launcher.png</li>
-<li>资源名id（字母小写和下划线组成）android:id=”@+layout/loading_view” 应用名称 代码排版</li>
-</ul>
-<h3 id="文字编码"><a href="#文字编码" class="headerlink" title="文字编码"></a>文字编码</h3><ul>
-<li>统一使用utf8编码<h3 id="缩进对齐"><a href="#缩进对齐" class="headerlink" title="缩进对齐"></a>缩进对齐</h3></li>
-<li>代码缩进采用 4个空格</li>
-<li>代码行首，合理缩进，以简洁明了为原则<h3 id="空格"><a href="#空格" class="headerlink" title="空格"></a>空格</h3></li>
-<li>条件语句，关键字与“(”用空格隔开，如 if (xx)、while (i&gt; 3)</li>
-<li>注释内容，左右用空格隔开，如 // xxx，/ xxx /</li>
-<li><p>比较操作符、赋值操作符、算术操作符、逻辑操作符、位操作符，等双目操作符的前后加空格</p>
-<pre><code class="java"><span class="keyword">if</span> ( (a &gt;= b) &amp;&amp; (c &lt;= d) )
-<span class="keyword">if</span> (size &gt;= MAX_SIZE)
-a = b + c;
-a *= <span class="number">2</span>;
-a = b ^ <span class="number">2</span>;
-</code></pre>
-</li>
-<li><p>“!”、”~”、”++”、”–”、”&amp;”（地址运算符）等单目操作符前后不加空格</p>
-</li>
-<li>逗号、分号（非行结束符号）在后面加空格，前面不加空格<pre><code class="java"><span class="keyword">int</span> x = <span class="number">1</span>, y = <span class="number">2</span>, z = <span class="number">3</span>;
-function(x, y, z);
-<span class="keyword">for</span> (inti = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)
-</code></pre>
-</li>
-</ul>
-<h3 id="条件语句（if、for、while、do）"><a href="#条件语句（if、for、while、do）" class="headerlink" title="条件语句（if、for、while、do）"></a>条件语句（if、for、while、do）</h3><ul>
-<li>条件语句，使用完备的括号</li>
-<li><p>条件语句，独自占一行，执行语句不得紧跟其他</p>
-<pre><code class="java"> <span class="comment">// BAD</span>
-<span class="keyword">if</span> (flag) doSomething();
-<span class="comment">// GOOD</span>
-<span class="keyword">if</span> (flag) {
-  doSomething();
-}
-</code></pre>
-</li>
-<li>条件语句，不论语执行句有多少行都要加“{}”</li>
-</ul>
-<h3 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h3><ul>
-<li>一行只写一条语句</li>
-<li>代码以“段”来编写，作用相近的代码写在一段，段与段间以空行分开，注释也相应以“段”来注释</li>
-<li>代码文件中从上到下，函数依次按照调度、被调度的顺序出现</li>
-</ul>
-<h3 id="代码注释"><a href="#代码注释" class="headerlink" title="代码注释"></a>代码注释</h3><h4 id="基本原则-1"><a href="#基本原则-1" class="headerlink" title="基本原则"></a>基本原则</h4><ul>
-<li>注释语言必须准确、简洁、易懂，能直接反映编程思路</li>
-<li>统一使用中文作为注释语言，除非直接拷贝第三方的英语注释</li>
-<li>注释比例没有严格的要求，建议不低于15%</li>
-<li>注释要与代码保持一致，代码作用变了，注释也要更新</li>
-<li>对于逻辑复杂、使用有限制的代码，需要重点注释<h4 id="必须注释"><a href="#必须注释" class="headerlink" title="必须注释"></a>必须注释</h4></li>
-<li>文件</li>
-<li>类</li>
-<li>函数（对外接口public函数）</li>
-<li>常量</li>
-<li>成员变量（有特殊含义）</li>
-<li>静态变量</li>
-<li>特殊逻辑、定制逻辑、有坑逻辑、临时逻辑<h4 id="建议注释"><a href="#建议注释" class="headerlink" title="建议注释"></a>建议注释</h4></li>
-<li>复杂的逻辑</li>
-<li>重要的分支，如 if-else，switch-case</li>
-<li>重要的循环，说明，“每次循环遍历…”<h4 id="注释样式"><a href="#注释样式" class="headerlink" title="注释样式"></a>注释样式</h4></li>
-<li>注释样式参考android源码</li>
-<li>代码以“段”来编写，注释也相应以“段”来注释</li>
-</ul>
-<h3 id="其他参考"><a href="#其他参考" class="headerlink" title="其他参考"></a>其他参考</h3><p><a href="https://source.android.com/source/code-style.html" target="_blank" rel="external">Android Code Style</a><br>[Java Programming Style Guidelines] (<a href="http://geosoft.no/development/javastyle.html" target="_blank" rel="external">http://geosoft.no/development/javastyle.html</a>)<br>[Google Java Style] (<a href="https://google.github.io/styleguide/javaguide.html" target="_blank" rel="external">https://google.github.io/styleguide/javaguide.html</a>)</p>
-<blockquote>
-<p>来自：<a href="http://www.jianshu.com/p/e4229061fceb" target="_blank" rel="external">http://www.jianshu.com/p/e4229061fceb</a></p>
-</blockquote>
+          Android编程规范基本原则
+代码风格与android源码保持一致
+命名要清晰明了、有明确含义
+同一产品命名风格要保持一致，避免一意多词
+同一作用域，不能有变量重名，如局部变量与全局变量重名
 
-          
+包名
+package命名如com.brian.xx.yy.zz，xx为产品，yy为模块，zz为子模块
+模
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/24/android-codingstyle/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -763,98 +653,18 @@ function(x, y, z);
       
         
           
-            <p><strong>Keytool</strong>  命令<br>Keytool 是一个JAVA环境下的安全钥匙与证书的管理工具.它管理一个存储了私有钥匙和验证相应公共钥匙的与它们相关联的X.509 证书链的keystore(相当一个数据库，里面可存放多个X.509标准的证书)..</p>
-<p><br></p>
-<h3 id="Keytool-常用命令："><a href="#Keytool-常用命令：" class="headerlink" title="Keytool 常用命令："></a>Keytool 常用命令：</h3><p>检查一个keystore</p>
-<pre><code>keytool -list -v -keystore c:\server.jks 
-</code></pre><p>检查一个keystore的内容</p>
-<pre><code>keytool -list -v -keystore c:\server.jks 
-</code></pre><p>添加一个信任根证书到keystore文件</p>
-<pre><code>keytool -import -alias newroot -file root.cer -keystore server.jks
-</code></pre><p>导入CA签署好的证书 </p>
-<pre><code>keytool -import -keystore c:\server.jks -alias tomcat -file c:\cert.txt 
-</code></pre><p>从 KEYSTORE中导出一个证书文件</p>
-<pre><code>keytool -export -alias myssl -keystore server.jks -rfc -file server.cer 
-*备注： &quot;-rfc&quot; 表示以base64输出文件，否则以二进制输出。
-</code></pre><p>从KEYSTORE中删除一个证书</p>
-<p>   keytool -delete -keystore server.jks -alias tomcat<br>   *备注：删除了别名为tomcat的证书。</p>
-<hr>
-<h2 id="推荐一个生成Keystore的工具-Keystore-GUI-1-6"><a href="#推荐一个生成Keystore的工具-Keystore-GUI-1-6" class="headerlink" title="推荐一个生成Keystore的工具  Keystore GUI 1.6 "></a>推荐一个生成Keystore的工具 <strong> Keystore GUI 1.6 </strong></h2><h3 id="Tomcat-支持SSL配置"><a href="#Tomcat-支持SSL配置" class="headerlink" title="Tomcat 支持SSL配置"></a>Tomcat 支持SSL配置</h3><p>修改tomcat安装目录下的conf\server.xml文件  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;Connector port=&quot;8443&quot; protocol=&quot;HTTP/1.1&quot; SSLEnabled=&quot;true&quot;</div><div class="line">               maxThreads=&quot;150&quot; scheme=&quot;https&quot; secure=&quot;true&quot;</div><div class="line">               clientAuth=&quot;false&quot; sslProtocol=&quot;TLS&quot;</div><div class="line"> 			   keystoreFile=&quot;C:\home\tomcat.jks&quot; keystorePass=&quot;123456&quot;/&gt;</div></pre></td></tr></table></figure>
-<p><br><br>…</p>
-<pre><code class="java"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> KeyStore <span class="title">readKeyStore</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>{
-        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+          Keytool  命令Keytool 是一个JAVA环境下的安全钥匙与证书的管理工具.它管理一个存储了私有钥匙和验证相应公共钥匙的与它们相关联的X.509 证书链的keystore(相当一个数据库，里面可存放多个X.509标准的证书)..
 
-        InputStream fis = <span class="keyword">null</span>;
-        InputStream fis2 = <span class="keyword">null</span>;
-        <span class="keyword">try</span> {
-            CertificateFactory certificateFactory = CertificateFactory.getInstance(<span class="string">"X.509"</span>);
-            fis = PSSApp_.getInstance().getAssets().open(<span class="string">"pss.cer"</span>);
-            fis2 = PSSApp_.getInstance().getAssets().open(<span class="string">"openfire.cer"</span>);
-            keyStore.load(<span class="keyword">null</span>);
-            keyStore.setCertificateEntry(<span class="string">"localhost"</span>, certificateFactory.generateCertificate(fis));
-            keyStore.setCertificateEntry(<span class="string">"openfire"</span>, certificateFactory.generateCertificate(fis2));
-        } <span class="keyword">finally</span> {
-            <span class="keyword">if</span> (fis != <span class="keyword">null</span>) {
-                fis.close();
-            }
-            <span class="keyword">if</span> (fis2 != <span class="keyword">null</span>) {
-                fis2.close();
-            }
-        }
-        <span class="keyword">return</span> keyStore;
-    }
-
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doSSLTest</span><span class="params">()</span> </span>{
-
-        OkHttpClient.Builder mBuilder = <span class="keyword">new</span> OkHttpClient.Builder();
-
-        <span class="keyword">try</span> {
-            KeyStore keyStore = readKeyStore(); <span class="comment">//your method to obtain KeyStore</span>
-            SSLContext sslContext = SSLContext.getInstance(<span class="string">"SSL"</span>);
-            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            trustManagerFactory.init(keyStore);
-            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-            keyManagerFactory.init(keyStore, <span class="string">"123456"</span>.toCharArray());
-            sslContext.init(<span class="keyword">null</span>, trustManagerFactory.getTrustManagers(), <span class="keyword">new</span> SecureRandom());
-            mBuilder.sslSocketFactory(sslContext.getSocketFactory());
-
-        } <span class="keyword">catch</span> (Exception e) {
-            Log.i(<span class="string">"Kurtis"</span>, <span class="string">"Exception"</span> + e.getMessage());
-        }
-
-        HostnameVerifier hostnameVerifier = <span class="keyword">new</span> HostnameVerifier() {
-            <span class="meta">@Override</span>
-            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">verify</span><span class="params">(String hostname, SSLSession session)</span> </span>{
-                Log.d(TAG, <span class="string">"Trust Host :"</span> + hostname);
-                <span class="keyword">return</span> <span class="keyword">true</span>;
-            }
-        };
-        mBuilder.hostnameVerifier(hostnameVerifier);
-
-        OkHttpClient mClient = mBuilder.build();
-        okhttp3.Request request = <span class="keyword">new</span> okhttp3.Request.Builder()
-                .get()
-                .url(<span class="string">"https://192.168.188.17:9091/"</span>)
-                .build();
-
-        mClient.newCall(request).enqueue(<span class="keyword">new</span> Callback() {
-            <span class="meta">@Override</span>
-            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(Call call, IOException e)</span> </span>{
-                Log.i(<span class="string">"Kurtis"</span>, <span class="string">"onFailure"</span>);
-            }
-
-            <span class="meta">@Override</span>
-            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResponse</span><span class="params">(Call call, Response response)</span> <span class="keyword">throws</span> IOException </span>{
-                Log.i(<span class="string">"Kurtis"</span>, <span class="string">"onResponse"</span>);
-            }
-        });
-
-    }
-</code></pre>
-
-          
+Keytool 常用命令：检查一个keystore
+key
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/07/15/keystore/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -986,212 +796,19 @@ function(x, y, z);
       
         
           
-            <blockquote>
-<p><a href="http://www.mobilephonedevelopment.com/archives/1762" target="_blank" rel="external">http://www.mobilephonedevelopment.com/archives/1762</a><br><a href="http://www.tuicool.com/articles/2MVJb2" target="_blank" rel="external">http://www.tuicool.com/articles/2MVJb2</a></p>
-</blockquote>
-<p>在SSL/TLS通信中，客户端通过数字证书判断服务器是否可信，并采用证书的公钥与服务器进行加密通信。</p>
-<p>然而，在开发者在代码中不检查服务器证书的有效性，或选择接受所有的证书时，这种做法可能导致的问题是中间人攻击。  攻击者可以伪造证书，或者盗用证书，以来达到和客户端建立通信的目地。 目前Google已经针对不验证服务器证书的app给出了警告，这些app将来是会有被Play Store拒之门外的危险的。(参考)[<a href="https://support.google.com/faqs/answer/6346016?hl=en" target="_blank" rel="external">https://support.google.com/faqs/answer/6346016?hl=en</a>]</p>
-<h3 id="开发者常见信任所有证书的错误做法"><a href="#开发者常见信任所有证书的错误做法" class="headerlink" title="开发者常见信任所有证书的错误做法"></a>开发者常见信任所有证书的错误做法</h3><p>实现一个X509TrustManager接口，将其中的CheckServerTrusted()方法实现为空，即不检查服务器是否可信或者在SSLSoketFactory的实例中，通过setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIET),接受所有证书。做出这种选择的可能原因是，使用了自己生成了证书，客户端发现证书没有和可信CA 形成信任链，出现 了CertificateException等异常。</p>
-<h4 id="使用Apache的HttpClient"><a href="#使用Apache的HttpClient" class="headerlink" title="使用Apache的HttpClient"></a>使用Apache的HttpClient</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DefaultHttpClient <span class="title">getHttpClient</span><span class="params">(<span class="keyword">int</span> httpPort,</span></span></div><div class="line">			<span class="keyword">int</span> httpsPort) &#123;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			SSLSocketFactory sf = getSocketFactory();</div><div class="line">			sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);</div><div class="line"></div><div class="line">			HttpParams params = <span class="keyword">new</span> BasicHttpParams();</div><div class="line">			HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);</div><div class="line">			HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);</div><div class="line">			HttpProtocolParams.setUseExpectContinue(params, <span class="keyword">true</span>);</div><div class="line"></div><div class="line">			<span class="comment">// set connection timeout.</span></div><div class="line">			ConnManagerParams.setTimeout(params, DEFAULT_TIMEOUT);</div><div class="line">			HttpConnectionParams.setConnectionTimeout(params,</div><div class="line">					DEFAULT_CONN_TIMEOUT);</div><div class="line">			HttpConnectionParams.setSoTimeout(params, DEFAULT_SOCKET_TIMEOUT);</div><div class="line">			<span class="comment">// set socket buffer size</span></div><div class="line">			HttpConnectionParams.setSocketBufferSize(params,</div><div class="line">					DEFAULT_SOCKET_BUFFER_SIZE);</div><div class="line">			<span class="comment">// set max connections per host</span></div><div class="line">			ConnManagerParams.setMaxConnectionsPerRoute(params,</div><div class="line">					<span class="keyword">new</span> ConnPerRouteBean(DEFAULT_MAX_CONN_PER_ROUTE));</div><div class="line">			<span class="comment">// set max total connections</span></div><div class="line">			ConnManagerParams.setMaxTotalConnections(params,</div><div class="line">					DEFAULT_MAX_CONNECTIONS);</div><div class="line"></div><div class="line">			SchemeRegistry registry = <span class="keyword">new</span> SchemeRegistry();</div><div class="line">			registry.register(<span class="keyword">new</span> Scheme(<span class="string">"http"</span>, PlainSocketFactory</div><div class="line">					.getSocketFactory(), httpPort));</div><div class="line">			registry.register(<span class="keyword">new</span> Scheme(<span class="string">"https"</span>, sf, httpsPort));</div><div class="line"></div><div class="line">			ClientConnectionManager ccm = <span class="keyword">new</span> ThreadSafeClientConnManager(</div><div class="line">					params, registry);</div><div class="line">			<span class="keyword">return</span> <span class="keyword">new</span> DefaultHttpClient(ccm, params);</div><div class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">new</span> DefaultHttpClient();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCredentials</span><span class="params">(DefaultHttpClient httpClient,</span></span></div><div class="line">			String host, <span class="keyword">int</span> port, String realm, String username, String password) &#123;</div><div class="line">		httpClient.getCredentialsProvider().setCredentials(</div><div class="line">				<span class="keyword">new</span> AuthScope(host, port, realm, <span class="string">"basic"</span>),</div><div class="line">				<span class="keyword">new</span> UsernamePasswordCredentials(username, password));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">```      </div><div class="line"> </div><div class="line"> 重点是在获取SSLSocketFactory，马上贴上代码     </div><div class="line"></div><div class="line">``` java  </div><div class="line">    <span class="comment">// 获取SocketFactory</span></div><div class="line">	<span class="function"><span class="keyword">private</span> SSLSocketFactory <span class="title">getSocketFactory</span><span class="params">()</span> </span>&#123;</div><div class="line">	  <span class="keyword">final</span> TrustManager[] trustManagers = <span class="keyword">new</span> TrustManager[] &#123; <span class="keyword">new</span> X509TrustManager() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkClientTrusted</span><span class="params">(</span></span></div><div class="line">                    java.security.cert.X509Certificate[] chain,</div><div class="line">                    String authType) <span class="keyword">throws</span> CertificateException &#123;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkServerTrusted</span><span class="params">(</span></span></div><div class="line">                    java.security.cert.X509Certificate[] chain,</div><div class="line">                    String authType) <span class="keyword">throws</span> CertificateException &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="keyword">public</span> java.security.cert.X509Certificate[] getAcceptedIssuers() &#123;</div><div class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">            &#125;</div><div class="line">        &#125; &#125;;</div><div class="line"></div><div class="line">        <span class="comment">// Install the all-trusting trust manager</span></div><div class="line">        <span class="keyword">final</span> SSLContext sslContext = SSLContext.getInstance(<span class="string">"TLS"</span>);</div><div class="line">        sslContext.init(<span class="keyword">null</span>, trustManagers, <span class="keyword">new</span> java.security.SecureRandom());</div><div class="line">        <span class="comment">// Create an ssl socket factory with our all-trusting manager</span></div><div class="line">        <span class="keyword">return</span> sslContext.getSocketFactory();</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<h4 id="使用Square的OKHttp"><a href="#使用Square的OKHttp" class="headerlink" title="使用Square的OKHttp"></a>使用Square的OKHttp</h4><pre><code class="java"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getOKHttpClient</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>{
-       OkHttpClient okHttpClient = <span class="keyword">new</span> OkHttpClient();
-       <span class="keyword">final</span> TrustManager[] trustManagers = <span class="keyword">new</span> TrustManager[] { <span class="keyword">new</span> X509TrustManager() {
-           <span class="meta">@Override</span>
-           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkClientTrusted</span><span class="params">(
-                   java.security.cert.X509Certificate[] chain,
-                   String authType)</span> <span class="keyword">throws</span> CertificateException </span>{
-           }
-
-           <span class="meta">@Override</span>
-           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkServerTrusted</span><span class="params">(
-                   java.security.cert.X509Certificate[] chain,
-                   String authType)</span> <span class="keyword">throws</span> CertificateException </span>{
-
-           }
-
-           <span class="meta">@Override</span>
-           <span class="keyword">public</span> java.security.cert.X509Certificate[] getAcceptedIssuers() {
-               <span class="keyword">return</span> <span class="keyword">null</span>;
-           }
-       } };
-
-       <span class="comment">// Install the all-trusting trust manager</span>
-       <span class="keyword">final</span> SSLContext sslContext = SSLContext.getInstance(<span class="string">"TLS"</span>);
-       sslContext.init(<span class="keyword">null</span>, trustManagers, <span class="keyword">new</span> java.security.SecureRandom());
-       <span class="comment">// Create an ssl socket factory with our all-trusting manager</span>
-       <span class="keyword">final</span> SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-       okHttpClient.setSslSocketFactory(sslSocketFactory);
-
-       <span class="comment">// Sets the verifier used to confirm that response certificates</span>
-       okHttpClient.setHostnameVerifier(<span class="keyword">new</span> HostnameVerifier() {
-           <span class="meta">@Override</span>
-           <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">verify</span><span class="params">(String hostname, SSLSession session)</span> </span>{
-               <span class="keyword">return</span> <span class="keyword">true</span>;
-           }
-       });
-   }
-</code></pre>
-<h3 id="Certificate-Pinning"><a href="#Certificate-Pinning" class="headerlink" title="Certificate Pinning"></a>Certificate Pinning</h3><p>事实上，在移动软件大多只和固定的服务器通信，因此可以在代码更精确地直接验证是否某张特定的证书，这种方法称为“证书锁定”（certificate pinning）。<br>实现证书的方法有二种：一种是前文提到的实现X509TrustManager接口，另一种则是使用keystore。    </p>
-<h4 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h4><p>实现X509TrustManager接口，在方法checkClientTrusted中可以获取到服务器端的证书，证书里面有包括版本号， 序列号， 创建时间，过期时间，公钥，签名等信息，一般情况下我们是那公钥验证。<br>常规做法是先获取到证书上的公钥，然后hash或者MD5，或者加上其他的处理，当每次请求时在方法checkClientTrusted中获取公钥做同样的处理，比较两次处理后的结果是否一致，如果一直说明访问的Server是可信的，否则是不可信的。     </p>
-<p><strong> OKHttp </strong> 针对Certificate Pinning 做了一个封装，它的原理是，可以对特定的host做证书验证，其实也是验证证书的公钥，不过有自己特定的规则{Public Key}经过Sha1算法hash一下，然后Base64加密一次，然后在结果前面加上字符串”sha1/“.                  </p>
-<pre><code class="java">
-CertificatePinner certificatePinner = <span class="keyword">new</span> CertificatePinner.Builder()
-                  .add(<span class="string">"127.0.0.1"</span>, <span class="string">"sha1/xxxxx"</span>)
-                  .build();
-          okHttpClient.setCertificatePinner(certificatePinner);
-
-<span class="comment">// 在    checkClientTrusted方法中通过以下方法可以获取上面"xxxxx"    的内容    </span>
-Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getEncoded())).base64()
-</code></pre>
-<h4 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h4><p>使用keystone， 具体如果使用，且听下回分解。<br><br></p>
-
           
-        
-      
-    </div>
+http://www.mobilephonedevelopment.com/archives/1762http://www.tuicool.com/articles/2MVJb2
 
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2016/03/16/https/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kurtis Hu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Kurtis's Notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/16/https/" itemprop="url">聊聊HTTPS</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-16T00:00:00+08:00">
-                2016-03-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Security/" itemprop="url" rel="index">
-                    <span itemprop="name">Security</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="什么是HTTPS"><a href="#什么是HTTPS" class="headerlink" title="什么是HTTPS"></a>什么是HTTPS</h3><p>在说HTTPS之前先说说什么是HTTP，HTTP就是我们平时浏览网页时候使用的一种协议。HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全。为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密，从而就诞生了HTTPS。<br>HTTPS（全称：Hyper Text Transfer Protocol over Secure Socket Layer），是以安全为目标的HTTP通道，简单讲是HTTP的安全版。 实际上我们现在的HTTPS都是用的TLS协议，TLS（”Transport Layer Security”），中文叫做”传输层安全协议” 或者”传输层加密协议”, 它是IETF将SSL标准化之后更改的名字。SSL/TLS 这两者可以视作同一个东西的不同阶段。</p>
-<h3 id="HTTPS的工作原理"><a href="#HTTPS的工作原理" class="headerlink" title="HTTPS的工作原理"></a>HTTPS的工作原理</h3><p>HTTPS在传输数据之前需要客户端（浏览器）与服务端（网站）之间进行一次握手，在握手过程中将确立双方加密传输数据的密码信息。TLS/SSL协议不仅仅是一套加密传输的协议,使用了非对称加密，它使用了对称加密以及HASH算法。<br><strong> 握手过程的简单描述如下： </strong><br><img src="http://ww2.sinaimg.cn/mw690/6941baebjw1erta80zxylj20l80f0q44.jpg" alt=""><br>①客户端的浏览器向服务器传送客户端SSL 协议的版本号，加密算法的种类，产生的随机数，以及其他服务器和客户端之间通讯所需要的各种信息。<br>②服务器向客户端传送SSL 协议的版本号，加密算法的种类，随机数以及其他相关信息，同时服务器还将向客户端传送自己的证书。<br>③客户利用服务器传过来的信息验证服务器的合法性，服务器的合法性包括：证书是否过期，发行服务器证书的CA 是否可靠，发行者证书的公钥能否正确解开服务器证书的“发行者的数字签名”，服务器证书上的域名是否和服务器的实际域名相匹配。如果合法性验证没有通过，通讯将断开；如果合法性验证通过，将继续进行第四步。<br>④用户端随机产生一个用于后面通讯的“对称密码”，然后用服务器的公钥（服务器的公钥从步骤②中的服务器的证书中获得）对其加密，然后将加密后的“预主密码”传给服务器。<br>⑤如果服务器要求客户的身份认证（在握手过程中为可选），用户可以建立一个随机数然后对其进行数据签名，将这个含有签名的随机数和客户自己的证书以及加密过的“预主密码”一起传给服务器。<br>⑥如果服务器要求客户的身份认证，服务器必须检验客户证书和签名随机数的合法性，具体的合法性验证过程包括：客户的证书使用日期是否有效，为客户提供证书的CA 是否可靠，发行CA 的公钥能否正确解开客户证书的发行CA 的数字签名，检查客户的证书是否在证书废止列表（CRL）中。检验如果没有通过，通讯立刻中断；如果验证通过，服务器将用自己的私钥解开加密的“预主密码”，然后执行一系列步骤来产生主通讯密码（客户端也将通过同样的方法产生相同的主通讯密码）。<br>⑦服务器和客户端用相同的主密码即“通话密码”，一个对称密钥用于SSL 协议的安全数据通讯的加解密通讯。同时在SSL 通讯过程中还要完成数据通讯的完整性，防止数据通讯中的任何变化。<br>⑧客户端向服务器端发出信息，指明后面的数据通讯将使用的步骤⑦中的主密码为对称密钥，同时通知服务器客户端的握手过程结束。<br>⑨服务器向客户端发出信息，指明后面的数据通讯将使用的步骤⑦中的主密码为对称密钥，同时通知客户端服务器端的握手过程结束。<br>⑩SSL 的握手部分结束，SSL 安全通道的数据通讯开始，客户和服务器开始使用相同的对称密钥进行数据通讯，同时进行通讯完整性的检验。   </p>
-<h3 id="”对称加密“和“非对称加密”的概念"><a href="#”对称加密“和“非对称加密”的概念" class="headerlink" title="”对称加密“和“非对称加密”的概念"></a>”对称加密“和“非对称加密”的概念</h3><h4 id="”对称加密“"><a href="#”对称加密“" class="headerlink" title="”对称加密“"></a>”对称加密“</h4><p>   所谓的“对称加密技术”，意思就是说：“加密”和“解密”使用【相同的】密钥。</p>
-<h4 id="”非对称加密“"><a href="#”非对称加密“" class="headerlink" title="”非对称加密“"></a>”非对称加密“</h4><p>   所谓的“非对称加密技术”，意思就是说：“加密”和“解密”使用【不同的】密钥。 不同的钥匙指的是公钥和私钥，公钥是暴露给被人用的，比如我们从网站的证书中获取的就是公钥，私钥是私人持有，绝不对外公开的。</p>
-<h3 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h3><p>数字证书是一个经证书授权中心数字签名的包含公开密钥拥有者信息以及公开密钥的文件。<br><strong> 数字证书有两个作用 </strong></p>
-<ol>
-<li>身份授权。确保浏览器访问的网站是经过 CA 验证的可信任的网站。</li>
-<li>分发公钥。每个数字证书都包含了注册者生成的公钥。在 SSL 握手时会通过 certificate 消息传输给客户端。比如前文提到的 RSA 证书公钥加密及 ECDHE 的签名都是使用的这个公钥。<br>CA是证书的签发机构，它是PKI的核心。CA是负责签发证书、认证证书、管理已颁发证书的机关。它要制定政策和具体步骤来验证、识别用户身份，并对用户证书进行签名，以确保证书持有者的身份和公钥的拥有权，CA是可以信任的第三方。<br>申请拿到CA签发的证书成为CA证书，还有就是开发者自己生成的证书，称为自签名证书，自签名证书在很多应用程序中用到。</li>
-</ol>
-<h3 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h3><p>  <img src="http://ww3.sinaimg.cn/mw690/6941baebjw1erta7ycyf8j215n0ridmj.jpg" alt=""></p>
-<hr>
-<h4 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h4><p>  <a href="https://segmentfault.com/a/1190000004631778" target="_blank" rel="external">HTTPS通信中的身份认证机制</a><br>  <a href="http://www.wxtlife.com/2016/03/27/%E8%AF%A6%E8%A7%A3https%E6%98%AF%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E5%AE%89%E5%85%A8%E7%9A%84%EF%BC%9F/" target="_blank" rel="external">详解https是如何确保安全的？</a></p>
-<p><br></p>
-
-          
+在SSL/TLS通信中，客户端通过数字证书判断服务器是否可信，并采用证书的公钥与服务器进行加密通信。
+然而，在开发者
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/03/18/certificate-pinning/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1323,21 +940,17 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
       
         
           
-            <h3 id="数字签名简介"><a href="#数字签名简介" class="headerlink" title="数字签名简介"></a>数字签名简介</h3><ol>
-<li>数字签名，就是只有信息的发送者才能产生的别人无法伪造的一段数字串，这段数字串同时也是对信息的发送者发送信息真实性的一个有效证明。  </li>
-<li>简单地说,所谓数字签名就是附加在数据单元上的一些数据,或是对数据单元所作的密码变换。这种数据或变换允许数据单元的接收者用以确认数据单元的来源和数据单元的完整性并保护数据,防止被人(例如接收者)进行伪造.  </li>
-</ol>
-<h3 id="数字签名功能"><a href="#数字签名功能" class="headerlink" title="数字签名功能"></a>数字签名功能</h3><ol>
-<li>保证信息传输的完整性、发送者的身份认证、防止交易中的抵赖发生</li>
-<li>数字签名技术是将摘要信息用发送者的私钥加密，与原文一起传送给接收者。接收者只有用发送者的公钥才能解密被加密的摘要信息，然后用HASH函数对收到的原文产生一个摘要信息，与解密的摘要信息对比。如果相同，则说明收到的信息是完整的，在传输过程中没有被修改，否则说明信息被修改过，因此数字签名能够验证信息的完整性。</li>
-<li>数字签名是个加密的过程，数字签名验证是个解密的过程。</li>
-</ol>
-<h3 id="数字签名过程"><a href="#数字签名过程" class="headerlink" title="数字签名过程"></a>数字签名过程</h3><ol>
-<li>“发送报文时，发送方用一个哈希函数从报文文本中生成报文摘要,然后用自己的私人密钥对这个摘要进行加密，这个加密后的摘要将作为报文的数字签名和报文一起发送给接收方，接收方首先用与发送方一样的哈希函数从接收到的原始报文中计算出报文摘要，接着再用发送方的公用密钥来对报文附加的数字签名进行解密，如果这两个摘要相同、那么接收方就能确认该数字签名是发送方的。</li>
-<li>数字签名有两种功效：一是能确定消息确实是由发送方签名并发出来的，因为别人假冒不了发送方的签名。二是数字签名能确定消息的完整性。因为数字签名的特点是它代表了文件的特征，文件如果发生改变，数字摘要的值也将发生变化。不同的文件将得到不同的数字摘要。 一次数字签名涉及到一个哈希函数、发送者的公钥、发送者的私钥。”<br><img src="/assets/signature.png" alt=""><br><br></li>
-</ol>
-
-          
+          数字签名简介
+数字签名，就是只有信息的发送者才能产生的别人无法伪造的一段数字串，这段数字串同时也是对信息的发送者发送信息真实性的一个有效证明。  
+简单地说,所谓数字签名就是附加在数据单元上的一些数据,或是对数据单元所作的密码变换。这种数据或变换允许数据单元的接收者用以确认数据单元的来源和数据单元的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/03/16/security-signature/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1379,7 +992,7 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2016/03/07/hybird-app/">
+    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2016/03/16/https/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Kurtis Hu">
@@ -1398,7 +1011,7 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/07/hybird-app/" itemprop="url">混合开发 App（Hybrid App）</a></h1>
+                <a class="post-title-link" href="/2016/03/16/https/" itemprop="url">聊聊HTTPS</a></h1>
         
 
         <div class="post-meta">
@@ -1410,8 +1023,8 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-07T00:00:00+08:00">
-                2016-03-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-16T00:00:00+08:00">
+                2016-03-16
               </time>
             
 
@@ -1433,8 +1046,8 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hybrid/" itemprop="url" rel="index">
-                    <span itemprop="name">Hybrid</span>
+                  <a href="/categories/Security/" itemprop="url" rel="index">
+                    <span itemprop="name">Security</span>
                   </a>
                 </span>
 
@@ -1469,48 +1082,15 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
       
         
           
-            <h3 id="移动应用分类"><a href="#移动应用分类" class="headerlink" title="移动应用分类"></a>移动应用分类</h3><ul>
-<li>原生应用</li>
-<li>Web应用</li>
-<li>混合应用</li>
-</ul>
-<h3 id="三者优缺点比较"><a href="#三者优缺点比较" class="headerlink" title="三者优缺点比较"></a>三者优缺点比较</h3><blockquote>
-<p><a href="http://www.leiphone.com/news/201406/12921-keats-difference-native-vs-web-apps.html" target="_blank" rel="external">原生应用、Web应用、混合应用：3者的优缺点解析</a></p>
-</blockquote>
-<hr>
-<p>Native App和Web App都有自己的优缺点，而Hybrid App在具备Native App和Web App优点的同时，也继承了两者的缺点。  </p>
-<hr>
-<h3 id="混合应用程序实现原理："><a href="#混合应用程序实现原理：" class="headerlink" title="混合应用程序实现原理："></a>混合应用程序实现原理：</h3><p>在本地应用程序中添加WebView来显示HTML5（CSS、JavaScript）部分的内容，逻辑操作则集中在JavaScript和本地代码中实现。通过JavaScript来实现本地代码和HTML5之间的互操作。</p>
-<hr>
-<h3 id="UI"><a href="#UI" class="headerlink" title="UI"></a>UI</h3><p><strong>viewport的概念</strong><br>在使用html5开发移动应用的时候，viewport可以让你开发出的页面，适应不同的设备的不同屏幕大小，不同的分辨率，控制用户的缩放、滚动行为，一般具体的设置如下:   </p>
-<pre><code class="java">&lt;meta name=<span class="string">"viewport"</span> content=<span class="string">"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"</span>&gt;
-</code></pre>
-<p>一般情况，在你的html中加入上面一行代码，就可以实现html的自适应了。  </p>
-<hr>
-<h3 id="混合开发在Android平台上的实现"><a href="#混合开发在Android平台上的实现" class="headerlink" title="混合开发在Android平台上的实现"></a>混合开发在Android平台上的实现</h3><hr>
-<h3 id="在iOS平台的实现"><a href="#在iOS平台的实现" class="headerlink" title="在iOS平台的实现"></a>在iOS平台的实现</h3><hr>
-<blockquote>
-<p><a href="http://bbs.gfan.com/android-6198184-1-1.html" target="_blank" rel="external">简单混合应用开发</a>  </p>
-</blockquote>
-<hr>
-<h3 id="三种不同的混合型APP应用开发解决方案"><a href="#三种不同的混合型APP应用开发解决方案" class="headerlink" title="三种不同的混合型APP应用开发解决方案"></a>三种不同的混合型APP应用开发解决方案</h3><blockquote>
-<p>  <a href="http://cache.baiducontent.com/c?m=9d78d513d9d431df4f9ae5697d65c0176d4381132ba1d1020cd0843e92732a405321a3e52878564291d27d141cb20c19afe736056e4470ecc29fd011cabbe57972d73a676d54c11a588845e7900c629d3d9058eaae1ae7b9fb3293add8c4df23098c0c5b&amp;p=882a9645dcd90be00abe9b7c4205cf&amp;newp=8679df0486cc42af52fec7710f598d231610db2151ddda06&amp;user=baidu&amp;fm=sc&amp;query=%BB%EC%BA%CF%D3%A6%D3%C3&amp;qid=95bad1f2000dfea4&amp;p1=16" target="_blank" rel="external">Link</a></p>
-</blockquote>
-<hr>
-<h3 id="常见框架"><a href="#常见框架" class="headerlink" title="常见框架"></a>常见框架</h3><p><a href="http://cordova.apache.org/" target="_blank" rel="external">Cordova</a> 、 <a href="http://ionicframework.com/" target="_blank" rel="external">ionic</a> 、 <a href="http://www.appcan.cn/" target="_blank" rel="external">AppCan</a> 、 <a href="http://www.apicloud.com/" target="_blank" rel="external">ApiCloud</a>        </p>
-<p><a href="http://www.cocoachina.com/webapp/20141222/10718.html" target="_blank" rel="external">HTML5来了，7个混合式移动开发框架</a></p>
-<p><a href="http://zjutkz.net/2016/04/17/%E5%A5%BD%E5%A5%BD%E5%92%8Ch5%E6%B2%9F%E9%80%9A%EF%BC%81%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%9A%84hybrid%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/" target="_blank" rel="external">好好和h5沟通！几种常见的hybrid通信方式</a></p>
-<hr>
-<h3 id="React-Native"><a href="#React-Native" class="headerlink" title="React Native"></a>React Native</h3><blockquote>
-<p>React Native使你能够在Javascript和React的基础上获得完全一致的开发体验，构建世界一流的原生APP。<br>React Native着力于提高多平台开发的开发效率 —— 仅需学习一次，编写任何平台。(Learn once, write anywhere)</p>
-</blockquote>
-<p>React Native 是使用html + Javascript 开发原生app的框架</p>
-<ul>
-<li><a href="http://www.tuicool.com/articles/y6zMVbb" target="_blank" rel="external">其实没那么复杂！探究react-native通信机制</a></li>
-</ul>
-<p><br></p>
-
-          
+          什么是HTTPS在说HTTPS之前先说说什么是HTTP，HTTP就是我们平时浏览网页时候使用的一种协议。HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全。为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/03/16/https/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1642,19 +1222,177 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
       
         
           
-            <ul>
-<li><a href="https://github.com/ele828/react-native-guide" target="_blank" rel="external">React-Native学习指南</a></li>
-<li><a href="http://reactnative.cn/docs/0.21/getting-started.html" target="_blank" rel="external">React Native</a></li>
-<li>…</li>
-</ul>
-<hr>
-<h4 id="React-Native-分析"><a href="#React-Native-分析" class="headerlink" title="React-Native 分析"></a>React-Native 分析</h4><ul>
-<li><a href="http://zhuanlan.zhihu.com/magilu/20259704" target="_blank" rel="external">React Native For Android 架构初探</a> - For Android</li>
-<li><a href="http://blog.cnbang.net/tech/2698/" target="_blank" rel="external">React Native通信机制详解</a> - For iOS</li>
-</ul>
-<p><br></p>
+          
+React-Native学习指南
+React Native
+…
+
+
+React-Native 分析
+React Native For Android 架构初探 - For Android
+React Native通信机制详解 - For iOS
+
+
 
           
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/03/07/react-native/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2016/03/07/hybird-app/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kurtis Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kurtis's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/07/hybird-app/" itemprop="url">混合开发 App（Hybrid App）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-07T00:00:00+08:00">
+                2016-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hybrid/" itemprop="url" rel="index">
+                    <span itemprop="name">Hybrid</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          移动应用分类
+原生应用
+Web应用
+混合应用
+
+三者优缺点比较
+原生应用、Web应用、混合应用：3者的优缺点解析
+
+
+Native App和Web App都有自己的优缺点，而Hybrid App在具备Native App和Web App优点的同时，也继承了两者的缺点。  
+
+混合应用程序实现原理：在
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/03/07/hybird-app/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1786,21 +1524,16 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
       
         
           
-            <p><strong>Realm</strong> 是一个开源的面向对象的关系型数据库，可运行于手机、平板和可穿戴设备之上。可以让你的应用更快速，带来难以想象的体验。其目标是为了代替 CoreData 和 SQLite 数据库。    </p>
-<p>目前支持 iOS/OS X/Android 平台，提供 Swift/Objective-C/Java 语言的 API。    </p>
-<p><br></p>
-<h4 id="Realm的特点"><a href="#Realm的特点" class="headerlink" title="Realm的特点"></a>Realm的特点</h4><p><strong>跨平台</strong>： 现在绝大多数的应用开发并不仅仅只在 iOS 平台上进行开发，还要兼顾到 Android 平台的开发。为两个平台设计不同的数据库是愚蠢的，而使用 Realm 数据库， iOS 和 Android 无需考虑内部数据的架构，调用 Realm 提供的 API 就可以完成数据的交换，实现 “ 一个数据库，两个平台无缝衔接 “。   </p>
-<p><strong>简单易用</strong>： Core Data 和 SQLite 以及Jave ORMs 冗余、繁杂的知识和代码足以吓退绝大多数刚入门的开发者，而换用 Realm ，则可以极大地减少学习代价和学习时间，让应用及早用上数据存储功能。     </p>
-<p><strong>可视化</strong>： Realm 还提供了一个轻量级的数据库查看工具，借助这个工具，开发者可以查看数据库当中的内容，执行简单的插入和删除数据的操作。毕竟，很多时候，开发者使用数据库的理由是因为要提供一些所谓的 “ 知识库 “。      </p>
-<p><br></p>
-<p><strong>Realm github 开源路径</strong>：<br><a href="https://github.com/realm/" target="_blank" rel="external">https://github.com/realm/</a>  </p>
-<p><br>    </p>
-<p><strong>中文文档</strong>:<br><a href="https://realm.io/cn/" target="_blank" rel="external">https://realm.io/cn/</a><br><a href="http://djyde.github.io/2014/10/17/realm-doc-in-chinese.html" target="_blank" rel="external">http://djyde.github.io/2014/10/17/realm-doc-in-chinese.html</a>     </p>
-<p><br></p>
-<p><strong>相关</strong><br><a href="http://www.infoq.com/cn/news/2014/10/Realm-android" target="_blank" rel="external">http://www.infoq.com/cn/news/2014/10/Realm-android</a><br><a href="http://www.cocoachina.com/ios/20150505/11756.html" target="_blank" rel="external">http://www.cocoachina.com/ios/20150505/11756.html</a> </p>
-<p><br></p>
-
-          
+          Realm 是一个开源的面向对象的关系型数据库，可运行于手机、平板和可穿戴设备之上。可以让你的应用更快速，带来难以想象的体验。其目标是为了代替 CoreData 和 SQLite 数据库。    
+目前支持 iOS/OS X/Android 平台，提供 Swift/Objective-C/Java 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/02/14/realm-introduce/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1932,64 +1665,19 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
       
         
           
-            <h3 id="Android源代码"><a href="#Android源代码" class="headerlink" title="Android源代码"></a>Android源代码</h3><ul>
-<li><a href="http://grepcode.com/project/repository.grepcode.com/java/ext/com.google.android/android/" target="_blank" rel="external">Grepcode</a> - Android系统源码在线查看</li>
-<li><a href="http://androidxref.com/" target="_blank" rel="external">Androidxref</a> - Android系统源码在线查</li>
-<li><a href="http://www.codota.com/" target="_blank" rel="external">codota</a> - Find Great Code Examples</li>
-<li><a href="https://searchcode.com/" target="_blank" rel="external">searchcode</a> - Search over 20 billion lines of code.</li>
-<li><a href="https://www.codota.com/" target="_blank" rel="external">codota</a> - Find Great Code Example</li>
-<li><a href="http://guides.codepath.com/android" target="_blank" rel="external">CodePath Android Cliffnotes</a></li>
-</ul>
-<hr>
-<h3 id="开源库"><a href="#开源库" class="headerlink" title="开源库"></a>开源库</h3><ul>
-<li><a href="https://github.com/snowdream/awesome-android" target="_blank" rel="external">awesome-android</a> - Android libs from github</li>
-<li><a href="https://github.com/Trinea/android-open-project" target="_blank" rel="external">android-open-project</a> - Android 开源项目分类汇总</li>
-<li><a href="http://android-arsenal.com/" target="_blank" rel="external">Android Arsenal</a></li>
-<li><a href="http://www.appance.com/category/android/" target="_blank" rel="external">appance</a></li>
-<li><a href="http://alamkanak.github.io/android-libraries-and-resources/" target="_blank" rel="external">Android Libraries and Resources</a></li>
-<li><a href="http://www.appdoll.com/" target="_blank" rel="external">appdoll</a></li>
-<li><a href="https://github.com/Trinea/android-open-project" target="_blank" rel="external">Android开源项目分类汇总</a></li>
-<li><a href="http://www.23code.com/" target="_blank" rel="external">23code</a> - Android 各种库展示</li>
-<li><a href="http://www.android-gems.com/" target="_blank" rel="external">Android Gems</a></li>
-<li><a href="https://android-libs.com/" target="_blank" rel="external">AndroidLibs</a></li>
-<li><a href="http://p.codekk.com/" target="_blank" rel="external">codeKK开源项目集合</a></li>
-<li><a href="http://adb.rocko.xyz/" target="_blank" rel="external">Android 开发者的浏览器书签</a></li>
-</ul>
-<hr>
-<h3 id="干活"><a href="#干活" class="headerlink" title="干活"></a>干活</h3><ul>
-<li><a href="http://gank.io/" target="_blank" rel="external">干货集中营</a></li>
-<li><a href="http://toutiao.io/" target="_blank" rel="external">开发者头条</a></li>
-<li><a href="http://gold.xitu.io/#/" target="_blank" rel="external">稀土掘金</a></li>
-<li><a href="http://androidweekly.net/" target="_blank" rel="external">Android Weekly</a></li>
-<li><a href="http://www.androidweekly.cn/" target="_blank" rel="external">Android开发技术周报</a></li>
-<li><a href="http://www.jcodecraeer.com/plus/list.php?tid=16" target="_blank" rel="external">泡在网上的日子</a></li>
-</ul>
-<hr>
-<h3 id="Android架构设计"><a href="#Android架构设计" class="headerlink" title="Android架构设计"></a>Android架构设计</h3><ul>
-<li><a href="http://mp.weixin.qq.com/s?__biz=MjM5NDkxMTgyNw==&amp;mid=404575601&amp;idx=1&amp;sn=bb6e51210563b79f682da02c7f78bf3e#rd" target="_blank" rel="external">浅谈Andorid开发中的MVP模式</a></li>
-<li><a href="https://www.sdk.cn/news/2501" target="_blank" rel="external">Android App的设计架构：MVC,MVP,MVVM与架构经验谈</a></li>
-<li><a href="http://blog.waynell.com/2015/05/29/mvp-on-android/" target="_blank" rel="external">Android的MVP设计模式</a></li>
-<li><a href="http://kymjs.com/code/2015/11/09/01/" target="_blank" rel="external">用MVP架构开发Android应用</a></li>
-<li><a href="http://www.jianshu.com/p/9a6845b26856" target="_blank" rel="external">Android MVP 详解（上）</a> - 分析详细</li>
-<li><a href="http://www.jianshu.com/p/0590f530c617" target="_blank" rel="external">Android MVP 详解（下）</a></li>
-<li><a href="http://www.jianshu.com/p/ed2aa9546c2c" target="_blank" rel="external">Android应用中MVP最佳实践</a></li>
-</ul>
-<hr>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
-<li><a href="http://tikitoo.github.io/2016/04/26/android-worth-subscribe-daily-weekly/" target="_blank" rel="external">Android 开发值得订阅的日报和周刊</a></li>
-<li><a href="http://www.jianshu.com/p/af2de05aadff#rd" target="_blank" rel="external">Android 学习资料收集</a> </li>
-<li><a href="https://github.com/lopspower/BestAndroidGists" target="_blank" rel="external">Best Android Gists</a></li>
-<li><a href="http://stormzhang.com/android/2014/07/07/learn-android-from-rookie/" target="_blank" rel="external">Android学习之路</a></li>
-<li><a href="https://github.com/futurice/android-best-practices" target="_blank" rel="external">Android最佳实践</a></li>
-<li><a href="http://www.jianshu.com/p/54902270249d" target="_blank" rel="external">Android开发者网址导航</a></li>
-<li><a href="http://www.jianshu.com/p/54c4a19ffa68" target="_blank" rel="external">Android开发者必知的杂志周刊</a></li>
-<li><a href="https://github.com/JohnTsaiAndroid/AndroidTips" target="_blank" rel="external">AndroidTips</a> - A collections of tips in Android developing.</li>
-<li><a href="http://www.jianshu.com/p/aa7238cd8daf" target="_blank" rel="external">2015年十大热门Android开源新项目</a></li>
-<li><a href="http://www.open-open.com/lib/view/open1388317075000.html" target="_blank" rel="external">GitHub上最火的74个Android开源项目</a></li>
-<li><a href="https://github.com/FX-Max/Point-of-Android" target="_blank" rel="external">Point-of-Android</a> - Android 一些重要知识点解析整理</li>
-</ul>
-
-          
+          Android源代码
+Grepcode - Android系统源码在线查看
+Androidxref - Android系统源码在线查
+codota - Find Great Code Examples
+searchcode - Search over 20 billion lines of code
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/02/03/android-resource/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2063,7 +1751,7 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
                alt="Kurtis Hu" />
           <p class="site-author-name" itemprop="name">Kurtis Hu</p>
            
-              <p class="site-description motion-element" itemprop="description">Hello World!</p>
+              <p class="site-description motion-element" itemprop="description">Everyone should have a dream</p>
           
         </div>
         <nav class="site-state motion-element">
@@ -2140,6 +1828,20 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
         
 
         
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://gank.io/" title="GankIO" target="_blank">GankIO</a>
+                </li>
+              
+            </ul>
+          </div>
         
 
         
@@ -2295,10 +1997,6 @@ Util.sha1(ByteString.of(chain[<span class="number">0</span>].getPublicKey().getE
 
 
 
-  
-    
-
-    
   
 
 
