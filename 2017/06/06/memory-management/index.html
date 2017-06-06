@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Souce code," />
+  <meta name="keywords" content="Performance,Memory Management," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="Android源代码 Grepcode - Android系统源码在线查看 Androidxref - Android系统源码在线查 codota - Find Great Code Examples searchcode - Search over 20 billion lines of code. codota - Find Great Code Example CodePath Androi">
-<meta name="keywords" content="Souce code">
+<meta name="description" content="Android 内存管理机制简介 每个应用程序都是一个独立的进程，互不影响，进程死掉不会导致系统崩溃、重启。 每个应用程序都有内存上限，接近、超过都会被kill。  App内存设置Android是一个多任务系统, 为了保证多任务的运行, Android给每个App可使用的Heap大小设定了一个限定值. 这个值是系统设置的prop值, 系统编译时内置的, 保存在system/build.prop中,">
+<meta name="keywords" content="Performance,Memory Management">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android 学习资源">
-<meta property="og:url" content="http://kurtishu.github.io/2016/02/03/android-resource/index.html">
+<meta property="og:title" content="Android 内存管理机制">
+<meta property="og:url" content="http://kurtishu.github.io/2017/06/06/memory-management/index.html">
 <meta property="og:site_name" content="Kurtis&#39;s Notes">
-<meta property="og:description" content="Android源代码 Grepcode - Android系统源码在线查看 Androidxref - Android系统源码在线查 codota - Find Great Code Examples searchcode - Search over 20 billion lines of code. codota - Find Great Code Example CodePath Androi">
-<meta property="og:updated_time" content="2017-05-26T01:09:22.199Z">
+<meta property="og:description" content="Android 内存管理机制简介 每个应用程序都是一个独立的进程，互不影响，进程死掉不会导致系统崩溃、重启。 每个应用程序都有内存上限，接近、超过都会被kill。  App内存设置Android是一个多任务系统, 为了保证多任务的运行, Android给每个App可使用的Heap大小设定了一个限定值. 这个值是系统设置的prop值, 系统编译时内置的, 保存在system/build.prop中,">
+<meta property="og:updated_time" content="2017-06-06T09:05:19.009Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android 学习资源">
-<meta name="twitter:description" content="Android源代码 Grepcode - Android系统源码在线查看 Androidxref - Android系统源码在线查 codota - Find Great Code Examples searchcode - Search over 20 billion lines of code. codota - Find Great Code Example CodePath Androi">
+<meta name="twitter:title" content="Android 内存管理机制">
+<meta name="twitter:description" content="Android 内存管理机制简介 每个应用程序都是一个独立的进程，互不影响，进程死掉不会导致系统崩溃、重启。 每个应用程序都有内存上限，接近、超过都会被kill。  App内存设置Android是一个多任务系统, 为了保证多任务的运行, Android给每个App可使用的Heap大小设定了一个限定值. 这个值是系统设置的prop值, 系统编译时内置的, 保存在system/build.prop中,">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://kurtishu.github.io/2016/02/03/android-resource/"/>
+  <link rel="canonical" href="http://kurtishu.github.io/2017/06/06/memory-management/"/>
 
 
 
 
 
-  <title>Android 学习资源 | Kurtis's Notes</title>
+  <title>Android 内存管理机制 | Kurtis's Notes</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +274,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2016/02/03/android-resource/">
+    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2017/06/06/memory-management/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Kurtis Hu">
@@ -291,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android 学习资源</h1>
+          <h1 class="post-title" itemprop="name headline">Android 内存管理机制</h1>
         
 
         <div class="post-meta">
@@ -303,8 +303,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-03T00:00:00+08:00">
-                2016-02-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-06T14:08:45+08:00">
+                2017-06-06
               </time>
             
 
@@ -333,6 +333,17 @@
 
                 
                 
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/Memory/" itemprop="url" rel="index">
+                    <span itemprop="name">Memory</span>
+                  </a>
+                </span>
+
+                
+                
               
             </span>
           
@@ -345,8 +356,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2016/02/03/android-resource/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2016/02/03/android-resource/" itemprop="commentsCount"></span>
+                <a href="/2017/06/06/memory-management/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/06/memory-management/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -354,7 +365,7 @@
 
           
           
-             <span id="/2016/02/03/android-resource/" class="leancloud_visitors" data-flag-title="Android 学习资源">
+             <span id="/2017/06/06/memory-management/" class="leancloud_visitors" data-flag-title="Android 内存管理机制">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -382,62 +393,96 @@
       
 
       
-        <h3 id="Android源代码"><a href="#Android源代码" class="headerlink" title="Android源代码"></a>Android源代码</h3><ul>
-<li><a href="http://grepcode.com/project/repository.grepcode.com/java/ext/com.google.android/android/" target="_blank" rel="external">Grepcode</a> - Android系统源码在线查看</li>
-<li><a href="http://androidxref.com/" target="_blank" rel="external">Androidxref</a> - Android系统源码在线查</li>
-<li><a href="http://www.codota.com/" target="_blank" rel="external">codota</a> - Find Great Code Examples</li>
-<li><a href="https://searchcode.com/" target="_blank" rel="external">searchcode</a> - Search over 20 billion lines of code.</li>
-<li><a href="https://www.codota.com/" target="_blank" rel="external">codota</a> - Find Great Code Example</li>
-<li><a href="http://guides.codepath.com/android" target="_blank" rel="external">CodePath Android Cliffnotes</a></li>
+        <h3 id="Android-内存管理机制简介"><a href="#Android-内存管理机制简介" class="headerlink" title="Android 内存管理机制简介"></a>Android 内存管理机制简介</h3><ul>
+<li>每个应用程序都是一个独立的进程，互不影响，进程死掉不会导致系统崩溃、重启。</li>
+<li>每个应用程序都有内存上限，接近、超过都会被kill。</li>
 </ul>
-<hr>
-<h3 id="开源库"><a href="#开源库" class="headerlink" title="开源库"></a>开源库</h3><ul>
-<li><a href="https://github.com/snowdream/awesome-android" target="_blank" rel="external">awesome-android</a> - Android libs from github</li>
-<li><a href="https://github.com/Trinea/android-open-project" target="_blank" rel="external">android-open-project</a> - Android 开源项目分类汇总</li>
-<li><a href="http://android-arsenal.com/" target="_blank" rel="external">Android Arsenal</a></li>
-<li><a href="http://www.appance.com/category/android/" target="_blank" rel="external">appance</a></li>
-<li><a href="http://alamkanak.github.io/android-libraries-and-resources/" target="_blank" rel="external">Android Libraries and Resources</a></li>
-<li><a href="http://www.appdoll.com/" target="_blank" rel="external">appdoll</a></li>
-<li><a href="https://github.com/Trinea/android-open-project" target="_blank" rel="external">Android开源项目分类汇总</a></li>
-<li><a href="http://www.23code.com/" target="_blank" rel="external">23code</a> - Android 各种库展示</li>
-<li><a href="http://www.android-gems.com/" target="_blank" rel="external">Android Gems</a></li>
-<li><a href="https://android-libs.com/" target="_blank" rel="external">AndroidLibs</a></li>
-<li><a href="http://p.codekk.com/" target="_blank" rel="external">codeKK开源项目集合</a></li>
-<li><a href="http://adb.rocko.xyz/" target="_blank" rel="external">Android 开发者的浏览器书签</a></li>
+<h3 id="App内存设置"><a href="#App内存设置" class="headerlink" title="App内存设置"></a>App内存设置</h3><p>Android是一个多任务系统, 为了保证多任务的运行, Android给每个App可使用的Heap大小设定了一个限定值.</p>
+<p>这个值是系统设置的prop值, 系统编译时内置的, 保存在system/build.prop中,  可以通过如下命令查看:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> $ adb shell</div><div class="line">shell<span class="meta">@n</span>7100:/ $ cat /system/build.prop</div></pre></td></tr></table></figure>
+<p>查询结果(只保留内存分配相关配置)：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// App启动后, 系统分配给它的Heap初始大小. 随着App使用可增加.</span></div><div class="line">alvik.vm.heapstartsize=<span class="number">8</span>m</div><div class="line"><span class="comment">// 默认情况下, App可使用的Heap的最大值, 超过这个值就会产生OOM.</span></div><div class="line">dalvik.vm.heapgrowthlimit=<span class="number">192</span>m</div><div class="line"><span class="comment">// 如果App的manifest文件中配置了largeHeap（android:largeHeap="true"）属性, 如下.则App可使用的Heap的最大值为此项设定值.</span></div><div class="line">dalvik.vm.heapsize=<span class="number">512</span>m</div><div class="line"><span class="comment">// 当前理想的堆内存利用率. GC后, Dalvik的Heap内存会进行相应的调整, 调整到当前存活的对象的大小和 / Heap大小 接近这个选项的值, 即这里的0.75. 注意, 这只是一个参考值.</span></div><div class="line">dalvik.vm.heaptargetutilization=<span class="number">0.75</span></div><div class="line"><span class="comment">// 单次Heap内存调整的最小值.</span></div><div class="line">dalvik.vm.heapminfree=<span class="number">512</span>k</div><div class="line"><span class="comment">// 单次Heap内存调整的最大值.</span></div><div class="line">dalvik.vm.heapmaxfree=<span class="number">8</span>m</div></pre></td></tr></table></figure></p>
+<p>也可以直接使用getprop查看单项prop:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ adb shell getprop dalvik.vm.heapsize</div><div class="line"><span class="number">512</span>m</div></pre></td></tr></table></figure></p>
+<h3 id="Android进程分类"><a href="#Android进程分类" class="headerlink" title="Android进程分类"></a>Android进程分类</h3><p>在Android中，进程主要分为以下几个种类：</p>
+<ul>
+<li>前台进程（Foreground）<br>目前正在屏幕上显示的进程和一些系统进程。举例来说，Dialer，Storage，Google Search等系统进程就是前台进程；再举例来说，当你运行一个程序，如浏览器，当浏览器界面在前台显示时，浏览器属于前台进程（foreground），但一旦你按home回到主界面，浏览器就变成了后台程序（background）。我们最不希望终止的进程就是前台进程。</li>
+<li>可见进程（Visible）<br>可见进程是一些不再前台，但用户依然可见的进程，举个例来说：widget、输入法等，都属于visible。这部分进程虽然不在前台，但与我们的使用也密切相关，我们也不希望它们被终止。</li>
+<li>桌面进程（Home app）<br>即launcher，保证在多任务切换之后，可以快速返回到home界面而不需重新加载launcher。</li>
+<li>次要服务（Secondary server）<br>目前正在运行的一些服务（主要服务，如拨号等，是不可能被进程管理终止的，故这里只谈次要服务），举例来说：谷歌企业套件，Gmail内部存储，联系人内部存储等。这部分服务虽然属于次要服务，但很一些系统功能依然息息相关，我们时常需要用到它们，所以也太希望他们被终止。</li>
+<li>后台进程（Hidden）<br>后台进程（background）就是我们通常意义上理解的启动后被切换到后台的进程，如浏览器，阅读器等。当程序显示在屏幕上时，他所运行的进程即为前台进程（foreground），一旦我们按home返回主界面（注意是按home，不是按back），程序就驻留在后台，成为后台进程（background）。</li>
+<li>内容供应节点（Content provider）<br>没有程序实体，进提供内容供别的程序去用的，比如日历供应节点，邮件供应节点等。在终止进程时，这类程序应该有较高的优先权。</li>
+<li>空进程（Empty）<br>没有任何东西在内运行的进程，有些程序，比如BTE，在程序退出后，依然会在进程中驻留一个空进程，这个进程里没有任何数据在运行，作用往往是提高该程序下次的启动速度或者记录程序的一些历史信息。这部分进程无疑是应该最先终止的。</li>
 </ul>
-<hr>
-<h3 id="干活"><a href="#干活" class="headerlink" title="干活"></a>干活</h3><ul>
-<li><a href="http://gank.io/" target="_blank" rel="external">干货集中营</a></li>
-<li><a href="http://toutiao.io/" target="_blank" rel="external">开发者头条</a></li>
-<li><a href="http://gold.xitu.io/#/" target="_blank" rel="external">稀土掘金</a></li>
-<li><a href="http://androidweekly.net/" target="_blank" rel="external">Android Weekly</a></li>
-<li><a href="http://www.androidweekly.cn/" target="_blank" rel="external">Android开发技术周报</a></li>
-<li><a href="http://www.jcodecraeer.com/plus/list.php?tid=16" target="_blank" rel="external">泡在网上的日子</a></li>
-</ul>
-<hr>
-<h3 id="Android架构设计"><a href="#Android架构设计" class="headerlink" title="Android架构设计"></a>Android架构设计</h3><ul>
-<li><a href="http://mp.weixin.qq.com/s?__biz=MjM5NDkxMTgyNw==&amp;mid=404575601&amp;idx=1&amp;sn=bb6e51210563b79f682da02c7f78bf3e#rd" target="_blank" rel="external">浅谈Andorid开发中的MVP模式</a></li>
-<li><a href="https://www.sdk.cn/news/2501" target="_blank" rel="external">Android App的设计架构：MVC,MVP,MVVM与架构经验谈</a></li>
-<li><a href="http://blog.waynell.com/2015/05/29/mvp-on-android/" target="_blank" rel="external">Android的MVP设计模式</a></li>
-<li><a href="http://kymjs.com/code/2015/11/09/01/" target="_blank" rel="external">用MVP架构开发Android应用</a></li>
-<li><a href="http://www.jianshu.com/p/9a6845b26856" target="_blank" rel="external">Android MVP 详解（上）</a> - 分析详细</li>
-<li><a href="http://www.jianshu.com/p/0590f530c617" target="_blank" rel="external">Android MVP 详解（下）</a></li>
-<li><a href="http://www.jianshu.com/p/ed2aa9546c2c" target="_blank" rel="external">Android应用中MVP最佳实践</a></li>
-</ul>
-<hr>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
-<li><a href="http://tikitoo.github.io/2016/04/26/android-worth-subscribe-daily-weekly/" target="_blank" rel="external">Android 开发值得订阅的日报和周刊</a></li>
-<li><a href="http://www.jianshu.com/p/af2de05aadff#rd" target="_blank" rel="external">Android 学习资料收集</a> </li>
-<li><a href="https://github.com/lopspower/BestAndroidGists" target="_blank" rel="external">Best Android Gists</a></li>
-<li><a href="http://stormzhang.com/android/2014/07/07/learn-android-from-rookie/" target="_blank" rel="external">Android学习之路</a></li>
-<li><a href="https://github.com/futurice/android-best-practices" target="_blank" rel="external">Android最佳实践</a></li>
-<li><a href="http://www.jianshu.com/p/54902270249d" target="_blank" rel="external">Android开发者网址导航</a></li>
-<li><a href="http://www.jianshu.com/p/54c4a19ffa68" target="_blank" rel="external">Android开发者必知的杂志周刊</a></li>
-<li><a href="https://github.com/JohnTsaiAndroid/AndroidTips" target="_blank" rel="external">AndroidTips</a> - A collections of tips in Android developing.</li>
-<li><a href="http://www.jianshu.com/p/aa7238cd8daf" target="_blank" rel="external">2015年十大热门Android开源新项目</a></li>
-<li><a href="http://www.open-open.com/lib/view/open1388317075000.html" target="_blank" rel="external">GitHub上最火的74个Android开源项目</a></li>
-<li><a href="https://github.com/FX-Max/Point-of-Android" target="_blank" rel="external">Point-of-Android</a> - Android 一些重要知识点解析整理</li>
-</ul>
+<h3 id="Android-进程级别-与-oom-adj"><a href="#Android-进程级别-与-oom-adj" class="headerlink" title="Android 进程级别 与 oom_adj"></a>Android 进程级别 与 oom_adj</h3><p>当系统的内存不足时, Android系统将根据进程优先级选择杀死一些不太重要的进程。<br>那么进程的优先级是怎样判别的呢？对，就是这个根据进程的oom_adj值。oom_adj的值越小，进程的优先级越高。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">进程级别</th>
+<th style="text-align:center">oom_adj</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">前台进程 （Foreground Process）</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">已启动服务的进程(Started Service Process)</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">可见进程 （Visible Process）</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">后台进程 （Backgroud Process）</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">主界面 （Home process）：</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">隐藏进程 （Hidden process</td>
+<td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center">内容提供者 （content provider）</td>
+<td style="text-align:center">14</td>
+</tr>
+<tr>
+<td style="text-align:center">空进程 （Empty process）</td>
+<td style="text-align:center">15</td>
+</tr>
+</tbody>
+</table>
+<p>可以通过adb 命令查看oom_adj值</p>
+<pre><code class="java">Kurtis-Hu:Desktop kurtishu$ adb shell
+shell<span class="meta">@n</span>7100:/ $ ps
+USER      PID   PPID  VSIZE  RSS   WCHAN            PC  NAME
+root      <span class="number">1</span>     <span class="number">0</span>     <span class="number">1332</span>   <span class="number">804</span>   sys_epoll_ <span class="number">00000000</span> S /init
+u0_a35    <span class="number">6230</span>  <span class="number">2077</span>  <span class="number">885440</span> <span class="number">33812</span> sys_epoll_ <span class="number">00000000</span> S com.android.calendar
+u0_a48    <span class="number">6250</span>  <span class="number">2077</span>  <span class="number">876176</span> <span class="number">33788</span> sys_epoll_ <span class="number">00000000</span> S com.google.android.inputmethod.latin.dictionarypack
+u0_a2     <span class="number">6265</span>  <span class="number">2077</span>  <span class="number">877416</span> <span class="number">34560</span> sys_epoll_ <span class="number">00000000</span> S com.android.providers.calendar
+u0_a29    <span class="number">7605</span>  <span class="number">2077</span>  <span class="number">906064</span> <span class="number">49436</span> sys_epoll_ <span class="number">00000000</span> S com.androidmarket.dingzhi:usbhelpersdk
+
+<span class="comment">// 或者直接搜索进程</span>
+<span class="number">1</span>|shell<span class="meta">@n</span>7100:/ $ ps | grep wandoujia 
+u0_a72    <span class="number">5274</span>  <span class="number">2077</span>  <span class="number">1739236</span> <span class="number">108684</span> sys_epoll_ <span class="number">00000000</span> S com.wandoujia.phoenix2
+</code></pre>
+<p>以上命令可以获取进程ID, 例如豌豆荚App的ID 5274，然后cat  /proc/PID/oom_adj查看oom_adj值。</p>
+<pre><code class="java"><span class="comment">// App处在前台</span>
+<span class="number">1</span>|shell<span class="meta">@n</span>7100:/ $ cat  /proc/<span class="number">5274</span>/oom_adj
+<span class="number">0</span>
+
+<span class="comment">// 点击Home，App进入后台</span>
+shell<span class="meta">@n</span>7100:/ $ cat  /proc/<span class="number">5274</span>/oom_adj 
+<span class="number">6</span>
+</code></pre>
+<p>通常修改指定包名应用的oom_adj，避免被系统回收，以到达进程保活的目的。</p>
+<p>未完待续…</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
+<p><a href="http://www.jianshu.com/p/8b1d9c86fa84" target="_blank" rel="external">Android内存管理分析总结</a><br><a href="http://www.jianshu.com/p/4ad716c72c12" target="_blank" rel="external">Android是如何管理App内存的–Android内存优化第二弹</a></p>
+</blockquote>
 
       
     </div>
@@ -467,7 +512,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Souce-code/" rel="tag"># Souce code</a>
+            <a href="/tags/Performance/" rel="tag"># Performance</a>
+          
+            <a href="/tags/Memory-Management/" rel="tag"># Memory Management</a>
           
         </div>
       
@@ -480,8 +527,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/18/androidannotations-analysis/" rel="next" title="AndroidAnnotions 源码解析">
-                <i class="fa fa-chevron-left"></i> AndroidAnnotions 源码解析
+              <a href="/2017/05/28/performance-optimizing/" rel="next" title="Android App性能优化技巧">
+                <i class="fa fa-chevron-left"></i> Android App性能优化技巧
               </a>
             
           </div>
@@ -489,10 +536,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/02/14/realm-introduce/" rel="prev" title="Realm 让移动开发更简单">
-                Realm 让移动开发更简单 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -657,7 +700,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android源代码"><span class="nav-number">1.</span> <span class="nav-text">Android源代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开源库"><span class="nav-number">2.</span> <span class="nav-text">开源库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#干活"><span class="nav-number">3.</span> <span class="nav-text">干活</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android架构设计"><span class="nav-number">4.</span> <span class="nav-text">Android架构设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-内存管理机制简介"><span class="nav-number">1.</span> <span class="nav-text">Android 内存管理机制简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#App内存设置"><span class="nav-number">2.</span> <span class="nav-text">App内存设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android进程分类"><span class="nav-number">3.</span> <span class="nav-text">Android进程分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-进程级别-与-oom-adj"><span class="nav-number">4.</span> <span class="nav-text">Android 进程级别 与 oom_adj</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
