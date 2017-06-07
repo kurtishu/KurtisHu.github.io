@@ -97,7 +97,7 @@
 <meta property="og:url" content="http://kurtishu.github.io/2017/06/06/memory-management/index.html">
 <meta property="og:site_name" content="Kurtis&#39;s Notes">
 <meta property="og:description" content="Android 内存管理机制简介 每个应用程序都是一个独立的进程，互不影响，进程死掉不会导致系统崩溃、重启。 每个应用程序都有内存上限，接近、超过都会被kill。  App内存设置Android是一个多任务系统, 为了保证多任务的运行, Android给每个App可使用的Heap大小设定了一个限定值. 这个值是系统设置的prop值, 系统编译时内置的, 保存在system/build.prop中,">
-<meta property="og:updated_time" content="2017-06-06T09:05:19.009Z">
+<meta property="og:updated_time" content="2017-06-07T02:12:23.937Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 内存管理机制">
 <meta name="twitter:description" content="Android 内存管理机制简介 每个应用程序都是一个独立的进程，互不影响，进程死掉不会导致系统崩溃、重启。 每个应用程序都有内存上限，接近、超过都会被kill。  App内存设置Android是一个多任务系统, 为了保证多任务的运行, Android给每个App可使用的Heap大小设定了一个限定值. 这个值是系统设置的prop值, 系统编译时内置的, 保存在system/build.prop中,">
@@ -279,7 +279,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Kurtis Hu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -455,30 +455,7 @@
 </tr>
 </tbody>
 </table>
-<p>可以通过adb 命令查看oom_adj值</p>
-<pre><code class="java">Kurtis-Hu:Desktop kurtishu$ adb shell
-shell<span class="meta">@n</span>7100:/ $ ps
-USER      PID   PPID  VSIZE  RSS   WCHAN            PC  NAME
-root      <span class="number">1</span>     <span class="number">0</span>     <span class="number">1332</span>   <span class="number">804</span>   sys_epoll_ <span class="number">00000000</span> S /init
-u0_a35    <span class="number">6230</span>  <span class="number">2077</span>  <span class="number">885440</span> <span class="number">33812</span> sys_epoll_ <span class="number">00000000</span> S com.android.calendar
-u0_a48    <span class="number">6250</span>  <span class="number">2077</span>  <span class="number">876176</span> <span class="number">33788</span> sys_epoll_ <span class="number">00000000</span> S com.google.android.inputmethod.latin.dictionarypack
-u0_a2     <span class="number">6265</span>  <span class="number">2077</span>  <span class="number">877416</span> <span class="number">34560</span> sys_epoll_ <span class="number">00000000</span> S com.android.providers.calendar
-u0_a29    <span class="number">7605</span>  <span class="number">2077</span>  <span class="number">906064</span> <span class="number">49436</span> sys_epoll_ <span class="number">00000000</span> S com.androidmarket.dingzhi:usbhelpersdk
-
-<span class="comment">// 或者直接搜索进程</span>
-<span class="number">1</span>|shell<span class="meta">@n</span>7100:/ $ ps | grep wandoujia 
-u0_a72    <span class="number">5274</span>  <span class="number">2077</span>  <span class="number">1739236</span> <span class="number">108684</span> sys_epoll_ <span class="number">00000000</span> S com.wandoujia.phoenix2
-</code></pre>
-<p>以上命令可以获取进程ID, 例如豌豆荚App的ID 5274，然后cat  /proc/PID/oom_adj查看oom_adj值。</p>
-<pre><code class="java"><span class="comment">// App处在前台</span>
-<span class="number">1</span>|shell<span class="meta">@n</span>7100:/ $ cat  /proc/<span class="number">5274</span>/oom_adj
-<span class="number">0</span>
-
-<span class="comment">// 点击Home，App进入后台</span>
-shell<span class="meta">@n</span>7100:/ $ cat  /proc/<span class="number">5274</span>/oom_adj 
-<span class="number">6</span>
-</code></pre>
-<p>通常修改指定包名应用的oom_adj，避免被系统回收，以到达进程保活的目的。</p>
+<p>可以通过adb 命令查看oom_adj值<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">Kurtis-Hu:Desktop kurtishu$ adb shell</div><div class="line">shell<span class="meta">@n</span>7100:/ $ ps</div><div class="line">USER      PID   PPID  VSIZE  RSS   WCHAN            PC  NAME</div><div class="line">root      <span class="number">1</span>     <span class="number">0</span>     <span class="number">1332</span>   <span class="number">804</span>   sys_epoll_ <span class="number">00000000</span> S /init</div><div class="line">u0_a35    <span class="number">6230</span>  <span class="number">2077</span>  <span class="number">885440</span> <span class="number">33812</span> sys_epoll_ <span class="number">00000000</span> S com.android.calendar</div><div class="line">u0_a48    <span class="number">6250</span>  <span class="number">2077</span>  <span class="number">876176</span> <span class="number">33788</span> sys_epoll_ <span class="number">00000000</span> S com.google.android.inputmethod.latin.dictionarypack</div><div class="line">u0_a2     <span class="number">6265</span>  <span class="number">2077</span>  <span class="number">877416</span> <span class="number">34560</span> sys_epoll_ <span class="number">00000000</span> S com.android.providers.calendar</div><div class="line">u0_a29    <span class="number">7605</span>  <span class="number">2077</span>  <span class="number">906064</span> <span class="number">49436</span> sys_epoll_ <span class="number">00000000</span> S com.androidmarket.dingzhi:usbhelpersdk</div><div class="line"></div><div class="line"><span class="comment">// 或者直接搜索进程</span></div><div class="line"><span class="number">1</span>|shell<span class="meta">@n</span>7100:/ $ ps | grep wandoujia </div><div class="line">u0_a72    <span class="number">5274</span>  <span class="number">2077</span>  <span class="number">1739236</span> <span class="number">108684</span> sys_epoll_ <span class="number">00000000</span> S com.wandoujia.phoenix2</div><div class="line">``` </div><div class="line">以上命令可以获取进程ID, 例如豌豆荚App的ID <span class="number">5274</span>，然后cat  /proc/PID/oom_adj查看oom_adj值。</div><div class="line">```java</div><div class="line"><span class="comment">// App处在前台</span></div><div class="line"><span class="number">1</span>|shell<span class="meta">@n</span>7100:/ $ cat  /proc/<span class="number">5274</span>/oom_adj</div><div class="line"><span class="number">0</span></div><div class="line"></div><div class="line"><span class="comment">// 点击Home，App进入后台</span></div><div class="line">shell<span class="meta">@n</span>7100:/ $ cat  /proc/<span class="number">5274</span>/oom_adj </div><div class="line"><span class="number">6</span></div><div class="line">``` </div><div class="line">通常修改指定包名应用的oom_adj，避免被系统回收，以到达进程保活的目的。</div><div class="line"></div><div class="line">用以下命令可以查看程序的内存使用情况：</div><div class="line">```java</div><div class="line"><span class="comment">//使用程序的包名或者进程id</span></div><div class="line">adb shell dumpsys meminfo $package_name or $pid</div></pre></td></tr></table></figure></p>
 <p>未完待续…</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
 <p><a href="http://www.jianshu.com/p/8b1d9c86fa84" target="_blank" rel="external">Android内存管理分析总结</a><br><a href="http://www.jianshu.com/p/4ad716c72c12" target="_blank" rel="external">Android是如何管理App内存的–Android内存优化第二弹</a></p>
@@ -536,6 +513,10 @@ shell<span class="meta">@n</span>7100:/ $ cat  /proc/<span class="number">5274</
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/07/andfix/" rel="prev" title="AndFix 使用">
+                AndFix 使用 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -597,11 +578,11 @@ shell<span class="meta">@n</span>7100:/ $ cat  /proc/<span class="number">5274</
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpg"
+               src="/uploads/avatar.png"
                alt="Kurtis Hu" />
           <p class="site-author-name" itemprop="name">Kurtis Hu</p>
            
-              <p class="site-description motion-element" itemprop="description">Everyone should have a dream</p>
+              <p class="site-description motion-element" itemprop="description">Everyone should have a dream!</p>
           
         </div>
         <nav class="site-state motion-element">
@@ -609,7 +590,7 @@ shell<span class="meta">@n</span>7100:/ $ cat  /proc/<span class="number">5274</
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -620,7 +601,7 @@ shell<span class="meta">@n</span>7100:/ $ cat  /proc/<span class="number">5274</
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -631,7 +612,7 @@ shell<span class="meta">@n</span>7100:/ $ cat  /proc/<span class="number">5274</
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
