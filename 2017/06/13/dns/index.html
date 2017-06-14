@@ -1,0 +1,994 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="DNS,SRV,Zone file,CNAME," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/uploads/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="DNS 简介DNS（Domain Name Server，域名服务器）是进行域名(domain name)和与之相对应的IP地址 (IP address)转换的服务器。域名是Internet上某一台计算机或计算机组的名称。但是计算机在互联网中的实际”住址”是IP，如何通过域名找到对应的计算机，这个过程就是通过DNS服务器来实现的，通过域名查找计算机的IP地址的过程叫做“域名解析”。  DNS Zo">
+<meta name="keywords" content="DNS,SRV,Zone file,CNAME">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DNS 相关知识">
+<meta property="og:url" content="http://kurtishu.github.io/2017/06/13/dns/index.html">
+<meta property="og:site_name" content="Kurtis&#39;s Notes">
+<meta property="og:description" content="DNS 简介DNS（Domain Name Server，域名服务器）是进行域名(domain name)和与之相对应的IP地址 (IP address)转换的服务器。域名是Internet上某一台计算机或计算机组的名称。但是计算机在互联网中的实际”住址”是IP，如何通过域名找到对应的计算机，这个过程就是通过DNS服务器来实现的，通过域名查找计算机的IP地址的过程叫做“域名解析”。  DNS Zo">
+<meta property="og:image" content="http://up.2cto.com/2012/1018/20121018014622645.jpg">
+<meta property="og:updated_time" content="2017-06-14T01:40:42.351Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DNS 相关知识">
+<meta name="twitter:description" content="DNS 简介DNS（Domain Name Server，域名服务器）是进行域名(domain name)和与之相对应的IP地址 (IP address)转换的服务器。域名是Internet上某一台计算机或计算机组的名称。但是计算机在互联网中的实际”住址”是IP，如何通过域名找到对应的计算机，这个过程就是通过DNS服务器来实现的，通过域名查找计算机的IP地址的过程叫做“域名解析”。  DNS Zo">
+<meta name="twitter:image" content="http://up.2cto.com/2012/1018/20121018014622645.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kurtishu.github.io/2017/06/13/dns/"/>
+
+
+
+
+
+  <title>DNS 相关知识 | Kurtis's Notes</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kurtis's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Simple notes</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2017/06/13/dns/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kurtis Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kurtis's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DNS 相关知识</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T15:09:21+08:00">
+                2017-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/其他/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/其他/DNS/" itemprop="url" rel="index">
+                    <span itemprop="name">DNS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/06/13/dns/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/13/dns/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/06/13/dns/" class="leancloud_visitors" data-flag-title="DNS 相关知识">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 访问量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="DNS-简介"><a href="#DNS-简介" class="headerlink" title="DNS 简介"></a>DNS 简介</h3><p>DNS（Domain Name Server，域名服务器）是进行域名(domain name)和与之相对应的IP地址 (IP address)转换的服务器。域名是Internet上某一台计算机或计算机组的名称。但是计算机在互联网中的实际”住址”是IP，如何通过域名找到对应的计算机，这个过程就是通过DNS服务器来实现的，通过域名查找计算机的IP地址的过程叫做“域名解析”。</p>
+<p><img src="http://up.2cto.com/2012/1018/20121018014622645.jpg" alt="DNS"></p>
+<h3 id="DNS-Zone-file"><a href="#DNS-Zone-file" class="headerlink" title="DNS Zone file"></a>DNS Zone file</h3><p>DNS zone file是一个文本文件，它包含了域名和对应的IP地址的映射关系，以及一些其他的资源记录。</p>
+<blockquote>
+<p>A Domain Name System (DNS) zone file is a text file that describes a DNS zone. A DNS zone is a subset, often a single domain, of the hierarchical domain name structure of the DNS. The zone file contains mappings between domain names and IP addresses and other resources, organized in the form of text representations of resource records (RR). A zone file may be either a DNS master file, authoritatively describing a zone, or it may be used to list the contents of a DNS cache. </p>
+</blockquote>
+<h4 id="Zone-file-格式"><a href="#Zone-file-格式" class="headerlink" title="Zone file 格式"></a>Zone file 格式</h4><p>Zone 文件是有许许多多的资源记录(resource records)组成的，文件的每一行描述了对一种资源记录的定义，它由多部分组成，没部分通过空格或者Tab分割<br>具体格式如下：<br> <strong>  name      ttl     record class     record type     record data  </strong></p>
+<ul>
+<li>name:  Record 名称，可为空，如果为空，前一个record的名称一样</li>
+<li>ttl: (time to live) DNS缓存时间</li>
+<li>record class: 表示记录的命令空间，通常为IN或者CHAOS</li>
+<li>record type: 记录的类型，例如SRV，A记录， CNAME等</li>
+<li>record data：根据记录类型，可能包含一个或多个元素。例如地址记录仅仅包含IP地址，如果是邮件交换记录则包含优先级(priority )、域名等。</li>
+</ul>
+<p>下面以domain 为 example.com 为例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">$ORIGIN example.com.     ; designates the start of <span class="keyword">this</span> zone file in the namespace</div><div class="line">$TTL <span class="number">1</span>h                  ; <span class="keyword">default</span> expiration time of all resource records without their own TTL value</div><div class="line">example.com.  IN  SOA   ns.example.com. username.example.com. ( <span class="number">2007120710</span> <span class="number">1</span>d <span class="number">2</span>h <span class="number">4</span>w <span class="number">1</span>h )</div><div class="line">example.com.  IN  NS    ns                    ; ns.example.com is a nameserver <span class="keyword">for</span> example.com</div><div class="line">example.com.  IN  NS    ns.somewhere.example. ; ns.somewhere.example is a backup nameserver <span class="keyword">for</span> example.com</div><div class="line">example.com.  IN  MX    <span class="number">10</span> mail.example.com.  ; mail.example.com is the mailserver <span class="keyword">for</span> example.com</div><div class="line">@             IN  MX    <span class="number">20</span> mail2.example.com. ; equivalent to above line, <span class="string">"@"</span> represents zone origin</div><div class="line">@             IN  MX    <span class="number">50</span> mail3              ; equivalent to above line, but using a relative host name</div><div class="line">example.com.  IN  A     <span class="number">192.0</span>.2.1             ; IPv4 address <span class="keyword">for</span> example.com</div><div class="line">              IN  AAAA  <span class="number">2001</span>:db8:<span class="number">10</span>::<span class="number">1</span>        ; IPv6 address <span class="keyword">for</span> example.com</div><div class="line">ns            IN  A     <span class="number">192.0</span>.2.2             ; IPv4 address <span class="keyword">for</span> ns.example.com</div><div class="line">              IN  AAAA  <span class="number">2001</span>:db8:<span class="number">10</span>::<span class="number">2</span>        ; IPv6 address <span class="keyword">for</span> ns.example.com</div><div class="line">www           IN  CNAME example.com.          ; www.example.com is an alias <span class="keyword">for</span> example.com</div><div class="line">wwwtest       IN  CNAME www                   ; wwwtest.example.com is another alias <span class="keyword">for</span> www.example.com</div><div class="line">mail          IN  A     <span class="number">192.0</span>.2.3             ; IPv4 address <span class="keyword">for</span> mail.example.com</div><div class="line">mail2         IN  A     <span class="number">192.0</span>.2.4             ; IPv4 address <span class="keyword">for</span> mail2.example.com</div><div class="line">mail3         IN  A     <span class="number">192.0</span>.2.5             ; IPv4 address <span class="keyword">for</span> mail3.example.com</div></pre></td></tr></table></figure></p>
+<h3 id="SRV-record"><a href="#SRV-record" class="headerlink" title="SRV record"></a>SRV record</h3><p>SRV 记录在DNS域名系统中比较特殊的一种数据，它包含域名、端口号等信息。它一般为一些特定的服务器提供服务，还有一些互联网协议比如Session Initiation Protocol (SIP)以及 Extensible Messaging and Presence Protocol (XMPP)等都需要SRV记录。</p>
+<h4 id="SRV记录的格式"><a href="#SRV记录的格式" class="headerlink" title="SRV记录的格式"></a>SRV记录的格式</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">_service._proto.name. TTL <span class="class"><span class="keyword">class</span> <span class="title">SRV</span> <span class="title">priority</span> <span class="title">weight</span> <span class="title">port</span> <span class="title">target</span>.</span></div></pre></td></tr></table></figure>
+<ul>
+<li>service: 服务器的名称</li>
+<li>proto： 传输的端口号</li>
+<li>name： 合法的域名并以.结尾</li>
+<li>TTL：缓存有效时间</li>
+<li>class：标准DNS类别，一般为IN</li>
+<li>priority: m目标域名的优先级，数值越低优先级越高</li>
+<li>weight：权重和priority类似，权重越高优先级越高</li>
+<li>port：TCP/UDP的端口号</li>
+<li>target：主机的别名，并且以.结尾</li>
+</ul>
+<p>举个例子：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># _service._proto.name.  TTL   class SRV priority weight port target.</div><div class="line">_sip._tcp.example.com.   86400 IN    SRV 10       60     5060 bigbox.example.com.</div><div class="line">_sip._tcp.example.com.   86400 IN    SRV 10       20     5060 smallbox1.example.com.</div><div class="line">_sip._tcp.example.com.   86400 IN    SRV 10       20     5060 smallbox2.example.com.</div><div class="line">_sip._tcp.example.com.   86400 IN    SRV 20       0      5060 backupbox.example.com.</div></pre></td></tr></table></figure></p>
+<h4 id="查看SRV记录"><a href="#查看SRV记录" class="headerlink" title="查看SRV记录"></a>查看SRV记录</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ dig _sip._tcp.example.com SRV</div><div class="line"></div><div class="line">$ host -t SRV _sip._tcp.example.com</div><div class="line"></div><div class="line">$ nslookup -querytype=srv _sip._tcp.example.com</div><div class="line"></div><div class="line">$ nslookup</div><div class="line">&gt; set querytype=srv</div><div class="line">&gt; _sip._tcp.example.com</div></pre></td></tr></table></figure>
+<h3 id="CNAME-Record"><a href="#CNAME-Record" class="headerlink" title="CNAME Record"></a>CNAME Record</h3><p>经常在购买域名或者注册域名的时候经常听说CNAME，所谓CNAME记录，及别名记录。这种记录允许您将多个名字映射到同一台计算机。 通常用于同时提供WWW和MAIL服务的计算机。例如，有一台计算机名为“host.mydomain.com”（A记录）。 它同时提供WWW和MAIL服务，为了便于用户访问服务。可以为该计算机设置两个别名（CNAME）：WWW和MAIL。</p>
+<p>例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">NAME                    TYPE   VALUE</div><div class="line">--------------------------------------------------</div><div class="line">bar.example.com.        CNAME  foo.example.com.</div><div class="line">foo.example.com.        A      <span class="number">192.0</span>.2.23</div></pre></td></tr></table></figure></p>
+<p>以上例子第一行的Type为CNAME，也就是说该行是别名记录（CNAME Record）, bar.example.com是域名foo.example.com的别名，通过别名访问域名，域名通过Type为A的记录，找到对应的IP地址。<br>上面提到 的Type为A的记录，这就是所谓的A记录。</p>
+<h3 id="A记录"><a href="#A记录" class="headerlink" title="A记录"></a>A记录</h3><p>A记录记录的是一个32为的IPv4的IP地址，他通常被用记录域名与IP地址之间的映射关系。比如上面提到的，域名foo.example.com所映射的IP地址为192.0.2.23<br>DNS 记录有很多种类型，每种类型都有它特定的含义和作用。<br><a href="https://en.wikipedia.org/wiki/List_of_DNS_record_types" target="_blank" rel="external"><strong>List of DNS record types </strong></a> </p>
+<h3 id="代码操作DNS-Record"><a href="#代码操作DNS-Record" class="headerlink" title="代码操作DNS Record"></a>代码操作DNS Record</h3><p>在项目开发中，有时候需求获取或者更新DNS 记录，这时候可以通过一个Java库dnsjava来实现。dnsjava是DNS的一个Java实现。支持所有定义的记录类型包括DNSSEC类型，和未知类型。它还可以用于查询，区域传输，动态更新。dnsjava还包含一个客户端使用的缓存，一个小型DNS服务器。</p>
+<h4 id="Java代码获取Srv-Record"><a href="#Java代码获取Srv-Record" class="headerlink" title="Java代码获取Srv Record"></a>Java代码获取Srv Record</h4><p>首先需要导入dnsJava的jar包，此处<a href="http://www.dnsjava.org/download/" target="_blank" rel="external">下载 dnsjava</a><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DNSLookup</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line"></div><div class="line">          String query = <span class="string">"_sip._tcp.example.com"</span> ;</div><div class="line"></div><div class="line">          <span class="keyword">try</span> &#123;</div><div class="line">            <span class="comment">/*****HERE*********/</span></div><div class="line">            Record[] records = <span class="keyword">new</span> Lookup(query, Type.SRV).run();</div><div class="line">            <span class="keyword">for</span> (Record record : records) &#123;</div><div class="line">                 SRVRecord srv = (SRVRecord) record;</div><div class="line">            String hostname = srv.getTarget().toString().replaceFirst(<span class="string">"\\.$"</span>, <span class="string">""</span>);</div><div class="line">            <span class="keyword">int</span> port = srv.getPort();</div><div class="line">            System.out.println(hostname + <span class="string">":"</span> + port);</div><div class="line">          &#125;</div><div class="line">          &#125; <span class="keyword">catch</span> (TextParseException e) &#123;</div><div class="line">             e.printStackTrace();</div><div class="line">          &#125;</div><div class="line">       &#125;</div><div class="line">      &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>以上关于DNS的介绍仅仅只是设计到部分知识，后续或不断更新，如果以上有错误的地方还望提出指正。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
+<p><a href="https://en.wikipedia.org/wiki/Domain_Name_System" target="_blank" rel="external">Domain Name System</a><br><a href="https://en.wikipedia.org/wiki/SRV_record" target="_blank" rel="external">SRV record</a><br><a href="https://en.wikipedia.org/wiki/Zone_file" target="_blank" rel="external">Zone file</a><br><a href="http://www.2cto.com/net/201210/161839.html" target="_blank" rel="external">DNS扫盲系列</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DNS/" rel="tag"># DNS</a>
+          
+            <a href="/tags/SRV/" rel="tag"># SRV</a>
+          
+            <a href="/tags/Zone-file/" rel="tag"># Zone file</a>
+          
+            <a href="/tags/CNAME/" rel="tag"># CNAME</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/09/retrofit/" rel="next" title="Retrofit 入门以及源码分析">
+                <i class="fa fa-chevron-left"></i> Retrofit 入门以及源码分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="Kurtis Hu" />
+          <p class="site-author-name" itemprop="name">Kurtis Hu</p>
+           
+              <p class="site-description motion-element" itemprop="description">Everyone should have a dream!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kurtishu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/2a75d9856a6d" target="_blank" title="JianShu">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  JianShu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://gank.io/" title="GankIO" target="_blank">GankIO</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS-简介"><span class="nav-number">1.</span> <span class="nav-text">DNS 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS-Zone-file"><span class="nav-number">2.</span> <span class="nav-text">DNS Zone file</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Zone-file-格式"><span class="nav-number">2.1.</span> <span class="nav-text">Zone file 格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SRV-record"><span class="nav-number">3.</span> <span class="nav-text">SRV record</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SRV记录的格式"><span class="nav-number">3.1.</span> <span class="nav-text">SRV记录的格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看SRV记录"><span class="nav-number">3.2.</span> <span class="nav-text">查看SRV记录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNAME-Record"><span class="nav-number">4.</span> <span class="nav-text">CNAME Record</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A记录"><span class="nav-number">5.</span> <span class="nav-text">A记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码操作DNS-Record"><span class="nav-number">6.</span> <span class="nav-text">代码操作DNS Record</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java代码获取Srv-Record"><span class="nav-number">6.1.</span> <span class="nav-text">Java代码获取Srv Record</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kurtis Hu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt31LeFJ';
+      var conf = '222f1650ed5b1208d7436f6992204017';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("1YKadwc8LWJMRRBdlGWVT3Vt-gzGzoHsz", "YAyQ5TrFrlyB6rs69pqe1fbV");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
