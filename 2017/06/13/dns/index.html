@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="Kurtis&#39;s Notes">
 <meta property="og:description" content="DNS 简介DNS（Domain Name Server，域名服务器）是进行域名(domain name)和与之相对应的IP地址 (IP address)转换的服务器。域名是Internet上某一台计算机或计算机组的名称。但是计算机在互联网中的实际”住址”是IP，如何通过域名找到对应的计算机，这个过程就是通过DNS服务器来实现的，通过域名查找计算机的IP地址的过程叫做“域名解析”。  DNS Zo">
 <meta property="og:image" content="http://up.2cto.com/2012/1018/20121018014622645.jpg">
-<meta property="og:updated_time" content="2017-06-14T01:40:42.351Z">
+<meta property="og:updated_time" content="2017-06-19T01:18:52.957Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DNS 相关知识">
 <meta name="twitter:description" content="DNS 简介DNS（Domain Name Server，域名服务器）是进行域名(domain name)和与之相对应的IP地址 (IP address)转换的服务器。域名是Internet上某一台计算机或计算机组的名称。但是计算机在互联网中的实际”住址”是IP，如何通过域名找到对应的计算机，这个过程就是通过DNS服务器来实现的，通过域名查找计算机的IP地址的过程叫做“域名解析”。  DNS Zo">
@@ -435,7 +435,9 @@
 <p>以上例子第一行的Type为CNAME，也就是说该行是别名记录（CNAME Record）, bar.example.com是域名foo.example.com的别名，通过别名访问域名，域名通过Type为A的记录，找到对应的IP地址。<br>上面提到 的Type为A的记录，这就是所谓的A记录。</p>
 <h3 id="A记录"><a href="#A记录" class="headerlink" title="A记录"></a>A记录</h3><p>A记录记录的是一个32为的IPv4的IP地址，他通常被用记录域名与IP地址之间的映射关系。比如上面提到的，域名foo.example.com所映射的IP地址为192.0.2.23<br>DNS 记录有很多种类型，每种类型都有它特定的含义和作用。<br><a href="https://en.wikipedia.org/wiki/List_of_DNS_record_types" target="_blank" rel="external"><strong>List of DNS record types </strong></a> </p>
 <h3 id="代码操作DNS-Record"><a href="#代码操作DNS-Record" class="headerlink" title="代码操作DNS Record"></a>代码操作DNS Record</h3><p>在项目开发中，有时候需求获取或者更新DNS 记录，这时候可以通过一个Java库dnsjava来实现。dnsjava是DNS的一个Java实现。支持所有定义的记录类型包括DNSSEC类型，和未知类型。它还可以用于查询，区域传输，动态更新。dnsjava还包含一个客户端使用的缓存，一个小型DNS服务器。</p>
-<h4 id="Java代码获取Srv-Record"><a href="#Java代码获取Srv-Record" class="headerlink" title="Java代码获取Srv Record"></a>Java代码获取Srv Record</h4><p>首先需要导入dnsJava的jar包，此处<a href="http://www.dnsjava.org/download/" target="_blank" rel="external">下载 dnsjava</a><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DNSLookup</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line"></div><div class="line">          String query = <span class="string">"_sip._tcp.example.com"</span> ;</div><div class="line"></div><div class="line">          <span class="keyword">try</span> &#123;</div><div class="line">            <span class="comment">/*****HERE*********/</span></div><div class="line">            Record[] records = <span class="keyword">new</span> Lookup(query, Type.SRV).run();</div><div class="line">            <span class="keyword">for</span> (Record record : records) &#123;</div><div class="line">                 SRVRecord srv = (SRVRecord) record;</div><div class="line">            String hostname = srv.getTarget().toString().replaceFirst(<span class="string">"\\.$"</span>, <span class="string">""</span>);</div><div class="line">            <span class="keyword">int</span> port = srv.getPort();</div><div class="line">            System.out.println(hostname + <span class="string">":"</span> + port);</div><div class="line">          &#125;</div><div class="line">          &#125; <span class="keyword">catch</span> (TextParseException e) &#123;</div><div class="line">             e.printStackTrace();</div><div class="line">          &#125;</div><div class="line">       &#125;</div><div class="line">      &#125;</div></pre></td></tr></table></figure></p>
+<h4 id="Java代码获取Srv-Record"><a href="#Java代码获取Srv-Record" class="headerlink" title="Java代码获取Srv Record"></a>Java代码获取Srv Record</h4><p>首先需要导入dnsJava的jar包，此处<a href="http://www.dnsjava.org/download/" target="_blank" rel="external">下载 dnsjava</a>。<br>Android 添加如下依赖：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile <span class="string">"dnsjava:dnsjava:2.1.6"</span></div></pre></td></tr></table></figure></p>
+<p>具体代码实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DNSLookup</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line"></div><div class="line">          String query = <span class="string">"_sip._tcp.example.com"</span> ;</div><div class="line"></div><div class="line">          <span class="keyword">try</span> &#123;</div><div class="line">            <span class="comment">/*****HERE*********/</span></div><div class="line">            Record[] records = <span class="keyword">new</span> Lookup(query, Type.SRV).run();</div><div class="line">            <span class="keyword">for</span> (Record record : records) &#123;</div><div class="line">                 SRVRecord srv = (SRVRecord) record;</div><div class="line">            String hostname = srv.getTarget().toString().replaceFirst(<span class="string">"\\.$"</span>, <span class="string">""</span>);</div><div class="line">            <span class="keyword">int</span> port = srv.getPort();</div><div class="line">            System.out.println(hostname + <span class="string">":"</span> + port);</div><div class="line">          &#125;</div><div class="line">          &#125; <span class="keyword">catch</span> (TextParseException e) &#123;</div><div class="line">             e.printStackTrace();</div><div class="line">          &#125;</div><div class="line">       &#125;</div><div class="line">      &#125;</div></pre></td></tr></table></figure>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>以上关于DNS的介绍仅仅只是设计到部分知识，后续或不断更新，如果以上有错误的地方还望提出指正。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
 <p><a href="https://en.wikipedia.org/wiki/Domain_Name_System" target="_blank" rel="external">Domain Name System</a><br><a href="https://en.wikipedia.org/wiki/SRV_record" target="_blank" rel="external">SRV record</a><br><a href="https://en.wikipedia.org/wiki/Zone_file" target="_blank" rel="external">Zone file</a><br><a href="http://www.2cto.com/net/201210/161839.html" target="_blank" rel="external">DNS扫盲系列</a></p>
@@ -497,6 +499,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/27/android-package/" rel="prev" title="Android 打包">
+                Android 打包 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -570,7 +576,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -581,7 +587,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -592,7 +598,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-count">48</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

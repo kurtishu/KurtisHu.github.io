@@ -97,7 +97,7 @@
 <meta property="og:url" content="http://kurtishu.github.io/2017/06/09/retrofit/index.html">
 <meta property="og:site_name" content="Kurtis&#39;s Notes">
 <meta property="og:description" content="Retrofit 简介 A type-safe HTTP client for Android and Java  Retrofit是Square公司开发的一款针对Java和Android平台开发的网络请求框架，目前的Retrofit2底层是基于OkHttp。Retrofit + OkHttp基本成为目前App开发网络请求的标配了。 Retrofit 使用加入Retrofit的依赖12345678">
-<meta property="og:updated_time" content="2017-06-12T02:32:35.325Z">
+<meta property="og:updated_time" content="2017-06-26T05:44:51.813Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Retrofit 入门以及源码分析">
 <meta name="twitter:description" content="Retrofit 简介 A type-safe HTTP client for Android and Java  Retrofit是Square公司开发的一款针对Java和Android平台开发的网络请求框架，目前的Retrofit2底层是基于OkHttp。Retrofit + OkHttp基本成为目前App开发网络请求的标配了。 Retrofit 使用加入Retrofit的依赖12345678">
@@ -430,6 +430,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Retrofit retrofit = <span class="keyword">new</span> Retrofit.Builder()</div><div class="line">  .baseUrl(GankConfig.API_HOST)</div><div class="line">  .addConverterFactory(ProtoConverterFactory.create())</div><div class="line">  .addConverterFactory(GsonConverterFactory.create())</div><div class="line">  <span class="comment">// 设置CallAdapter</span></div><div class="line">  .addCallAdapterFactory(RxJavaCallAdapterFactory.create())</div><div class="line">  .build();</div></pre></td></tr></table></figure>
 <p>上面代码创建了一个Retrofit对象，支持Proto和Gson两种数据格式，并且还支持RxJava<br>更多可以参考<a href="http://gank.io/post/56e80c2c677659311bed9841" target="_blank" rel="external">RxJava 与 Retrofit 结合的最佳实践</a></p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Retrofit就是在组装请求，把请求交给Adapter(OkHttp)去处理请求，然后拿回结果用Converter将原始数据转化成期望的对象。 通过Retrofit的封装，使得App网络请求层代码简洁，方便维护。</p>
+<h3 id="More"><a href="#More" class="headerlink" title="More"></a>More</h3><p><a href="http://www.jianshu.com/p/0c055ad46b6c" target="_blank" rel="external">Android：手把手带你深入剖析 Retrofit 2.0 源码</a></p>
 
       
     </div>
@@ -562,7 +563,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -573,7 +574,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -584,7 +585,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-count">48</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -653,7 +654,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Retrofit-简介"><span class="nav-number">1.</span> <span class="nav-text">Retrofit 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Retrofit-使用"><span class="nav-number">2.</span> <span class="nav-text">Retrofit 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#加入Retrofit的依赖"><span class="nav-number">2.1.</span> <span class="nav-text">加入Retrofit的依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ProGuard-配置"><span class="nav-number">2.2.</span> <span class="nav-text">ProGuard 配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建接口"><span class="nav-number">2.3.</span> <span class="nav-text">创建接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例化Retrofit对象"><span class="nav-number">2.4.</span> <span class="nav-text">实例化Retrofit对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">2.5.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Retrofit源码分析"><span class="nav-number">3.</span> <span class="nav-text">Retrofit源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Retofit成员变量分析"><span class="nav-number">3.1.</span> <span class="nav-text">Retofit成员变量分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Retrofit-核心代码"><span class="nav-number">3.2.</span> <span class="nav-text">Retrofit 核心代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取Platform"><span class="nav-number">3.3.</span> <span class="nav-text">获取Platform</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解析注解"><span class="nav-number">3.4.</span> <span class="nav-text">解析注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何在Retrofit中使用RxJava"><span class="nav-number">3.5.</span> <span class="nav-text">如何在Retrofit中使用RxJava</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Retrofit-简介"><span class="nav-number">1.</span> <span class="nav-text">Retrofit 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Retrofit-使用"><span class="nav-number">2.</span> <span class="nav-text">Retrofit 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#加入Retrofit的依赖"><span class="nav-number">2.1.</span> <span class="nav-text">加入Retrofit的依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ProGuard-配置"><span class="nav-number">2.2.</span> <span class="nav-text">ProGuard 配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建接口"><span class="nav-number">2.3.</span> <span class="nav-text">创建接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例化Retrofit对象"><span class="nav-number">2.4.</span> <span class="nav-text">实例化Retrofit对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">2.5.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Retrofit源码分析"><span class="nav-number">3.</span> <span class="nav-text">Retrofit源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Retofit成员变量分析"><span class="nav-number">3.1.</span> <span class="nav-text">Retofit成员变量分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Retrofit-核心代码"><span class="nav-number">3.2.</span> <span class="nav-text">Retrofit 核心代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取Platform"><span class="nav-number">3.3.</span> <span class="nav-text">获取Platform</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解析注解"><span class="nav-number">3.4.</span> <span class="nav-text">解析注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何在Retrofit中使用RxJava"><span class="nav-number">3.5.</span> <span class="nav-text">如何在Retrofit中使用RxJava</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#More"><span class="nav-number">5.</span> <span class="nav-text">More</span></a></li></ol></div>
             
 
           </div>

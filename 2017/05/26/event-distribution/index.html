@@ -99,7 +99,7 @@
 <meta property="og:description" content="在Android中事件分发是很重要的一块知识，了解并熟悉整套的分发机制有助于更好的分析各种点击滑动失效问题，更好去扩展控件的事件功能和开发自定义控件，同时事件分发机制也是Android面试必问考点之一。 MotionEvent事件初探MotionEvent在Android View事件分发、处理过程中很重要的一个类，我们对屏幕的点击，滑动，抬起等一系的动作都是由一个一个MotionEvent对象组">
 <meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_png/y5HvXaQmpqnNkrnc8wQ9gAQcm76IKQPD7HDXqyRAGfepiahzaTJYx1K5KTEiaR0KgRWvmAIa7ylM6iaAGkvXMZvLg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1">
 <meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_png/y5HvXaQmpqnNkrnc8wQ9gAQcm76IKQPDO5VQXDR85NbaFHVGmKME4G3xMsXe0o74O0eRuMW6LHDjm2H17NqNiaQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1">
-<meta property="og:updated_time" content="2017-05-27T08:03:33.692Z">
+<meta property="og:updated_time" content="2017-06-20T05:08:34.615Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 事件分发机制">
 <meta name="twitter:description" content="在Android中事件分发是很重要的一块知识，了解并熟悉整套的分发机制有助于更好的分析各种点击滑动失效问题，更好去扩展控件的事件功能和开发自定义控件，同时事件分发机制也是Android面试必问考点之一。 MotionEvent事件初探MotionEvent在Android View事件分发、处理过程中很重要的一个类，我们对屏幕的点击，滑动，抬起等一系的动作都是由一个一个MotionEvent对象组">
@@ -436,7 +436,7 @@
 <p>关于onLongClick就稍微复杂一些，通过以上源码可以看到，当用户按下时（ACTION_DOWN）执行了checkForLongClick方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">checkForLongClick</span><span class="params">(<span class="keyword">int</span> delayOffset, <span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> ((mViewFlags &amp; LONG_CLICKABLE) == LONG_CLICKABLE) &#123;</div><div class="line">            mHasPerformedLongPress = <span class="keyword">false</span>;</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (mPendingCheckForLongPress == <span class="keyword">null</span>) &#123;</div><div class="line">                mPendingCheckForLongPress = <span class="keyword">new</span> CheckForLongPress();</div><div class="line">            &#125;</div><div class="line">            mPendingCheckForLongPress.setAnchor(x, y);</div><div class="line">            mPendingCheckForLongPress.rememberWindowAttachCount();</div><div class="line">            postDelayed(mPendingCheckForLongPress,</div><div class="line">                    ViewConfiguration.getLongPressTimeout() - delayOffset);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
 <p>该方法实际就是创建了个CheckForLongPress 的 Runnable， 它的run方法里面就是performLongClick(OnLongClickListener的回调就是在该方法中执行的)，然后把它放入一个HandlerActionQueue队列中，让它延迟一段时间（DEFAULT_LONG_PRESS_TIMEOUT = 500）以后执行。<br>同时如果500毫秒之内，ACTION_UP或者ACTION_CANCEL执行了，就会移除该Runnable。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
-<p><a href="http://www.jianshu.com/p/e99b5e8bd67b" target="_blank" rel="external">图解 Android 事件分发机制</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&amp;mid=2247484615&amp;idx=1&amp;sn=d34d4035e6ecf03abbead56cd9eafa4c&amp;chksm=96cda58aa1ba2c9c5663ff1f3e6a2ef72a64db81c813c74b7ebbc389fbcbb0ce3b3eaefe85a5&amp;scene=21#wechat_redirect" target="_blank" rel="external">一文读懂Android View事件分发机制</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&amp;mid=2247484662&amp;idx=1&amp;sn=7b8a8831b37975936a9ea95c7a54d52a&amp;chksm=96cda5bba1ba2cad32081316ad0771aab42fa64782f7b2c726acc2bb5809fb04f4ef7088ab29&amp;mpshare=1&amp;scene=23&amp;srcid=0527RJ2k4z4mAQyPQqhbtYIG#rd" target="_blank" rel="external">一文解决Android View滑动冲突</a></p>
+<p><a href="https://mp.weixin.qq.com/s/rgQrJv8ghXO2HFt5Y5ISqA" target="_blank" rel="external">可能是讲解Android事件分发最好的文章</a><br><a href="http://www.jianshu.com/p/e99b5e8bd67b" target="_blank" rel="external">图解 Android 事件分发机制</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&amp;mid=2247484615&amp;idx=1&amp;sn=d34d4035e6ecf03abbead56cd9eafa4c&amp;chksm=96cda58aa1ba2c9c5663ff1f3e6a2ef72a64db81c813c74b7ebbc389fbcbb0ce3b3eaefe85a5&amp;scene=21#wechat_redirect" target="_blank" rel="external">一文读懂Android View事件分发机制</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&amp;mid=2247484662&amp;idx=1&amp;sn=7b8a8831b37975936a9ea95c7a54d52a&amp;chksm=96cda5bba1ba2cad32081316ad0771aab42fa64782f7b2c726acc2bb5809fb04f4ef7088ab29&amp;mpshare=1&amp;scene=23&amp;srcid=0527RJ2k4z4mAQyPQqhbtYIG#rd" target="_blank" rel="external">一文解决Android View滑动冲突</a></p>
 </blockquote>
 
       
@@ -570,7 +570,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -581,7 +581,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -592,7 +592,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-count">48</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

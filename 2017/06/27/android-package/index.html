@@ -1,0 +1,1002 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="打包,package," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/uploads/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Android打包也称作构建，及Android 构建系统编译应用资源和源代码，然后将它们打包成可供您测试、部署、签署和分发的 APK之前一直使用的Ant作为Android构建工具，目前基本上使用Gradle 这一高级构建工具包来自动化执行和管理构建流程的。 Android 打包流程构建流程涉及许多将您的项目转换成 Android 应用软件包 (APK) 的工具和流程。如图所示，典型 Android">
+<meta name="keywords" content="打包,package">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 打包">
+<meta property="og:url" content="http://kurtishu.github.io/2017/06/27/android-package/index.html">
+<meta property="og:site_name" content="Kurtis&#39;s Notes">
+<meta property="og:description" content="Android打包也称作构建，及Android 构建系统编译应用资源和源代码，然后将它们打包成可供您测试、部署、签署和分发的 APK之前一直使用的Ant作为Android构建工具，目前基本上使用Gradle 这一高级构建工具包来自动化执行和管理构建流程的。 Android 打包流程构建流程涉及许多将您的项目转换成 Android 应用软件包 (APK) 的工具和流程。如图所示，典型 Android">
+<meta property="og:image" content="https://developer.android.google.cn/images/tools/studio/build-process_2x.png">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2016/11/29/8643b670708aa421a9883df897496289">
+<meta property="og:updated_time" content="2017-06-28T09:24:31.131Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 打包">
+<meta name="twitter:description" content="Android打包也称作构建，及Android 构建系统编译应用资源和源代码，然后将它们打包成可供您测试、部署、签署和分发的 APK之前一直使用的Ant作为Android构建工具，目前基本上使用Gradle 这一高级构建工具包来自动化执行和管理构建流程的。 Android 打包流程构建流程涉及许多将您的项目转换成 Android 应用软件包 (APK) 的工具和流程。如图所示，典型 Android">
+<meta name="twitter:image" content="https://developer.android.google.cn/images/tools/studio/build-process_2x.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kurtishu.github.io/2017/06/27/android-package/"/>
+
+
+
+
+
+  <title>Android 打包 | Kurtis's Notes</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kurtis's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Simple notes</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2017/06/27/android-package/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kurtis Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kurtis's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android 打包</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-27T17:15:07+08:00">
+                2017-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/其他/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/06/27/android-package/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/27/android-package/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/06/27/android-package/" class="leancloud_visitors" data-flag-title="Android 打包">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 访问量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Android打包也称作构建，及Android 构建系统编译应用资源和源代码，然后将它们打包成可供您测试、部署、签署和分发的 APK<br>之前一直使用的Ant作为Android构建工具，目前基本上使用Gradle 这一高级构建工具包来自动化执行和管理构建流程的。</p>
+<h3 id="Android-打包流程"><a href="#Android-打包流程" class="headerlink" title="Android 打包流程"></a>Android 打包流程</h3><p>构建流程涉及许多将您的项目转换成 Android 应用软件包 (APK) 的工具和流程。<br><img src="https://developer.android.google.cn/images/tools/studio/build-process_2x.png" alt="典型 Android 应用模块的构建流程"><br>如图所示，典型 Android 应用模块的构建流程通常依循下列步骤：</p>
+<ul>
+<li>[x] 编译器将您的源代码转换成 DEX（Dalvik Executable) 文件（其中包括运行在 Android 设备上的字节码），将所有其他内容转换成已编译资源。</li>
+<li>[x] APK 打包器将 DEX 文件和已编译资源合并成单个 APK。不过，必须先签署 APK，才能将应用安装并部署到 Android 设备上。</li>
+<li>[x] APK 打包器使用调试或发布密钥库签署您的 APK：<ul>
+<li>如果您构建的是调试版本的应用（即专用于测试和分析的应用），打包器会使用调试密钥库签署您的应用。Android Studio 自动使用调试密钥库配置新项目。</li>
+<li>如果您构建的是打算向外发布的发布版本应用，打包器会使用发布密钥库签署您的应用。要创建发布密钥库，请阅读在 Android Studio 中签署您的应用。</li>
+</ul>
+</li>
+<li>[x] 在生成最终 APK 之前，打包器会使用 zipalign 工具对应用进行优化，减少其在设备上运行时的内存占用。</li>
+</ul>
+<p>构建流程结束时，您将获得可用来进行部署、测试的调试 APK，或者可用来发布给外部用户的发布 APK。</p>
+<h3 id="使用Ant打包"><a href="#使用Ant打包" class="headerlink" title="使用Ant打包"></a>使用Ant打包</h3><p>使用Eclipse的时期，都是借助Ant作为Android的构建工具，不过现在基本上都是使用Android studio作为开发工具，并使用更强大的Gradle构建工具，因此这个构建方式已经被淘汰了。</p>
+<h4 id="Ant安装"><a href="#Ant安装" class="headerlink" title="Ant安装"></a>Ant安装</h4><p>ant的安装比较简单，下载ant压缩包  <a href="http://ant.apache.org" target="_blank" rel="external">http://ant.apache.org</a>  ，配置环境变量。</p>
+<h4 id="为Android项目生成Ant配置build-xml"><a href="#为Android项目生成Ant配置build-xml" class="headerlink" title="为Android项目生成Ant配置build.xml"></a>为Android项目生成Ant配置build.xml</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">android update project --name &lt;project_name&gt; --target &lt;target_ID&gt;--path &lt;path_to_your_project&gt;</div></pre></td></tr></table></figure>
+<p>项目根目录下多了build.xml，以及local.properties两个文件。</p>
+<p>　　其中local.properties写明了我们的android SDK的目录(其实是环境变量ANDROID_HOME的值，所以如果环境变量中没有这个的，请增加)。<br>　　build.xml则是ant构建的最重要脚本，打开一看，发现里面其实大部分都是写注释，有用的没几行，这是因为生成的这个build.xml引用了android SDK自带的构建脚本，具体目录是{sdk目录}/tools/ant/build.xml 。</p>
+<h4 id="编译打包项目"><a href="#编译打包项目" class="headerlink" title="编译打包项目"></a>编译打包项目</h4><p>在项目的根目录下建一个ant.properties文件，输入如下内容，其中keystore密码和alias密码可以不指定（防泄漏），那么在命令执行的过程中会要求你输入<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#keystore的路径，必须使用正斜杠  </div><div class="line">key.store= "E:/wp_android_sample/me.key" </div><div class="line">#keystore的密码  </div><div class="line">key.store.password=*****</div><div class="line">#alias名  </div><div class="line">key.alias=me</div><div class="line">#alias密码  </div><div class="line">key.alias.password=******</div></pre></td></tr></table></figure></p>
+<p>在项目根目录下运行 ant release 命令就会帮你生成一个经过签名和aligned的apk，生成的apk（your_project_name-release.apk）在bin目录下</p>
+<h3 id="使用gradle-打包"><a href="#使用gradle-打包" class="headerlink" title="使用gradle 打包"></a>使用gradle 打包</h3><p>通常有2种打包方式：</p>
+<p>Android Studio图形界面 点击run按钮<br>命令行方式 gradlew assembleDebug, gradlew assembleRelease<br>方式1使用自动生成的debug keystore签名；方式2如果是Release包使用release keystore签名，如果是Debug包则使用debug keystore签名。</p>
+<h4 id="配置-Gradle-以签署您的-APK"><a href="#配置-Gradle-以签署您的-APK" class="headerlink" title="配置 Gradle 以签署您的 APK"></a>配置 Gradle 以签署您的 APK</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    ...</div><div class="line">    defaultConfig &#123; ... &#125;</div><div class="line">    signingConfigs &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(<span class="string">"my-release-key.jks"</span>)</span></span></div><div class="line">            storePassword "password"</div><div class="line">            keyAlias "my-alias"</div><div class="line">            keyPassword "password"</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            signingConfig signingConfigs.release</div><div class="line">            ...</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Build项目"><a href="#Build项目" class="headerlink" title="Build项目"></a>Build项目</h4><p>在您的项目根目录中打开一个命令行，并调用 assembleRelease 任务：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gradlew assembleRelease</div></pre></td></tr></table></figure></p>
+<p>这将在 project_name/module_name/build/outputs/apk/ 中创建一个名为 module_name-release.apk 的 APK。这个 APK 文件已经使用 build.gradle 文件中指定的私钥签署，并使用 zipalign 进行了对齐。</p>
+<h3 id="手动签名"><a href="#手动签名" class="headerlink" title="手动签名"></a>手动签名</h3><h4 id="生成一个私钥"><a href="#生成一个私钥" class="headerlink" title="生成一个私钥"></a>生成一个私钥</h4><p>使用 keytool 生成一个私钥。例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">keytool -genkey -v -keystore my-release-key.jks</div><div class="line">-keyalg RSA -keysize <span class="number">2048</span> -validity <span class="number">10000</span> -alias my-alias</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注：keytool 位于 JDK 中的 bin/ 目录中。要从 Android Studio 查找您的 JDK，选择 File &gt; Project Structure，然后点击 SDK Location，您将看到 JDK location.</p>
+<h4 id="zipalign-对齐"><a href="#zipalign-对齐" class="headerlink" title="zipalign 对齐"></a>zipalign 对齐</h4><p>使用 zipalign 对齐未签署的 APK<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zipalign -v -p <span class="number">4</span> my-app-unsigned.apk my-app-unsigned-aligned.apk</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>zipalign 可以确保所有未压缩的数据的开头均相对于文件开头部分执行特定的字节对齐，这样可减少应用消耗的 RAM 量。</p>
+<h4 id="通过-apksigner-签名"><a href="#通过-apksigner-签名" class="headerlink" title="通过 apksigner 签名"></a>通过 apksigner 签名</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apksigner sign --ks my-release-key.jks --out my-app-release.apk my-app-unsigned-aligned.apk</div></pre></td></tr></table></figure>
+<h4 id="验证您的-APK-是否已签署："><a href="#验证您的-APK-是否已签署：" class="headerlink" title="验证您的 APK 是否已签署："></a>验证您的 APK 是否已签署：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apksigner verify my-app-release.apk</div></pre></td></tr></table></figure>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>在做自动化打包的时候，有时候需要获取版本控制工具的版本号，以此来作为将要构建的APK的versionName<br>一下列出了两个常用的版本控制工具SVN、Git获取版本号的方法：</p>
+<h4 id="SVN获取版本号"><a href="#SVN获取版本号" class="headerlink" title="SVN获取版本号"></a>SVN获取版本号</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">uildscript &#123;</div><div class="line"></div><div class="line">    dependencies &#123;</div><div class="line">	    <span class="comment">// 添加SVN的插件</span></div><div class="line">        classpath group: <span class="string">'org.tmatesoft.svnkit'</span>, name: <span class="string">'svnkit'</span>, version: <span class="string">'1.8.9'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">def <span class="title">getSvnRevision</span><span class="params">()</span> </span>&#123;</div><div class="line">    org.tmatesoft.svn.core.wc.ISVNOptions options = SVNWCUtil.createDefaultOptions(<span class="keyword">true</span>);</div><div class="line">    org.tmatesoft.svn.core.wc.SVNClientManager clientManager = SVNClientManager.newInstance(options);</div><div class="line">    org.tmatesoft.svn.core.wc.SVNStatusClient statusClient = clientManager.getStatusClient();</div><div class="line">    org.tmatesoft.svn.core.wc.SVNStatus status = statusClient.doStatus(projectDir, <span class="keyword">false</span>);</div><div class="line">    org.tmatesoft.svn.core.wc.SVNRevision revision = status.getRevision();</div><div class="line">    <span class="keyword">return</span> revision.getNumber();</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">ext &#123;</div><div class="line">    <span class="comment">// JDK version</span></div><div class="line">    sourceCompatibility = JavaVersion.VERSION_1_8</div><div class="line">    targetCompatibility = JavaVersion.VERSION_1_8</div><div class="line"></div><div class="line">    <span class="comment">// App version</span></div><div class="line">    appVersion = <span class="string">"2.0.0.REVISION"</span></div><div class="line">    appVersionCode = <span class="number">123456</span></div><div class="line">    appVersionName = appVersion.replace(<span class="string">".REVISION"</span>, <span class="string">"."</span> + getSvnRevision())</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Git-获取版本号"><a href="#Git-获取版本号" class="headerlink" title="Git 获取版本号"></a>Git 获取版本号</h3><p>采用java来实行process<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function">def <span class="title">getGitVersion</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">'git rev-parse --short HEAD'</span>.execute().text.trim()</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果我们要把取到的Git提交的version显示到界面上</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">defaultConfig &#123;</div><div class="line">	minSdkVersion rootProject.ext.minSdkVersion</div><div class="line">	targetSdkVersion rootProject.ext.targetSdkVersion</div><div class="line">	buildConfigField <span class="string">"String"</span>, <span class="string">"GIT_REVISION"</span>, <span class="string">"\"$&#123;getGitVersion()&#125;\""</span></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>这样系统会自动生成BuildConfig这个类，类里面就有</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String GIT_REVISION = <span class="string">"0"</span>;</div><div class="line">  </div><div class="line">  <span class="comment">// 获取直接赋值给AppVersionName</span></div><div class="line">  ext &#123;</div><div class="line">    <span class="comment">// JDK version</span></div><div class="line">    sourceCompatibility = JavaVersion.VERSION_1_8</div><div class="line">    targetCompatibility = JavaVersion.VERSION_1_8</div><div class="line"></div><div class="line">    <span class="comment">// App version</span></div><div class="line">    appVersion = <span class="string">"2.0.0.REVISION"</span></div><div class="line">    appVersionCode = <span class="number">123456</span></div><div class="line">    appVersionName = appVersion.replace(<span class="string">".REVISION"</span>, <span class="string">"."</span> + getGitVersion())</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>详细的流程图<br><img src="https://user-gold-cdn.xitu.io/2016/11/29/8643b670708aa421a9883df897496289" alt="流程图"><br>我们可以将整个打包过程概括为以下几步：</p>
+<ol>
+<li>通过aapt打包res资源文件，生成R.java、resources.arsc和res文件（二进制 &amp; 非二进制如res/raw和pic保持原样）</li>
+<li>处理.aidl文件，生成对应的Java接口文件</li>
+<li>通过Java Compiler编译R.java、Java接口文件、Java源文件，生成.class文件</li>
+<li>通过dex命令，将.class文件和第三方库中的.class文件处理生成classes.dex</li>
+<li>通过apkbuilder工具，将aapt生成的resources.arsc和res文件、assets文件和classes.dex一起打包生成apk</li>
+<li>通过zipalign工具，对apk进行对齐处理。</li>
+<li>通过apksigner/Jarsigner工具，对上面的apk进行debug或release签名</li>
+</ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://developer.android.google.cn/studio/build/index.html" target="_blank" rel="external">https://developer.android.google.cn/studio/build/index.html</a><br><a href="https://developer.android.google.cn/studio/publish/app-signing.html" target="_blank" rel="external">https://developer.android.google.cn/studio/publish/app-signing.html</a><br><a href="https://developer.android.google.cn/studio/publish/app-signing.html#release-mode" target="_blank" rel="external">https://developer.android.google.cn/studio/publish/app-signing.html#release-mode</a><br><a href="https://juejin.im/entry/57a5bc735bbb500064246d00" target="_blank" rel="external">Android 打包系列——打包流程梳理</a><br><a href="https://developer.android.google.cn/studio/command-line/index.html" target="_blank" rel="external">https://developer.android.google.cn/studio/command-line/index.html</a><br><a href="https://developer.android.google.cn/studio/command-line/apksigner.html" target="_blank" rel="external">https://developer.android.google.cn/studio/command-line/apksigner.html</a><br><a href="http://www.cnblogs.com/yaozhongxiao/p/3523061.html" target="_blank" rel="external">Ant自动编译打包&amp;发布 android项目</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/打包/" rel="tag"># 打包</a>
+          
+            <a href="/tags/package/" rel="tag"># package</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/13/dns/" rel="next" title="DNS 相关知识">
+                <i class="fa fa-chevron-left"></i> DNS 相关知识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="Kurtis Hu" />
+          <p class="site-author-name" itemprop="name">Kurtis Hu</p>
+           
+              <p class="site-description motion-element" itemprop="description">Everyone should have a dream!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kurtishu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/2a75d9856a6d" target="_blank" title="JianShu">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  JianShu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://gank.io/" title="GankIO" target="_blank">GankIO</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-打包流程"><span class="nav-number">1.</span> <span class="nav-text">Android 打包流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Ant打包"><span class="nav-number">2.</span> <span class="nav-text">使用Ant打包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Ant安装"><span class="nav-number">2.1.</span> <span class="nav-text">Ant安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为Android项目生成Ant配置build-xml"><span class="nav-number">2.2.</span> <span class="nav-text">为Android项目生成Ant配置build.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译打包项目"><span class="nav-number">2.3.</span> <span class="nav-text">编译打包项目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用gradle-打包"><span class="nav-number">3.</span> <span class="nav-text">使用gradle 打包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-Gradle-以签署您的-APK"><span class="nav-number">3.1.</span> <span class="nav-text">配置 Gradle 以签署您的 APK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Build项目"><span class="nav-number">3.2.</span> <span class="nav-text">Build项目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动签名"><span class="nav-number">4.</span> <span class="nav-text">手动签名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成一个私钥"><span class="nav-number">4.1.</span> <span class="nav-text">生成一个私钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zipalign-对齐"><span class="nav-number">4.2.</span> <span class="nav-text">zipalign 对齐</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过-apksigner-签名"><span class="nav-number">4.3.</span> <span class="nav-text">通过 apksigner 签名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证您的-APK-是否已签署："><span class="nav-number">4.4.</span> <span class="nav-text">验证您的 APK 是否已签署：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SVN获取版本号"><span class="nav-number">5.1.</span> <span class="nav-text">SVN获取版本号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-获取版本号"><span class="nav-number">6.</span> <span class="nav-text">Git 获取版本号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kurtis Hu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt31LeFJ';
+      var conf = '222f1650ed5b1208d7436f6992204017';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("1YKadwc8LWJMRRBdlGWVT3Vt-gzGzoHsz", "YAyQ5TrFrlyB6rs69pqe1fbV");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
