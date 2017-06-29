@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="SSL,HTTPS,对称加密,非对称加密,CA 证书," />
+  <meta name="keywords" content="打包,反编译," />
 
 
 
@@ -90,20 +90,20 @@
 
 
 
-<meta name="description" content="什么是HTTPS在说HTTPS之前先说说什么是HTTP，HTTP就是我们平时浏览网页时候使用的一种协议。HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全。为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密，从而就诞生了HTTPS。HTTPS（全称：Hyper Tex">
-<meta name="keywords" content="SSL,HTTPS,对称加密,非对称加密,CA 证书">
+<meta name="description" content="在Android开发过程中有时候会好奇想知道别人的项目是怎么架构的，用到那些第三方库，或者某一个功能是怎么实现的等等。无奈我们只有别人的APK文件，没法看到源码，这时候就需要用到反编译技术了。 APK编译的原理说起反编译首先要只要APK是怎么被编译出来的，也就是说要了解APK的构建原理以及步骤具体可以参考《Android 打包那些事》 APK内容分析APK的实质是一个压缩文件，类似我们常见的zip">
+<meta name="keywords" content="打包,反编译">
 <meta property="og:type" content="article">
-<meta property="og:title" content="聊聊HTTPS">
-<meta property="og:url" content="http://kurtishu.github.io/2016/03/16/https/index.html">
+<meta property="og:title" content="Android 反编译">
+<meta property="og:url" content="http://kurtishu.github.io/2017/06/19/decompilation/index.html">
 <meta property="og:site_name" content="Kurtis&#39;s Notes">
-<meta property="og:description" content="什么是HTTPS在说HTTPS之前先说说什么是HTTP，HTTP就是我们平时浏览网页时候使用的一种协议。HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全。为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密，从而就诞生了HTTPS。HTTPS（全称：Hyper Tex">
-<meta property="og:image" content="http://ww2.sinaimg.cn/mw690/6941baebjw1erta80zxylj20l80f0q44.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/mw690/6941baebjw1erta7ycyf8j215n0ridmj.jpg">
-<meta property="og:updated_time" content="2017-05-26T01:07:29.252Z">
+<meta property="og:description" content="在Android开发过程中有时候会好奇想知道别人的项目是怎么架构的，用到那些第三方库，或者某一个功能是怎么实现的等等。无奈我们只有别人的APK文件，没法看到源码，这时候就需要用到反编译技术了。 APK编译的原理说起反编译首先要只要APK是怎么被编译出来的，也就是说要了解APK的构建原理以及步骤具体可以参考《Android 打包那些事》 APK内容分析APK的实质是一个压缩文件，类似我们常见的zip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1430132-9db81651ccbf76a4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1430132-4d0b0120a2cf6429.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-06-29T08:37:20.805Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="聊聊HTTPS">
-<meta name="twitter:description" content="什么是HTTPS在说HTTPS之前先说说什么是HTTP，HTTP就是我们平时浏览网页时候使用的一种协议。HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全。为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密，从而就诞生了HTTPS。HTTPS（全称：Hyper Tex">
-<meta name="twitter:image" content="http://ww2.sinaimg.cn/mw690/6941baebjw1erta80zxylj20l80f0q44.jpg">
+<meta name="twitter:title" content="Android 反编译">
+<meta name="twitter:description" content="在Android开发过程中有时候会好奇想知道别人的项目是怎么架构的，用到那些第三方库，或者某一个功能是怎么实现的等等。无奈我们只有别人的APK文件，没法看到源码，这时候就需要用到反编译技术了。 APK编译的原理说起反编译首先要只要APK是怎么被编译出来的，也就是说要了解APK的构建原理以及步骤具体可以参考《Android 打包那些事》 APK内容分析APK的实质是一个压缩文件，类似我们常见的zip">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1430132-9db81651ccbf76a4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://kurtishu.github.io/2016/03/16/https/"/>
+  <link rel="canonical" href="http://kurtishu.github.io/2017/06/19/decompilation/"/>
 
 
 
 
 
-  <title>聊聊HTTPS | Kurtis's Notes</title>
+  <title>Android 反编译 | Kurtis's Notes</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -277,7 +277,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2016/03/16/https/">
+    <link itemprop="mainEntityOfPage" href="http://kurtishu.github.io/2017/06/19/decompilation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Kurtis Hu">
@@ -294,7 +294,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">聊聊HTTPS</h1>
+          <h1 class="post-title" itemprop="name headline">Android 反编译</h1>
         
 
         <div class="post-meta">
@@ -306,8 +306,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-16T00:00:00+08:00">
-                2016-03-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-19T15:52:52+08:00">
+                2017-06-19
               </time>
             
 
@@ -329,8 +329,19 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Security/" itemprop="url" rel="index">
-                    <span itemprop="name">Security</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/其他/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
                   </a>
                 </span>
 
@@ -348,8 +359,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2016/03/16/https/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2016/03/16/https/" itemprop="commentsCount"></span>
+                <a href="/2017/06/19/decompilation/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/06/19/decompilation/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -357,7 +368,7 @@
 
           
           
-             <span id="/2016/03/16/https/" class="leancloud_visitors" data-flag-title="聊聊HTTPS">
+             <span id="/2017/06/19/decompilation/" class="leancloud_visitors" data-flag-title="Android 反编译">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -390,19 +401,46 @@
       
 
       
-        <h3 id="什么是HTTPS"><a href="#什么是HTTPS" class="headerlink" title="什么是HTTPS"></a>什么是HTTPS</h3><p>在说HTTPS之前先说说什么是HTTP，HTTP就是我们平时浏览网页时候使用的一种协议。HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全。为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密，从而就诞生了HTTPS。<br>HTTPS（全称：Hyper Text Transfer Protocol over Secure Socket Layer），是以安全为目标的HTTP通道，简单讲是HTTP的安全版。 实际上我们现在的HTTPS都是用的TLS协议，TLS（”Transport Layer Security”），中文叫做”传输层安全协议” 或者”传输层加密协议”, 它是IETF将SSL标准化之后更改的名字。SSL/TLS 这两者可以视作同一个东西的不同阶段。</p>
-<h3 id="HTTPS的工作原理"><a href="#HTTPS的工作原理" class="headerlink" title="HTTPS的工作原理"></a>HTTPS的工作原理</h3><p>HTTPS在传输数据之前需要客户端（浏览器）与服务端（网站）之间进行一次握手，在握手过程中将确立双方加密传输数据的密码信息。TLS/SSL协议不仅仅是一套加密传输的协议,使用了非对称加密，它使用了对称加密以及HASH算法。<br><strong> 握手过程的简单描述如下： </strong><br><img src="http://ww2.sinaimg.cn/mw690/6941baebjw1erta80zxylj20l80f0q44.jpg" alt=""><br>①客户端的浏览器向服务器传送客户端SSL 协议的版本号，加密算法的种类，产生的随机数，以及其他服务器和客户端之间通讯所需要的各种信息。<br>②服务器向客户端传送SSL 协议的版本号，加密算法的种类，随机数以及其他相关信息，同时服务器还将向客户端传送自己的证书。<br>③客户利用服务器传过来的信息验证服务器的合法性，服务器的合法性包括：证书是否过期，发行服务器证书的CA 是否可靠，发行者证书的公钥能否正确解开服务器证书的“发行者的数字签名”，服务器证书上的域名是否和服务器的实际域名相匹配。如果合法性验证没有通过，通讯将断开；如果合法性验证通过，将继续进行第四步。<br>④用户端随机产生一个用于后面通讯的“对称密码”，然后用服务器的公钥（服务器的公钥从步骤②中的服务器的证书中获得）对其加密，然后将加密后的“预主密码”传给服务器。<br>⑤如果服务器要求客户的身份认证（在握手过程中为可选），用户可以建立一个随机数然后对其进行数据签名，将这个含有签名的随机数和客户自己的证书以及加密过的“预主密码”一起传给服务器。<br>⑥如果服务器要求客户的身份认证，服务器必须检验客户证书和签名随机数的合法性，具体的合法性验证过程包括：客户的证书使用日期是否有效，为客户提供证书的CA 是否可靠，发行CA 的公钥能否正确解开客户证书的发行CA 的数字签名，检查客户的证书是否在证书废止列表（CRL）中。检验如果没有通过，通讯立刻中断；如果验证通过，服务器将用自己的私钥解开加密的“预主密码”，然后执行一系列步骤来产生主通讯密码（客户端也将通过同样的方法产生相同的主通讯密码）。<br>⑦服务器和客户端用相同的主密码即“通话密码”，一个对称密钥用于SSL 协议的安全数据通讯的加解密通讯。同时在SSL 通讯过程中还要完成数据通讯的完整性，防止数据通讯中的任何变化。<br>⑧客户端向服务器端发出信息，指明后面的数据通讯将使用的步骤⑦中的主密码为对称密钥，同时通知服务器客户端的握手过程结束。<br>⑨服务器向客户端发出信息，指明后面的数据通讯将使用的步骤⑦中的主密码为对称密钥，同时通知客户端服务器端的握手过程结束。<br>⑩SSL 的握手部分结束，SSL 安全通道的数据通讯开始，客户和服务器开始使用相同的对称密钥进行数据通讯，同时进行通讯完整性的检验。   </p>
-<h3 id="”对称加密“和“非对称加密”的概念"><a href="#”对称加密“和“非对称加密”的概念" class="headerlink" title="”对称加密“和“非对称加密”的概念"></a>”对称加密“和“非对称加密”的概念</h3><h4 id="”对称加密“"><a href="#”对称加密“" class="headerlink" title="”对称加密“"></a>”对称加密“</h4><p>   所谓的“对称加密技术”，意思就是说：“加密”和“解密”使用【相同的】密钥。</p>
-<h4 id="”非对称加密“"><a href="#”非对称加密“" class="headerlink" title="”非对称加密“"></a>”非对称加密“</h4><p>   所谓的“非对称加密技术”，意思就是说：“加密”和“解密”使用【不同的】密钥。 不同的钥匙指的是公钥和私钥，公钥是暴露给被人用的，比如我们从网站的证书中获取的就是公钥，私钥是私人持有，绝不对外公开的。</p>
-<h3 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h3><p>数字证书是一个经证书授权中心数字签名的包含公开密钥拥有者信息以及公开密钥的文件。<br><strong> 数字证书有两个作用 </strong></p>
+        <p>在Android开发过程中有时候会好奇想知道别人的项目是怎么架构的，用到那些第三方库，或者某一个功能是怎么实现的等等。<br>无奈我们只有别人的APK文件，没法看到源码，这时候就需要用到反编译技术了。</p>
+<h3 id="APK编译的原理"><a href="#APK编译的原理" class="headerlink" title="APK编译的原理"></a>APK编译的原理</h3><p>说起反编译首先要只要APK是怎么被编译出来的，也就是说要了解APK的构建原理以及步骤<br>具体可以参考<a href="http://kurtishu.github.io/2017/06/27/android-package">《Android 打包那些事》</a></p>
+<h4 id="APK内容分析"><a href="#APK内容分析" class="headerlink" title="APK内容分析"></a>APK内容分析</h4><p>APK的实质是一个压缩文件，类似我们常见的zip、rar格式的文件，可以直接加压缩，下图为APK解压缩的文件结构图：<br><img src="http://upload-images.jianshu.io/upload_images/1430132-9db81651ccbf76a4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="APK 解压缩后"></p>
+<ul>
+<li>assets文件夹：原始资源文件夹，对应着Android工程的assets文件夹，一般用于存放原始的图片、txt、css等资源文件。</li>
+<li>lib：存放应用需要的引用第三方SDK的so库。比如一些底层实现的图片处理、音视频处理、数据加密的库等。而该文件夹下有时会多一个层级，这是根据不同CPU 型号而划分的，如 ARM，ARM-v7a，x86等。</li>
+<li>META-INF：保存apk签名信息，保证apk的完整性和安全性。</li>
+<li>res：资源文件夹，其中的资源文件包括了布局(layout)，常量值(values)，颜色值(colors)，尺寸值(dimens)，字符串(strings)，自定义样式(styles)等。</li>
+<li>AndroidManifest.xml文件：全局配置文件，里面包含了版本信息、activity、broadcasts等基本配置。不过这里的是二进制的xml文件，无法直接查看，需要反编译后才能查看。</li>
+<li>classes.dex文件：这是安卓代码的核心部分，dex是在Dalvik虚拟机上可以执行的文件。这里有classes.dex和classes2.dex两个文件，说明工程的方法数较多，进行了dex拆分。</li>
+<li>resources.arsc文件：记录资源文件和资源id的映射关系。</li>
+</ul>
+<p>对于assets和res里面的一些资源文件例如图片文件是可以直接查看的(有些APK解压后图片也是无法被查看)，但是其他例如dex文件就需要借助其他的工具才能查看。</p>
+<h3 id="反编译工具"><a href="#反编译工具" class="headerlink" title="反编译工具"></a>反编译工具</h3><h4 id="Apktools-目前最强大的反编译工具"><a href="#Apktools-目前最强大的反编译工具" class="headerlink" title="Apktools-目前最强大的反编译工具"></a>Apktools-目前最强大的反编译工具</h4><p>Apktool <a href="https://ibotpeaches.github.io/Apktool/" target="_blank" rel="external">官网</a></p>
+<blockquote>
+<p>It is a tool for reverse engineering 3rd party, closed, binary Android apps. It can decode resources to nearly original form and rebuild them after making some modifications; it makes possible to debug smali code step by step. Also it makes working with app easier because of project-like files structure and automation of some repetitive tasks like building apk, etc.</p>
+</blockquote>
+<p>它不仅能够反编译apk，解析出资源文件，xml文件，生成smali文件，还可以把修改后的文件你想生成apk。作用：资源文件获取，可以提取出图片文件和布局文件进行使用查看</p>
+<h4 id="dex2jar"><a href="#dex2jar" class="headerlink" title="dex2jar"></a>dex2jar</h4><p>将apk中的classes.dex转化成Jar文件。<br><a href="https://bitbucket.org/pxb1988/dex2jar" target="_blank" rel="external">dex2jar下载地址</a></p>
+<h4 id="jd-gui"><a href="#jd-gui" class="headerlink" title="jd-gui"></a>jd-gui</h4><p>查看APK中classes.dex转化成出的jar文件.<br><a href="http://jd.benow.ca/" target="_blank" rel="external">jd-gui下载地址</a></p>
+<h4 id="ClassyShark"><a href="#ClassyShark" class="headerlink" title="ClassyShark"></a>ClassyShark</h4><blockquote>
+<p>ClassyShark is an Android executables browser. It can reliably open any Android executable and analyse its content. ClassyShark supports multiple formats including jar, class, apk, dex, so, aar and Android XML.</p>
+</blockquote>
+<p><a href="http://classyshark.com/" target="_blank" rel="external">ClassyShark 下载地址</a><br>ClassyShark 是一个可视化的查看Android APK内容(源代码，资源文件等)的工具。<br>它使用起来很方便，下载下来之后是一个可执行的jar文件，在终端执行<code>java -jar classyshark.jar</code>即可打开图形化界面。在打开的图形操作界面中拖入待目标apk，即可展示出反编译之后的结果。<br><img src="http://upload-images.jianshu.io/upload_images/1430132-4d0b0120a2cf6429.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="ClassyShark"></p>
+<p><strong>Methods count</strong>里面即可看到引用了哪些包，方法数。</p>
+<h4 id="APK-Analyzer"><a href="#APK-Analyzer" class="headerlink" title="APK Analyzer"></a>APK Analyzer</h4><p>Android Studio新增了APK Analyzer功能，使用方法很简单，只需要将目标apk拖入到Android Studio中即可。</p>
+<h3 id="防止APK程序被反编译"><a href="#防止APK程序被反编译" class="headerlink" title="防止APK程序被反编译"></a>防止APK程序被反编译</h3><h4 id="代码混淆-Proguard"><a href="#代码混淆-Proguard" class="headerlink" title="代码混淆(Proguard)"></a>代码混淆(Proguard)</h4><p>所谓代码混淆就是把源代码中有意义的变量名，类名用简单字母代替，使得代码变得不可读，进而达到保护源代码的目的。</p>
 <ol>
-<li>身份授权。确保浏览器访问的网站是经过 CA 验证的可信任的网站。</li>
-<li>分发公钥。每个数字证书都包含了注册者生成的公钥。在 SSL 握手时会通过 certificate 消息传输给客户端。比如前文提到的 RSA 证书公钥加密及 ECDHE 的签名都是使用的这个公钥。<br>CA是证书的签发机构，它是PKI的核心。CA是负责签发证书、认证证书、管理已颁发证书的机关。它要制定政策和具体步骤来验证、识别用户身份，并对用户证书进行签名，以确保证书持有者的身份和公钥的拥有权，CA是可以信任的第三方。<br>申请拿到CA签发的证书成为CA证书，还有就是开发者自己生成的证书，称为自签名证书，自签名证书在很多应用程序中用到。</li>
+<li>Gradle ProGuard配置<br>在Android Studio中，使用构建工具是Gradle，要启动ProGuard,可以在Module的build.gradle文件中设置：<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">		    <span class="comment">// ProGuard 启用代码压缩</span></div><div class="line">            minifyEnabled <span class="keyword">true</span></div><div class="line">			<span class="comment">// 启用资源压缩</span></div><div class="line">			<span class="function">shrinkResources <span class="keyword">true</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>,</div><div class="line">                    'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
 </ol>
-<h3 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h3><p>  <img src="http://ww3.sinaimg.cn/mw690/6941baebjw1erta7ycyf8j215n0ridmj.jpg" alt=""></p>
-<hr>
-<h4 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h4><p>  <a href="https://segmentfault.com/a/1190000004631778" target="_blank" rel="external">HTTPS通信中的身份认证机制</a><br>  <a href="http://www.wxtlife.com/2016/03/27/%E8%AF%A6%E8%A7%A3https%E6%98%AF%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E5%AE%89%E5%85%A8%E7%9A%84%EF%BC%9F/" target="_blank" rel="external">详解https是如何确保安全的？</a></p>
-<p><br></p>
+<p>proguardFiles指定ProGuard配置文件，proguard-rules.pro是Module下的自定义配置文件；</p>
+<p>接下来就是要配置ProGuard规则：<br>这里给出一个Android项目的ProGuard规则<a href="https://www.guardsquare.com/en/proguard/manual/examples#androidapplication" target="_blank" rel="external">来自官网的androidapplication example</a><br>参考：<br><a href="https://developer.android.google.cn/studio/build/shrink-code.html#shrink-resources" target="_blank" rel="external">https://developer.android.google.cn/studio/build/shrink-code.html#shrink-resources</a></p>
+<ol>
+<li>DexGuard<br><a href="https://www.guardsquare.com/en/dexguard" target="_blank" rel="external">官网地址</a>, 它比ProGuard更安全，功能更多，不过是商业软件，需要收费。</li>
+</ol>
+<h4 id="代码加固"><a href="#代码加固" class="headerlink" title="代码加固"></a>代码加固</h4><p>代码加固一般使用第三方软件，比如360加固、百度加固、腾讯乐固等<br><a href="http://www.jianshu.com/p/340507049ded" target="_blank" rel="external">Android市面常见加固方案评测</a></p>
+<h4 id="使用Native层"><a href="#使用Native层" class="headerlink" title="使用Native层"></a>使用Native层</h4><p>一些关键的算法，或者数据可以使用C/C++来实现，毕竟反编译so文件要比java文件的难度大太多了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>安卓应用主要基于Java开发，可以借助一些反编译工具可以轻松的破解，获取源代码或者接口信息等，所以为了避免代码泄漏，我们需要对我们的源码进行混淆、加固处理。加大反编译的难度。<br>作为一个有节操的程序员我们出于学习的目的反编译别人项目是可以的，切不可以商业目的窃取别人源代码，甚至加入广告，病毒等二次打包发布。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.jianshu.com/p/9e0d1c3e342e" target="_blank" rel="external">Android APK 反编译实践</a><br><a href="https://developer.android.google.cn/studio/build/shrink-code.html#shrink-resources" target="_blank" rel="external">https://developer.android.google.cn/studio/build/shrink-code.html#shrink-resources</a><br><a href="http://www.jianshu.com/p/340507049ded" target="_blank" rel="external">http://www.jianshu.com/p/340507049ded</a><br><a href="http://proguard.sourceforge.net/index.html" target="_blank" rel="external">http://proguard.sourceforge.net/index.html</a></p>
 
       
     </div>
@@ -432,15 +470,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/SSL/" rel="tag"># SSL</a>
+            <a href="/tags/打包/" rel="tag"># 打包</a>
           
-            <a href="/tags/HTTPS/" rel="tag"># HTTPS</a>
-          
-            <a href="/tags/对称加密/" rel="tag"># 对称加密</a>
-          
-            <a href="/tags/非对称加密/" rel="tag"># 非对称加密</a>
-          
-            <a href="/tags/CA-证书/" rel="tag"># CA 证书</a>
+            <a href="/tags/反编译/" rel="tag"># 反编译</a>
           
         </div>
       
@@ -453,8 +485,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/16/security-signature/" rel="next" title="数字签名">
-                <i class="fa fa-chevron-left"></i> 数字签名
+              <a href="/2017/06/13/dns/" rel="next" title="DNS 相关知识">
+                <i class="fa fa-chevron-left"></i> DNS 相关知识
               </a>
             
           </div>
@@ -463,8 +495,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/03/18/certificate-pinning/" rel="prev" title="Android SSL Certificate Pinning">
-                Android SSL Certificate Pinning <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/27/android-package/" rel="prev" title="Android 打包那些事">
+                Android 打包那些事 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -630,7 +662,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是HTTPS"><span class="nav-number">1.</span> <span class="nav-text">什么是HTTPS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS的工作原理"><span class="nav-number">2.</span> <span class="nav-text">HTTPS的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#”对称加密“和“非对称加密”的概念"><span class="nav-number">3.</span> <span class="nav-text">”对称加密“和“非对称加密”的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#”对称加密“"><span class="nav-number">3.1.</span> <span class="nav-text">”对称加密“</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#”非对称加密“"><span class="nav-number">3.2.</span> <span class="nav-text">”非对称加密“</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字证书"><span class="nav-number">4.</span> <span class="nav-text">数字证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字签名"><span class="nav-number">5.</span> <span class="nav-text">数字签名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#链接"><span class="nav-number">5.1.</span> <span class="nav-text">链接</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#APK编译的原理"><span class="nav-number">1.</span> <span class="nav-text">APK编译的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#APK内容分析"><span class="nav-number">1.1.</span> <span class="nav-text">APK内容分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反编译工具"><span class="nav-number">2.</span> <span class="nav-text">反编译工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Apktools-目前最强大的反编译工具"><span class="nav-number">2.1.</span> <span class="nav-text">Apktools-目前最强大的反编译工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dex2jar"><span class="nav-number">2.2.</span> <span class="nav-text">dex2jar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jd-gui"><span class="nav-number">2.3.</span> <span class="nav-text">jd-gui</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassyShark"><span class="nav-number">2.4.</span> <span class="nav-text">ClassyShark</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#APK-Analyzer"><span class="nav-number">2.5.</span> <span class="nav-text">APK Analyzer</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#防止APK程序被反编译"><span class="nav-number">3.</span> <span class="nav-text">防止APK程序被反编译</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码混淆-Proguard"><span class="nav-number">3.1.</span> <span class="nav-text">代码混淆(Proguard)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码加固"><span class="nav-number">3.2.</span> <span class="nav-text">代码加固</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用Native层"><span class="nav-number">3.3.</span> <span class="nav-text">使用Native层</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

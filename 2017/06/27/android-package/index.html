@@ -93,15 +93,15 @@
 <meta name="description" content="Android打包也称作构建，及Android 构建系统编译应用资源和源代码，然后将它们打包成可供您测试、部署、签署和分发的 APK之前一直使用的Ant作为Android构建工具，目前基本上使用Gradle 这一高级构建工具包来自动化执行和管理构建流程的。 Android 打包流程构建流程涉及许多将您的项目转换成 Android 应用软件包 (APK) 的工具和流程。如图所示，典型 Android">
 <meta name="keywords" content="打包,package">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android 打包">
+<meta property="og:title" content="Android 打包那些事">
 <meta property="og:url" content="http://kurtishu.github.io/2017/06/27/android-package/index.html">
 <meta property="og:site_name" content="Kurtis&#39;s Notes">
 <meta property="og:description" content="Android打包也称作构建，及Android 构建系统编译应用资源和源代码，然后将它们打包成可供您测试、部署、签署和分发的 APK之前一直使用的Ant作为Android构建工具，目前基本上使用Gradle 这一高级构建工具包来自动化执行和管理构建流程的。 Android 打包流程构建流程涉及许多将您的项目转换成 Android 应用软件包 (APK) 的工具和流程。如图所示，典型 Android">
 <meta property="og:image" content="https://developer.android.google.cn/images/tools/studio/build-process_2x.png">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2016/11/29/8643b670708aa421a9883df897496289">
-<meta property="og:updated_time" content="2017-06-28T09:24:31.131Z">
+<meta property="og:updated_time" content="2017-06-29T07:11:08.357Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android 打包">
+<meta name="twitter:title" content="Android 打包那些事">
 <meta name="twitter:description" content="Android打包也称作构建，及Android 构建系统编译应用资源和源代码，然后将它们打包成可供您测试、部署、签署和分发的 APK之前一直使用的Ant作为Android构建工具，目前基本上使用Gradle 这一高级构建工具包来自动化执行和管理构建流程的。 Android 打包流程构建流程涉及许多将您的项目转换成 Android 应用软件包 (APK) 的工具和流程。如图所示，典型 Android">
 <meta name="twitter:image" content="https://developer.android.google.cn/images/tools/studio/build-process_2x.png">
 
@@ -137,7 +137,7 @@
 
 
 
-  <title>Android 打包 | Kurtis's Notes</title>
+  <title>Android 打包那些事 | Kurtis's Notes</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -294,7 +294,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android 打包</h1>
+          <h1 class="post-title" itemprop="name headline">Android 打包那些事</h1>
         
 
         <div class="post-meta">
@@ -368,7 +368,7 @@
 
           
           
-             <span id="/2017/06/27/android-package/" class="leancloud_visitors" data-flag-title="Android 打包">
+             <span id="/2017/06/27/android-package/" class="leancloud_visitors" data-flag-title="Android 打包那些事">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -436,7 +436,7 @@
 <h4 id="验证您的-APK-是否已签署："><a href="#验证您的-APK-是否已签署：" class="headerlink" title="验证您的 APK 是否已签署："></a>验证您的 APK 是否已签署：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apksigner verify my-app-release.apk</div></pre></td></tr></table></figure>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>在做自动化打包的时候，有时候需要获取版本控制工具的版本号，以此来作为将要构建的APK的versionName<br>一下列出了两个常用的版本控制工具SVN、Git获取版本号的方法：</p>
 <h4 id="SVN获取版本号"><a href="#SVN获取版本号" class="headerlink" title="SVN获取版本号"></a>SVN获取版本号</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">uildscript &#123;</div><div class="line"></div><div class="line">    dependencies &#123;</div><div class="line">	    <span class="comment">// 添加SVN的插件</span></div><div class="line">        classpath group: <span class="string">'org.tmatesoft.svnkit'</span>, name: <span class="string">'svnkit'</span>, version: <span class="string">'1.8.9'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">def <span class="title">getSvnRevision</span><span class="params">()</span> </span>&#123;</div><div class="line">    org.tmatesoft.svn.core.wc.ISVNOptions options = SVNWCUtil.createDefaultOptions(<span class="keyword">true</span>);</div><div class="line">    org.tmatesoft.svn.core.wc.SVNClientManager clientManager = SVNClientManager.newInstance(options);</div><div class="line">    org.tmatesoft.svn.core.wc.SVNStatusClient statusClient = clientManager.getStatusClient();</div><div class="line">    org.tmatesoft.svn.core.wc.SVNStatus status = statusClient.doStatus(projectDir, <span class="keyword">false</span>);</div><div class="line">    org.tmatesoft.svn.core.wc.SVNRevision revision = status.getRevision();</div><div class="line">    <span class="keyword">return</span> revision.getNumber();</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">ext &#123;</div><div class="line">    <span class="comment">// JDK version</span></div><div class="line">    sourceCompatibility = JavaVersion.VERSION_1_8</div><div class="line">    targetCompatibility = JavaVersion.VERSION_1_8</div><div class="line"></div><div class="line">    <span class="comment">// App version</span></div><div class="line">    appVersion = <span class="string">"2.0.0.REVISION"</span></div><div class="line">    appVersionCode = <span class="number">123456</span></div><div class="line">    appVersionName = appVersion.replace(<span class="string">".REVISION"</span>, <span class="string">"."</span> + getSvnRevision())</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="Git-获取版本号"><a href="#Git-获取版本号" class="headerlink" title="Git 获取版本号"></a>Git 获取版本号</h3><p>采用java来实行process<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function">def <span class="title">getGitVersion</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">'git rev-parse --short HEAD'</span>.execute().text.trim()</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="Git-获取版本号"><a href="#Git-获取版本号" class="headerlink" title="Git 获取版本号"></a>Git 获取版本号</h4><p>采用java来实行process<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function">def <span class="title">getGitVersion</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">'git rev-parse --short HEAD'</span>.execute().text.trim()</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>如果我们要把取到的Git提交的version显示到界面上</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">defaultConfig &#123;</div><div class="line">	minSdkVersion rootProject.ext.minSdkVersion</div><div class="line">	targetSdkVersion rootProject.ext.targetSdkVersion</div><div class="line">	buildConfigField <span class="string">"String"</span>, <span class="string">"GIT_REVISION"</span>, <span class="string">"\"$&#123;getGitVersion()&#125;\""</span></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p>这样系统会自动生成BuildConfig这个类，类里面就有</p>
@@ -448,8 +448,8 @@
 <li>通过Java Compiler编译R.java、Java接口文件、Java源文件，生成.class文件</li>
 <li>通过dex命令，将.class文件和第三方库中的.class文件处理生成classes.dex</li>
 <li>通过apkbuilder工具，将aapt生成的resources.arsc和res文件、assets文件和classes.dex一起打包生成apk</li>
-<li>通过zipalign工具，对apk进行对齐处理。</li>
 <li>通过apksigner/Jarsigner工具，对上面的apk进行debug或release签名</li>
+<li>通过zipalign工具，对apk进行对齐处理。</li>
 </ol>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://developer.android.google.cn/studio/build/index.html" target="_blank" rel="external">https://developer.android.google.cn/studio/build/index.html</a><br><a href="https://developer.android.google.cn/studio/publish/app-signing.html" target="_blank" rel="external">https://developer.android.google.cn/studio/publish/app-signing.html</a><br><a href="https://developer.android.google.cn/studio/publish/app-signing.html#release-mode" target="_blank" rel="external">https://developer.android.google.cn/studio/publish/app-signing.html#release-mode</a><br><a href="https://juejin.im/entry/57a5bc735bbb500064246d00" target="_blank" rel="external">Android 打包系列——打包流程梳理</a><br><a href="https://developer.android.google.cn/studio/command-line/index.html" target="_blank" rel="external">https://developer.android.google.cn/studio/command-line/index.html</a><br><a href="https://developer.android.google.cn/studio/command-line/apksigner.html" target="_blank" rel="external">https://developer.android.google.cn/studio/command-line/apksigner.html</a><br><a href="http://www.cnblogs.com/yaozhongxiao/p/3523061.html" target="_blank" rel="external">Ant自动编译打包&amp;发布 android项目</a></p>
 
@@ -496,8 +496,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/13/dns/" rel="next" title="DNS 相关知识">
-                <i class="fa fa-chevron-left"></i> DNS 相关知识
+              <a href="/2017/06/19/decompilation/" rel="next" title="Android 反编译">
+                <i class="fa fa-chevron-left"></i> Android 反编译
               </a>
             
           </div>
@@ -578,7 +578,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -589,7 +589,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -600,7 +600,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">46</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -669,7 +669,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-打包流程"><span class="nav-number">1.</span> <span class="nav-text">Android 打包流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Ant打包"><span class="nav-number">2.</span> <span class="nav-text">使用Ant打包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Ant安装"><span class="nav-number">2.1.</span> <span class="nav-text">Ant安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为Android项目生成Ant配置build-xml"><span class="nav-number">2.2.</span> <span class="nav-text">为Android项目生成Ant配置build.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译打包项目"><span class="nav-number">2.3.</span> <span class="nav-text">编译打包项目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用gradle-打包"><span class="nav-number">3.</span> <span class="nav-text">使用gradle 打包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-Gradle-以签署您的-APK"><span class="nav-number">3.1.</span> <span class="nav-text">配置 Gradle 以签署您的 APK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Build项目"><span class="nav-number">3.2.</span> <span class="nav-text">Build项目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动签名"><span class="nav-number">4.</span> <span class="nav-text">手动签名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成一个私钥"><span class="nav-number">4.1.</span> <span class="nav-text">生成一个私钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zipalign-对齐"><span class="nav-number">4.2.</span> <span class="nav-text">zipalign 对齐</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过-apksigner-签名"><span class="nav-number">4.3.</span> <span class="nav-text">通过 apksigner 签名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证您的-APK-是否已签署："><span class="nav-number">4.4.</span> <span class="nav-text">验证您的 APK 是否已签署：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SVN获取版本号"><span class="nav-number">5.1.</span> <span class="nav-text">SVN获取版本号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-获取版本号"><span class="nav-number">6.</span> <span class="nav-text">Git 获取版本号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-打包流程"><span class="nav-number">1.</span> <span class="nav-text">Android 打包流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Ant打包"><span class="nav-number">2.</span> <span class="nav-text">使用Ant打包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Ant安装"><span class="nav-number">2.1.</span> <span class="nav-text">Ant安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为Android项目生成Ant配置build-xml"><span class="nav-number">2.2.</span> <span class="nav-text">为Android项目生成Ant配置build.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译打包项目"><span class="nav-number">2.3.</span> <span class="nav-text">编译打包项目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用gradle-打包"><span class="nav-number">3.</span> <span class="nav-text">使用gradle 打包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-Gradle-以签署您的-APK"><span class="nav-number">3.1.</span> <span class="nav-text">配置 Gradle 以签署您的 APK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Build项目"><span class="nav-number">3.2.</span> <span class="nav-text">Build项目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动签名"><span class="nav-number">4.</span> <span class="nav-text">手动签名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成一个私钥"><span class="nav-number">4.1.</span> <span class="nav-text">生成一个私钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zipalign-对齐"><span class="nav-number">4.2.</span> <span class="nav-text">zipalign 对齐</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过-apksigner-签名"><span class="nav-number">4.3.</span> <span class="nav-text">通过 apksigner 签名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证您的-APK-是否已签署："><span class="nav-number">4.4.</span> <span class="nav-text">验证您的 APK 是否已签署：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SVN获取版本号"><span class="nav-number">5.1.</span> <span class="nav-text">SVN获取版本号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-获取版本号"><span class="nav-number">5.2.</span> <span class="nav-text">Git 获取版本号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
