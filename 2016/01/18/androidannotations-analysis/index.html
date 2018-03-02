@@ -97,7 +97,8 @@
 <meta property="og:url" content="http://kurtishu.github.io/2016/01/18/androidannotations-analysis/index.html">
 <meta property="og:site_name" content="Kurtis&#39;s Notes">
 <meta property="og:description" content="AndroidAnnotions 官方的给出的定义是    AndroidAnnotations is an Open Source framework that speeds up Android development. It takes care of the plumbing, and lets you concentrate on what’s really important. By">
-<meta property="og:updated_time" content="2017-06-01T05:13:03.613Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-02T05:46:10.335Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AndroidAnnotions 源码解析">
 <meta name="twitter:description" content="AndroidAnnotions 官方的给出的定义是    AndroidAnnotations is an Open Source framework that speeds up Android development. It takes care of the plumbing, and lets you concentrate on what’s really important. By">
@@ -403,7 +404,7 @@
 <p>AndroidAnnotations is an Open Source framework that speeds up Android development. It takes care of the plumbing, and lets you concentrate on what’s really important. By simplifying your code, it facilitates its maintenance.</p>
 </blockquote>
 <p>AndroidAnnotations 使用标准的Java注解处理工具自动添加一个额外的编译步骤生成的源代码(会生成一个加了”_”的同名类)，在新生产的源文件中实现View的实例化、Class的注入等工作，以达到减轻开发者工作量的目的。  </p>
-<h3 id="关于-APT-Annotion-Processing-Tool"><a href="#关于-APT-Annotion-Processing-Tool" class="headerlink" title="关于 APT(Annotion Processing Tool)"></a>关于 APT(Annotion Processing Tool)</h3><p>APT 是java 注解处理工具，它的作用就是在源代码中找到并处理Annotation Processors(Annnotation Processors 简单说就是实现了AnnotationProcessor interface 的类)，更多关于APT的内容请参考：<a href="http://docs.oracle.com/javase/1.5.0/docs/guide/apt/GettingStarted.html" target="_blank" rel="external">oracle apt doc</a>   </p>
+<h3 id="关于-APT-Annotion-Processing-Tool"><a href="#关于-APT-Annotion-Processing-Tool" class="headerlink" title="关于 APT(Annotion Processing Tool)"></a>关于 APT(Annotion Processing Tool)</h3><p>APT 是java 注解处理工具，它的作用就是在源代码中找到并处理Annotation Processors(Annnotation Processors 简单说就是实现了AnnotationProcessor interface 的类)，更多关于APT的内容请参考：<a href="http://docs.oracle.com/javase/1.5.0/docs/guide/apt/GettingStarted.html" target="_blank" rel="noopener">oracle apt doc</a>   </p>
 <h3 id="Android-Stuio使用AndroidAnnotation"><a href="#Android-Stuio使用AndroidAnnotation" class="headerlink" title="Android Stuio使用AndroidAnnotation"></a>Android Stuio使用AndroidAnnotation</h3><p>在Android Stuio使用AndroidAnnotion，在网上有具体的配置步骤，引入这个框架会涉及到两个jar包  </p>
 <pre><code> dependencies {
     apt &quot;org.androidannotations:androidannotations:$AAVersion&quot;
@@ -427,6 +428,7 @@
     <span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span> </span>{
       ...
     }
+
 </code></pre>
 <p>从代码可以看到 AndroidAnnotationProcessor继承至AbstractProcessor需要实现三个方法, process是处理Annotation的核心方法，Annatation解析s所需要的java<br>的版本好，一般使用lastestSupported(最新的java版本), getSupportedAnnotationTypes 返回需要解析的Annotation的Class集合。这里重点讲下process方法。   </p>
 <h3 id="关于process方法"><a href="#关于process方法" class="headerlink" title="关于process方法"></a>关于process方法</h3><p>先贴出核心代码  </p>
@@ -467,6 +469,7 @@
         <span class="comment">// * 根据解析到的Annotations 生成相应的类文件</span>
         generateSources(processResult);
     }
+
 </code></pre>
 <h3 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h3><p>关于AndroidAnnotation框架如何去Validate、解析，以及生成类的过程没有具体分析，留到以后再完善。</p>
 <p><br></p>
@@ -600,7 +603,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -622,7 +625,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -714,7 +717,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

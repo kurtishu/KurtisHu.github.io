@@ -97,8 +97,9 @@
 <meta property="og:url" content="http://kurtishu.github.io/2017/05/28/performance-optimizing/index.html">
 <meta property="og:site_name" content="Kurtis&#39;s Notes">
 <meta property="og:description" content="当出现App启动慢、界面跳转慢、事件相应慢、滑动和动画卡顿、展现内容慢等问题的时候意味着App性能出现问题，这个时候就有必要对App做一下性能优化，其实不是非等到App出现性能问题的时候才开始做优化，而是要把优化做到平时的开发和维护过程中。但性能优化如何下手？下面结合Android官方文档以及平时开发中的经验来聊聊Andrid性能优化的技巧。 Layout布局优化Layout的优化目的是处理应用U">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://developer.android.google.cn/images/developing/hv_treeview_screenshot.png">
-<meta property="og:updated_time" content="2017-06-01T06:06:40.192Z">
+<meta property="og:updated_time" content="2018-03-02T05:46:10.360Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android App性能优化技巧">
 <meta name="twitter:description" content="当出现App启动慢、界面跳转慢、事件相应慢、滑动和动画卡顿、展现内容慢等问题的时候意味着App性能出现问题，这个时候就有必要对App做一下性能优化，其实不是非等到App出现性能问题的时候才开始做优化，而是要把优化做到平时的开发和维护过程中。但性能优化如何下手？下面结合Android官方文档以及平时开发中的经验来聊聊Andrid性能优化的技巧。 Layout布局优化Layout的优化目的是处理应用U">
@@ -400,40 +401,40 @@
       
 
       
-        <p>当出现App启动慢、界面跳转慢、事件相应慢、滑动和动画卡顿、展现内容慢等问题的时候意味着App性能出现问题，这个时候就有必要对App做一下性能优化，其实不是非等到App出现性能问题的时候才开始做优化，而是要把优化做到平时的开发和维护过程中。但性能优化如何下手？下面结合Android<a href="https://developer.android.google.cn/training/best-performance.html" target="_blank" rel="external">官方文档</a>以及平时开发中的经验来聊聊Andrid性能优化的技巧。</p>
+        <p>当出现App启动慢、界面跳转慢、事件相应慢、滑动和动画卡顿、展现内容慢等问题的时候意味着App性能出现问题，这个时候就有必要对App做一下性能优化，其实不是非等到App出现性能问题的时候才开始做优化，而是要把优化做到平时的开发和维护过程中。但性能优化如何下手？下面结合Android<a href="https://developer.android.google.cn/training/best-performance.html" target="_blank" rel="noopener">官方文档</a>以及平时开发中的经验来聊聊Andrid性能优化的技巧。</p>
 <h3 id="Layout布局优化"><a href="#Layout布局优化" class="headerlink" title="Layout布局优化"></a>Layout布局优化</h3><p>Layout的优化目的是处理应用UI卡顿、ANR问题，使App用起来丝般顺滑。</p>
 <ul>
-<li>优化布局结构，避免复杂的Layout嵌套。比如使用<code>merge</code> 标签减少布局嵌套。<br>使用 <a href="https://developer.android.google.cn/studio/profile/hierarchy-viewer.html" target="_blank" rel="external">Hierarchy Viewer</a> 分析布局，对出现红色、或者黄色的布局需要尤为注意。<br><img src="https://developer.android.google.cn/images/developing/hv_treeview_screenshot.png" alt="Tree View"></li>
+<li>优化布局结构，避免复杂的Layout嵌套。比如使用<code>merge</code> 标签减少布局嵌套。<br>使用 <a href="https://developer.android.google.cn/studio/profile/hierarchy-viewer.html" target="_blank" rel="noopener">Hierarchy Viewer</a> 分析布局，对出现红色、或者黄色的布局需要尤为注意。<br><img src="https://developer.android.google.cn/images/developing/hv_treeview_screenshot.png" alt="Tree View"></li>
 <li>使用Lint进行资源及冗余UI布局分析，根据Lint report提示做相应的优化</li>
 <li>使用<code>include</code> 标签达到布局重用的目的， </li>
 <li>使用懒加载的Views，比如ViewStub</li>
 <li>使用Memory监测及GC打印与Allocation Tracker进行UI卡顿分析。</li>
 <li>使用RelativeLayout扁平化布局，ListView item布局，一定要扁平化。</li>
 <li>TextView组合图标，代替LinearLayout+TextView+ImageView。</li>
-<li><p>在项目中使用<a href="https://developer.android.google.cn/reference/android/os/StrictMode.html" target="_blank" rel="external">StrictMode</a>来检查主线程耗时操作等。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">StrictMode.setThreadPolicy(<span class="keyword">new</span> StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().penaltyDialog().build());</div><div class="line"> StrictMode.setVmPolicy(<span class="keyword">new</span> StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());</div></pre></td></tr></table></figure>
+<li><p>在项目中使用<a href="https://developer.android.google.cn/reference/android/os/StrictMode.html" target="_blank" rel="noopener">StrictMode</a>来检查主线程耗时操作等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">StrictMode.setThreadPolicy(<span class="keyword">new</span> StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().penaltyDialog().build());</span><br><span class="line"> StrictMode.setVmPolicy(<span class="keyword">new</span> StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>自定义View时，避免onDraw方法过度绘制或者重复绘制，避免在里面初始化变量等。</p>
 </li>
 <li>ListView或者RecyclerView渲染item时，将耗时操作（文件，网络， DB）放在子线程中，item要是用ViewHolder布局缓存复用机制。</li>
-<li>使用traces.txt文件进行ANR分析优化，或者使用<a href="https://github.com/markzhai/AndroidPerformanceMonitor" target="_blank" rel="external">Blockcanary</a>，使用方法和Leackcanary类似。</li>
+<li>使用traces.txt文件进行ANR分析优化，或者使用<a href="https://github.com/markzhai/AndroidPerformanceMonitor" target="_blank" rel="noopener">Blockcanary</a>，使用方法和Leackcanary类似。</li>
 <li>使用SVG代替图片</li>
 <li>使用xml代替图片</li>
 </ul>
 <h3 id="优化设备的电池寿命"><a href="#优化设备的电池寿命" class="headerlink" title="优化设备的电池寿命"></a>优化设备的电池寿命</h3><p>电池优化一般只针对耗电量比较大的App，一般应用貌似都还没有考虑到这一点。对于电池使用优化主要考虑：</p>
 <ul>
 <li>监控电池电量和充电状态，监控显著的电池电量变化，一般而言，最好在电池电量极低时停用所有后台更新。</li>
-<li>确定和监控插接状态和基座类型，具体参考<a href="https://developer.android.google.cn/training/monitoring-device-state/docking-monitoring.html" target="_blank" rel="external">官方文档</a></li>
-<li>确定和监控网络连接状态，可以利用 <a href="https://developer.android.google.cn/reference/android/net/ConnectivityManager.html" target="_blank" rel="external">ConnectivityManager</a> 来检查是否已实际连入互联网以及已连入情况下的连接类型。</li>
+<li>确定和监控插接状态和基座类型，具体参考<a href="https://developer.android.google.cn/training/monitoring-device-state/docking-monitoring.html" target="_blank" rel="noopener">官方文档</a></li>
+<li>确定和监控网络连接状态，可以利用 <a href="https://developer.android.google.cn/reference/android/net/ConnectivityManager.html" target="_blank" rel="noopener">ConnectivityManager</a> 来检查是否已实际连入互联网以及已连入情况下的连接类型。</li>
 </ul>
 <h3 id="高效地利用线程"><a href="#高效地利用线程" class="headerlink" title="高效地利用线程"></a>高效地利用线程</h3><p>为了加快响应速度，需要把费时的操作（比如网络请求、数据库操作或者复杂的计算）从主线程移动到一个单独的线程中。</p>
 <ul>
 <li>可以使用自定义Thread，AsyncTask或者IntentService来创建后台操作。</li>
 <li><p>可以使用线程池，并用创建一个Manager类对多线程统一管理</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="title">PhotoManager</span><span class="params">()</span> </span>&#123;</div><div class="line">       ...</div><div class="line">       <span class="comment">// Sets the amount of time an idle thread waits before terminating</span></div><div class="line">       <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEEP_ALIVE_TIME = <span class="number">1</span>;</div><div class="line">       <span class="comment">// Sets the Time Unit to seconds</span></div><div class="line">       <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;</div><div class="line">       <span class="comment">// Creates a thread pool manager</span></div><div class="line">       mDecodeThreadPool = <span class="keyword">new</span> ThreadPoolExecutor(</div><div class="line">               NUMBER_OF_CORES,       <span class="comment">// Initial pool size</span></div><div class="line">               NUMBER_OF_CORES,       <span class="comment">// Max pool size</span></div><div class="line">               KEEP_ALIVE_TIME,</div><div class="line">               KEEP_ALIVE_TIME_UNIT,</div><div class="line">               mDecodeWorkQueue);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">PhotoManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       ...</span><br><span class="line">       <span class="comment">// Sets the amount of time an idle thread waits before terminating</span></span><br><span class="line">       <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEEP_ALIVE_TIME = <span class="number">1</span>;</span><br><span class="line">       <span class="comment">// Sets the Time Unit to seconds</span></span><br><span class="line">       <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;</span><br><span class="line">       <span class="comment">// Creates a thread pool manager</span></span><br><span class="line">       mDecodeThreadPool = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">               NUMBER_OF_CORES,       <span class="comment">// Initial pool size</span></span><br><span class="line">               NUMBER_OF_CORES,       <span class="comment">// Max pool size</span></span><br><span class="line">               KEEP_ALIVE_TIME,</span><br><span class="line">               KEEP_ALIVE_TIME_UNIT,</span><br><span class="line">               mDecodeWorkQueue);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>当View销毁或者不可见的情况下，线程有必要取消、停止, 通常在线程内部设置flag取消耗时操作，尽快让线程结束。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * Before continuing, checks to see that the Thread hasn't</div><div class="line"> * been interrupted</div><div class="line"> */</div><div class="line"><span class="keyword">if</span> (Thread.interrupted()) &#123;</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * isCanceled标志</div><div class="line"> */</div><div class="line"><span class="keyword">if</span> (isCanceled()) &#123;</div><div class="line">   <span class="keyword">return</span>;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Before continuing, checks to see that the Thread hasn't</span></span><br><span class="line"><span class="comment"> * been interrupted</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">if</span> (Thread.interrupted()) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * isCanceled标志</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">if</span> (isCanceled()) &#123;</span><br><span class="line">   <span class="keyword">return</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="优化网络"><a href="#优化网络" class="headerlink" title="优化网络"></a>优化网络</h3><ul>
@@ -473,7 +474,7 @@
 <li>使用Parcelable代替Serializable，Parcelable更适合Android。</li>
 </ul>
 <h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>性能优化是一个大的话题，设计到的知识太多太多，上面只是提到部分，后续会不但的更新，如有不对之处，还望指正。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.jianshu.com/p/b3b09fa29f65" target="_blank" rel="external">Android性能优化的方方面面</a><br><a href="http://www.cnblogs.com/stay/p/4784014.html" target="_blank" rel="external">那些Android中的性能优化</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.jianshu.com/p/b3b09fa29f65" target="_blank" rel="noopener">Android性能优化的方方面面</a><br><a href="http://www.cnblogs.com/stay/p/4784014.html" target="_blank" rel="noopener">那些Android中的性能优化</a></p>
 
       
     </div>
@@ -604,7 +605,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -626,7 +627,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -718,7 +719,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

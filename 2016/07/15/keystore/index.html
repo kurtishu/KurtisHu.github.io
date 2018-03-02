@@ -97,7 +97,8 @@
 <meta property="og:url" content="http://kurtishu.github.io/2016/07/15/keystore/index.html">
 <meta property="og:site_name" content="Kurtis&#39;s Notes">
 <meta property="og:description" content="Keytool  命令Keytool 是一个JAVA环境下的安全钥匙与证书的管理工具.它管理一个存储了私有钥匙和验证相应公共钥匙的与它们相关联的X.509 证书链的keystore(相当一个数据库，里面可存放多个X.509标准的证书)..  Keytool 常用命令：检查一个keystore keytool -list -v -keystore c:\server.jks  检查一个keystor">
-<meta property="og:updated_time" content="2017-05-26T01:22:44.376Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-02T05:46:10.354Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Keystore">
 <meta name="twitter:description" content="Keytool  命令Keytool 是一个JAVA环境下的安全钥匙与证书的管理工具.它管理一个存储了私有钥匙和验证相应公共钥匙的与它们相关联的X.509 证书链的keystore(相当一个数据库，里面可存放多个X.509标准的证书)..  Keytool 常用命令：检查一个keystore keytool -list -v -keystore c:\server.jks  检查一个keystor">
@@ -404,7 +405,7 @@
 <p>   keytool -delete -keystore server.jks -alias tomcat<br>   *备注：删除了别名为tomcat的证书。</p>
 <hr>
 <h2 id="推荐一个生成Keystore的工具-Keystore-GUI-1-6"><a href="#推荐一个生成Keystore的工具-Keystore-GUI-1-6" class="headerlink" title="推荐一个生成Keystore的工具  Keystore GUI 1.6 "></a>推荐一个生成Keystore的工具 <strong> Keystore GUI 1.6 </strong></h2><h3 id="Tomcat-支持SSL配置"><a href="#Tomcat-支持SSL配置" class="headerlink" title="Tomcat 支持SSL配置"></a>Tomcat 支持SSL配置</h3><p>修改tomcat安装目录下的conf\server.xml文件  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;Connector port=&quot;8443&quot; protocol=&quot;HTTP/1.1&quot; SSLEnabled=&quot;true&quot;</div><div class="line">               maxThreads=&quot;150&quot; scheme=&quot;https&quot; secure=&quot;true&quot;</div><div class="line">               clientAuth=&quot;false&quot; sslProtocol=&quot;TLS&quot;</div><div class="line"> 			   keystoreFile=&quot;C:\home\tomcat.jks&quot; keystorePass=&quot;123456&quot;/&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;Connector port=&quot;8443&quot; protocol=&quot;HTTP/1.1&quot; SSLEnabled=&quot;true&quot;</span><br><span class="line">               maxThreads=&quot;150&quot; scheme=&quot;https&quot; secure=&quot;true&quot;</span><br><span class="line">               clientAuth=&quot;false&quot; sslProtocol=&quot;TLS&quot;</span><br><span class="line"> 			   keystoreFile=&quot;C:\home\tomcat.jks&quot; keystorePass=&quot;123456&quot;/&gt;</span><br></pre></td></tr></table></figure>
 <p><br><br>…</p>
 <pre><code class="java"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> KeyStore <span class="title">readKeyStore</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>{
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -476,6 +477,7 @@
         });
 
     }
+
 </code></pre>
 
       
@@ -607,7 +609,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -629,7 +631,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -721,7 +723,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

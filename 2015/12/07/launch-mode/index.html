@@ -97,11 +97,12 @@
 <meta property="og:url" content="http://kurtishu.github.io/2015/12/07/launch-mode/index.html">
 <meta property="og:site_name" content="Kurtis&#39;s Notes">
 <meta property="og:description" content="Android应用运行起来后就会开启一条线程，线程中会运行一个任务栈，当Activity实例创建后就会放入任务栈中。Activity启动模式的设置在AndroidManifest.xml文件中，通过配置Activity的属性android:launchMode=””设置。  1.&amp;nbsp;Standard模式（默认）Android activity 默认的启动模式， 每次启动一个activity">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://kurtishu.github.io/assets/Standard.png">
 <meta property="og:image" content="http://kurtishu.github.io/assets/SingleTop.png">
 <meta property="og:image" content="http://kurtishu.github.io/assets/SingleTask.png">
 <meta property="og:image" content="http://kurtishu.github.io/assets/SingleInstance.png">
-<meta property="og:updated_time" content="2017-06-01T05:48:55.817Z">
+<meta property="og:updated_time" content="2018-03-02T05:46:10.356Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 启动模式">
 <meta name="twitter:description" content="Android应用运行起来后就会开启一条线程，线程中会运行一个任务栈，当Activity实例创建后就会放入任务栈中。Activity启动模式的设置在AndroidManifest.xml文件中，通过配置Activity的属性android:launchMode=””设置。  1.&amp;nbsp;Standard模式（默认）Android activity 默认的启动模式， 每次启动一个activity">
@@ -406,7 +407,7 @@
 <p><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><img src="/assets/SingleInstance.png" width="508" height="428"></span></p>
 <p><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><strong>总结：</strong><br>standard：默认模式，始终创建新的实例。<br>singleTop： 要激活的Activity处于栈顶，则不新建实例，重用该实例，否则新建实例。<br>singleTask： 检查要激活Activity在栈中是否存在，如果存在把该实例pop 到栈顶，该实例栈以上的实例出栈，如果不存在，新建一个栈并把该实例置于栈底。<br>singleInstance：检查要激活Activity在栈中是否存在，不存在，新建一个栈并把该实例置于栈底，存在直接使用该实例，singleInstance的实例在所在的栈的栈底，并且该栈中只有唯一该对象。</span></p>
 <p><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; "><strong>signleTask 和singleInstance的区别<br></strong>这两种启动模式存在某些共同点，也是稍微难以理解的两种模式。<br></span><strong style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; ">相同点：<br></strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; ">1. 都只存在唯一的实例<br></span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; ">2.存在实例的时候都是会新建一个栈，并且把新建的对待置于栈底。<br></span><strong style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; ">不同点：<br></strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 16px; ">1. singleTask 实例所在的栈中可以存放其他的实例，singleInstance 实例只存在其本身一个实例<br>2. ingleInstance表示该Activity在系统范围内“实例唯一”。由此我们发现，singInstance和singleTask主要区别在与系统范围内的“实例唯一”还是当前Activity栈“实例唯一”</span></p>
-<p><a href="http://www.codeceo.com/article/android-activity-life-cycle-and-start-mode.html" target="_blank" rel="external">More</a></p>
+<p><a href="http://www.codeceo.com/article/android-activity-life-cycle-and-start-mode.html" target="_blank" rel="noopener">More</a></p>
 
       
     </div>
@@ -526,7 +527,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -548,7 +549,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -624,7 +625,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
